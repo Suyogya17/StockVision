@@ -2,19 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:stockvision_app/model/user.dart';
 
 class RegistrationScreen extends StatefulWidget {
-  const RegistrationScreen({super.key});
+  final Function(User) onUserRegistered;
+
+  const RegistrationScreen({super.key, required this.onUserRegistered});
 
   @override
   State<RegistrationScreen> createState() => _RegistrationScreenState();
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  final _gap = const SizedBox(
-    height: 15,
-  );
-  List<User> lsUser = [];
-
-  // Controllers for text fields to manage input
+  final _gap = const SizedBox(height: 15);
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -22,7 +19,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   void dispose() {
-    // Dispose controllers to free up resources
     _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
@@ -57,68 +53,47 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               const SizedBox(height: 50),
               TextFormField(
                 controller: _usernameController,
-                style: const TextStyle(color: Colors.black),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Username",
-                  labelStyle: const TextStyle(color: Colors.grey),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
                   filled: true,
                   fillColor: Colors.white,
-                  prefixIcon: const Icon(Icons.person, color: Colors.grey),
+                  prefixIcon: Icon(Icons.person, color: Colors.grey),
                 ),
               ),
               _gap,
               TextFormField(
                 controller: _emailController,
-                style: const TextStyle(color: Colors.black),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Email",
-                  labelStyle: const TextStyle(color: Colors.grey),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
                   filled: true,
                   fillColor: Colors.white,
-                  prefixIcon: const Icon(Icons.email, color: Colors.grey),
+                  prefixIcon: Icon(Icons.email, color: Colors.grey),
                 ),
               ),
               _gap,
               TextFormField(
                 controller: _phonenumberController,
-                style: const TextStyle(color: Colors.black),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Phone Number",
-                  labelStyle: const TextStyle(color: Colors.grey),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
                   filled: true,
                   fillColor: Colors.white,
-                  prefixIcon: const Icon(Icons.phone, color: Colors.grey),
+                  prefixIcon: Icon(Icons.phone, color: Colors.grey),
                 ),
               ),
               _gap,
               TextFormField(
                 controller: _passwordController,
                 obscureText: true,
-                style: const TextStyle(color: Colors.black),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Password",
-                  labelStyle: const TextStyle(color: Colors.grey),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
                   filled: true,
                   fillColor: Colors.white,
-                  prefixIcon: const Icon(Icons.lock, color: Colors.grey),
+                  prefixIcon: Icon(Icons.lock, color: Colors.grey),
                 ),
               ),
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  // Implement registration logic
                   String username = _usernameController.text.trim();
                   String email = _emailController.text.trim();
                   double? phonenumber =
@@ -138,13 +113,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ),
                     );
                   } else {
-                    setState(() {
-                      lsUser.add(User(
-                          fname: username,
-                          email: email,
-                          phonenumber: phonenumber,
-                          password: password));
-                    });
+                    User newUser = User(
+                      fname: username,
+                      email: email,
+                      phonenumber: phonenumber,
+                      password: password,
+                    );
+                    widget.onUserRegistered(newUser); // Notify parent widget
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         backgroundColor: Colors.green,
@@ -153,6 +128,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         behavior: SnackBarBehavior.floating,
                       ),
                     );
+                    Navigator.pushReplacementNamed(context, '/');
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -169,16 +145,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context); // Navigate back to the login screen
-                },
-                child: const Text(
-                  "Already have an account? Login",
-                  style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
             ],
