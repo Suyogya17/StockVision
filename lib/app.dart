@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stockvision_app/view/loginscreen_view.dart';
+import 'package:stockvision_app/view/registrationscreen_view.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -10,7 +11,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => LoginscreenView(),
+        '/': (context) => const LoginscreenView(),
+        '/register': (context) => const RegistrationScreen(),
       },
     );
   }

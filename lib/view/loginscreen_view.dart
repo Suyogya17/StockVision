@@ -98,6 +98,7 @@ class _LoginscreenViewState extends State<LoginscreenView> {
               TextButton(
                 onPressed: () {
                   // Add your "Create Account" logic here
+                  Navigator.pushNamed(context, '/register');
                 },
                 child: const Text(
                   "Create New Account",
