@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stockvision_app/model/user.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -8,10 +9,16 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  final _gap = const SizedBox(
+    height: 15,
+  );
+  List<User> lsUser = [];
+
   // Controllers for text fields to manage input
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _phonenumberController = TextEditingController();
 
   @override
   void dispose() {
@@ -19,6 +26,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _phonenumberController.dispose();
     super.dispose();
   }
 
@@ -61,7 +69,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   prefixIcon: const Icon(Icons.person, color: Colors.grey),
                 ),
               ),
-              const SizedBox(height: 15),
+              _gap,
               TextFormField(
                 controller: _emailController,
                 style: const TextStyle(color: Colors.black),
@@ -76,7 +84,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   prefixIcon: const Icon(Icons.email, color: Colors.grey),
                 ),
               ),
-              const SizedBox(height: 15),
+              _gap,
+              TextFormField(
+                controller: _phonenumberController,
+                style: const TextStyle(color: Colors.black),
+                decoration: InputDecoration(
+                  labelText: "Phone Number",
+                  labelStyle: const TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  prefixIcon: const Icon(Icons.phone, color: Colors.grey),
+                ),
+              ),
+              _gap,
               TextFormField(
                 controller: _passwordController,
                 obscureText: true,
@@ -96,20 +119,32 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ElevatedButton(
                 onPressed: () {
                   // Implement registration logic
-                  String username = _usernameController.text;
-                  String email = _emailController.text;
-                  String password = _passwordController.text;
+                  String username = _usernameController.text.trim();
+                  String email = _emailController.text.trim();
+                  double? phonenumber =
+                      double.tryParse(_phonenumberController.text.trim());
+                  String password = _passwordController.text.trim();
 
-                  if (username.isEmpty || email.isEmpty || password.isEmpty) {
+                  if (username.isEmpty ||
+                      email.isEmpty ||
+                      password.isEmpty ||
+                      phonenumber == null) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         backgroundColor: Colors.red,
-                        content: Text("Please fill in all fields."),
+                        content: Text("Please fill in all fields correctly."),
                         duration: Duration(seconds: 1),
                         behavior: SnackBarBehavior.floating,
                       ),
                     );
                   } else {
+                    setState(() {
+                      lsUser.add(User(
+                          fname: username,
+                          email: email,
+                          phonenumber: phonenumber,
+                          password: password));
+                    });
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         backgroundColor: Colors.green,
