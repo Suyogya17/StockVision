@@ -16,6 +16,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _phonenumberController = TextEditingController();
+  bool _obscurePassword = true;
 
   @override
   void dispose() {
@@ -83,12 +84,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               _gap,
               TextFormField(
                 controller: _passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
+                obscureText: _obscurePassword,
+                decoration: InputDecoration(
                   labelText: "Password",
                   filled: true,
                   fillColor: Colors.white,
-                  prefixIcon: Icon(Icons.lock, color: Colors.grey),
+                  prefixIcon: const Icon(Icons.lock, color: Colors.grey),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscurePassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
+                  ),
                 ),
               ),
               const SizedBox(height: 30),
@@ -96,18 +109,39 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 onPressed: () {
                   String username = _usernameController.text.trim();
                   String email = _emailController.text.trim();
-                  double? phonenumber =
-                      double.tryParse(_phonenumberController.text.trim());
+                  String phoneNumberStr = _phonenumberController.text.trim();
                   String password = _passwordController.text.trim();
+
+                  double? phonenumber = double.tryParse(phoneNumberStr);
 
                   if (username.isEmpty ||
                       email.isEmpty ||
                       password.isEmpty ||
-                      phonenumber == null) {
+                      phoneNumberStr.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         backgroundColor: Colors.red,
-                        content: Text("Please fill in all fields correctly."),
+                        content: Text("Please fill in all fields."),
+                        duration: Duration(seconds: 1),
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                  } else if (!email.contains('@') || !email.endsWith('.com')) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.red,
+                        content: Text("Please enter a valid email address."),
+                        duration: Duration(seconds: 1),
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                  } else if (phonenumber == null ||
+                      phoneNumberStr.length != 10) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.red,
+                        content:
+                            Text("Phone number must be exactly 10 digits."),
                         duration: Duration(seconds: 1),
                         behavior: SnackBarBehavior.floating,
                       ),
@@ -128,7 +162,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         behavior: SnackBarBehavior.floating,
                       ),
                     );
-                    Navigator.pushReplacementNamed(context, '/');
+                    Navigator.pushReplacementNamed(context, '/login');
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -145,6 +179,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
+                ),
+              ),
+              _gap,
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/login');
+                },
+                child: const Text(
+                  "Already have an Account? SIGN-IN",
+                  style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
             ],

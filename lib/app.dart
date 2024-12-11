@@ -3,6 +3,7 @@ import 'package:stockvision_app/model/user.dart';
 import 'package:stockvision_app/view/dashboardscreen_view.dart';
 import 'package:stockvision_app/view/loginscreen_view.dart';
 import 'package:stockvision_app/view/registrationscreen_view.dart';
+import 'package:stockvision_app/view/splashscreen_view.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -20,7 +21,9 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => LoginscreenView(registeredUsers: registeredUsers),
+        '/': (context) => const SplashScreen(),
+        '/login': (context) =>
+            LoginscreenView(registeredUsers: registeredUsers),
         '/register': (context) => RegistrationScreen(
               onUserRegistered: (user) {
                 setState(() {
