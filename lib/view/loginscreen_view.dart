@@ -14,6 +14,7 @@ class _LoginscreenViewState extends State<LoginscreenView> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _gap = const SizedBox(height: 15);
+  bool _isPasswordVisible = false; // To track password visibility
 
   @override
   void dispose() {
@@ -70,6 +71,12 @@ class _LoginscreenViewState extends State<LoginscreenView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const Icon(
+                Icons.inventory,
+                color: Colors.white,
+                size: 100,
+              ),
+              _gap,
               const Text(
                 "StockVision",
                 style: TextStyle(
@@ -84,7 +91,10 @@ class _LoginscreenViewState extends State<LoginscreenView> {
                 style: const TextStyle(color: Colors.black),
                 decoration: InputDecoration(
                   labelText: "Username",
-                  labelStyle: const TextStyle(color: Colors.grey),
+                  labelStyle: const TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -96,17 +106,34 @@ class _LoginscreenViewState extends State<LoginscreenView> {
               _gap,
               TextFormField(
                 controller: _passwordController,
-                obscureText: true,
+                obscureText: !_isPasswordVisible, // Toggle password visibility
                 style: const TextStyle(color: Colors.black),
                 decoration: InputDecoration(
                   labelText: "Password",
-                  labelStyle: const TextStyle(color: Colors.grey),
+                  labelStyle: const TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                   filled: true,
                   fillColor: Colors.white,
                   prefixIcon: const Icon(Icons.lock, color: Colors.grey),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _isPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: Colors.grey,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isPasswordVisible =
+                            !_isPasswordVisible; // Toggle visibility
+                      });
+                    },
+                  ),
                 ),
               ),
               const SizedBox(height: 30),
@@ -131,7 +158,7 @@ class _LoginscreenViewState extends State<LoginscreenView> {
               const SizedBox(height: 20),
               TextButton(
                 onPressed: () {
-                  // Add your "Forgot Password" logic here
+                  //"Forgot Password" logic here
                 },
                 child: const Text(
                   "Forgot Password?",
@@ -141,7 +168,6 @@ class _LoginscreenViewState extends State<LoginscreenView> {
               const SizedBox(height: 20),
               TextButton(
                 onPressed: () {
-                  // Add your "Create Account" logic here
                   Navigator.pushNamed(context, '/register');
                 },
                 child: const Text(

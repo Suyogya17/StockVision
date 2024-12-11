@@ -33,9 +33,9 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              Icons.inventory, // Stock/inventory-related icon
+              Icons.inventory,
               size: 100,
-              color: Colors.blue,
+              color: Colors.orange,
             ),
             SizedBox(height: 20),
             Text(

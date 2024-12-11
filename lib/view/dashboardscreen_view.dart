@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stockvision_app/model/user.dart';
+import 'package:stockvision_app/core/common/cardsview.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -30,12 +31,13 @@ class DashboardPage extends StatelessWidget {
                 Text(
                   user.fname,
                   style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 16),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
                 ),
-                // Replace email with address here
                 Text(
                   user.address,
-                  style: const TextStyle(fontSize: 12, color: Colors.white70),
+                  style: const TextStyle(fontSize: 12, color: Colors.white),
                 ),
               ],
             ),
@@ -56,78 +58,72 @@ class DashboardPage extends StatelessWidget {
           ),
         ],
         backgroundColor: Colors.orange,
-        elevation: 10, // Add shadow to the app bar
+        elevation: 20, // Add shadow to the app bar
         centerTitle: false,
         automaticallyImplyLeading: false, // Disable the back button
       ),
-      body: Container(
-        decoration: const BoxDecoration(color: Colors.amber),
-        child: const Padding(
-          padding: EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Dashboard",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
+      body: const SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Card 1
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              child: MyCard(
+                title: 'card 1',
+                color: Colors.amber,
+                width: 500.0, // Example size
               ),
-              SizedBox(height: 20),
-              Row(
+            ),
+
+            // Cards 2 and 3 side by side with a gap
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              child: Row(
                 children: [
-                  SizedBox(width: 20),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 5),
-                    ],
+                  // Card 2
+                  Expanded(
+                    child: MyCard(
+                      title: 'card 2',
+                      color: Colors.green,
+                      width: 500.0, // Adjust width
+                    ),
+                  ),
+                  SizedBox(width: 16), // Add gap between the two cards
+                  // Card 3
+                  Expanded(
+                    child: MyCard(
+                      title: 'card 3',
+                      color: Colors.amber,
+                      width: 500.0, // Adjust width
+                    ),
                   ),
                 ],
               ),
-              SizedBox(height: 30),
-              // Expanded(
-              //   child: GridView.count(
-              //     crossAxisCount: 2,
-              //     crossAxisSpacing: 20,
-              //     mainAxisSpacing: 20,
-              //     children: [
-              //       _buildDashboardCard(
-              //         icon: Icons.pie_chart,
-              //         title: "Analytics",
-              //         onTap: () {
-              //           // Handle action
-              //         },
-              //       ),
-              //       _buildDashboardCard(
-              //         icon: Icons.inventory,
-              //         title: "Inventory",
-              //         onTap: () {
-              //           // Handle action
-              //         },
-              //       ),
-              //       _buildDashboardCard(
-              //         icon: Icons.notifications,
-              //         title: "Alerts",
-              //         onTap: () {
-              //           // Handle action
-              //         },
-              //       ),
-              //       _buildDashboardCard(
-              //         icon: Icons.settings,
-              //         title: "Settings",
-              //         onTap: () {
-              //           // Handle action
-              //         },
-              //       ),
-              //     ],
-              //   ),
-              // ),
-            ],
-          ),
+            ),
+
+            // Card 4
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              child: MyCard(
+                title: 'card 4',
+                color: Colors.green,
+                width: 1000.0,
+                height: 500, // Example size
+              ),
+            ),
+
+            // Card 5
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              child: MyCard(
+                title: 'card 5',
+                color: Colors.amber,
+                width: 200.0, // Example size
+              ),
+            ),
+          ],
         ),
       ),
     );
