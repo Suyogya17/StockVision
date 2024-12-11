@@ -16,6 +16,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _phonenumberController = TextEditingController();
+  final _addressController = TextEditingController();
   bool _obscurePassword = true;
 
   @override
@@ -24,6 +25,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     _phonenumberController.dispose();
+    _addressController.dispose();
     super.dispose();
   }
 
@@ -39,10 +41,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.all(15.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const SizedBox(height: 50),
               const Text(
                 "Create Account",
                 style: TextStyle(
@@ -74,11 +77,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               _gap,
               TextFormField(
                 controller: _phonenumberController,
+                keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   labelText: "Phone Number",
                   filled: true,
                   fillColor: Colors.white,
                   prefixIcon: Icon(Icons.phone, color: Colors.grey),
+                ),
+              ),
+              _gap,
+              TextFormField(
+                controller: _addressController,
+                decoration: const InputDecoration(
+                  labelText: "Address",
+                  filled: true,
+                  fillColor: Colors.white,
+                  prefixIcon: Icon(Icons.home, color: Colors.grey),
                 ),
               ),
               _gap,
@@ -110,6 +124,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   String username = _usernameController.text.trim();
                   String email = _emailController.text.trim();
                   String phoneNumberStr = _phonenumberController.text.trim();
+                  String address = _addressController.text.trim();
                   String password = _passwordController.text.trim();
 
                   double? phonenumber = double.tryParse(phoneNumberStr);
@@ -117,7 +132,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   if (username.isEmpty ||
                       email.isEmpty ||
                       password.isEmpty ||
-                      phoneNumberStr.isEmpty) {
+                      phoneNumberStr.isEmpty ||
+                      address.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         backgroundColor: Colors.red,
@@ -152,6 +168,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       email: email,
                       phonenumber: phonenumber,
                       password: password,
+                      address: address,
                     );
                     widget.onUserRegistered(newUser); // Notify parent widget
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -191,6 +208,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
+              const SizedBox(height: 50),
             ],
           ),
         ),

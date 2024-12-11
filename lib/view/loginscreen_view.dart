@@ -28,7 +28,8 @@ class _LoginscreenViewState extends State<LoginscreenView> {
 
     User? user = widget.registeredUsers.firstWhere(
       (user) => user.fname == username && user.password == password,
-      orElse: () => User(fname: '', email: '', phonenumber: 0, password: ''),
+      orElse: () =>
+          User(fname: '', email: '', phonenumber: 0, password: '', address: ''),
     );
 
     if (user.fname.isNotEmpty && user.password == password) {
