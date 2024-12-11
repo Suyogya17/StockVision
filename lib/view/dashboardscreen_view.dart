@@ -95,7 +95,7 @@ class DashboardPage extends StatelessWidget {
                   Expanded(
                     child: MyCard(
                       title: 'card 3',
-                      color: Colors.amber,
+                      color: Colors.blue,
                       width: 500.0, // Adjust width
                     ),
                   ),
@@ -108,7 +108,7 @@ class DashboardPage extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
               child: MyCard(
                 title: 'card 4',
-                color: Colors.green,
+                color: Colors.grey,
                 width: 1000.0,
                 height: 500, // Example size
               ),
@@ -119,7 +119,7 @@ class DashboardPage extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
               child: MyCard(
                 title: 'card 5',
-                color: Colors.amber,
+                color: Colors.blue,
                 width: 200.0, // Example size
               ),
             ),
