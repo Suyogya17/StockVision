@@ -8,6 +8,7 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final User user = ModalRoute.of(context)?.settings.arguments as User;
+    const _gap = SizedBox(height: 15);
 
     return Scaffold(
       appBar: AppBar(
@@ -35,9 +36,18 @@ class DashboardPage extends StatelessWidget {
                     fontSize: 20,
                   ),
                 ),
-                Text(
-                  user.address,
-                  style: const TextStyle(fontSize: 12, color: Colors.white),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.location_on,
+                      size: 15,
+                      color: Colors.red,
+                    ),
+                    Text(
+                      user.address,
+                      style: const TextStyle(fontSize: 12, color: Colors.white),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -62,32 +72,28 @@ class DashboardPage extends StatelessWidget {
         centerTitle: false,
         automaticallyImplyLeading: false, // Disable the back button
       ),
-      body: const SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Card 1
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              child: MyCard(
+      body: const Padding(
+        padding: EdgeInsets.all(10.0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // Card 1
+              _gap,
+              MyCard(
                 title: 'card 1',
                 color: Colors.amber,
-                width: 500.0, // Example size
+                width: double.infinity, // Example size
               ),
-            ),
-
-            // Cards 2 and 3 side by side with a gap
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              child: Row(
+              _gap,
+              // Cards 2 and 3 side by side with a gap
+              Row(
                 children: [
                   // Card 2
                   Expanded(
                     child: MyCard(
                       title: 'card 2',
                       color: Colors.green,
-                      width: 500.0, // Adjust width
+                      // Adjust width
                     ),
                   ),
                   SizedBox(width: 16), // Add gap between the two cards
@@ -96,34 +102,30 @@ class DashboardPage extends StatelessWidget {
                     child: MyCard(
                       title: 'card 3',
                       color: Colors.blue,
-                      width: 500.0, // Adjust width
+                      // Adjust width
                     ),
                   ),
                 ],
               ),
-            ),
+              _gap,
 
-            // Card 4
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              child: MyCard(
+              // Card 4
+              MyCard(
                 title: 'card 4',
                 color: Colors.grey,
                 width: 1000.0,
                 height: 500, // Example size
               ),
-            ),
+              _gap,
 
-            // Card 5
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              child: MyCard(
+              // Card 5
+              MyCard(
                 title: 'card 5',
                 color: Colors.blue,
-                width: 200.0, // Example size
+                width: double.infinity, // Example size
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
