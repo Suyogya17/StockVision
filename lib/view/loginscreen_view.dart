@@ -13,8 +13,8 @@ class LoginscreenView extends StatefulWidget {
 class _LoginscreenViewState extends State<LoginscreenView> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _gap = const SizedBox(height: 15);
   bool _isPasswordVisible = false; // To track password visibility
+  final _gap = const SizedBox(height: 15);
 
   @override
   void dispose() {
@@ -57,8 +57,11 @@ class _LoginscreenViewState extends State<LoginscreenView> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Container(
+        height: screenHeight, // Ensuring the container covers the full screen
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.red, Colors.orange],
@@ -66,116 +69,106 @@ class _LoginscreenViewState extends State<LoginscreenView> {
             end: Alignment.bottomRight,
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.inventory,
-                color: Colors.white,
-                size: 100,
-              ),
-              _gap,
-              const Text(
-                "StockVision",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 50),
-              TextFormField(
-                controller: _usernameController,
-                style: const TextStyle(color: Colors.black),
-                decoration: InputDecoration(
-                  labelText: "Username",
-                  labelStyle: const TextStyle(
-                    color: Colors.grey,
-                    fontWeight: FontWeight.bold,
+        child: Center(
+          // Vertically and horizontally centers the content
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min, // Shrink to fit content
+                children: [
+                  const Icon(
+                    Icons.inventory,
+                    color: Colors.white,
+                    size: 100,
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
-                  prefixIcon: const Icon(Icons.person, color: Colors.grey),
-                ),
-              ),
-              _gap,
-              TextFormField(
-                controller: _passwordController,
-                obscureText: !_isPasswordVisible, // Toggle password visibility
-                style: const TextStyle(color: Colors.black),
-                decoration: InputDecoration(
-                  labelText: "Password",
-                  labelStyle: const TextStyle(
-                    color: Colors.grey,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
-                  prefixIcon: const Icon(Icons.lock, color: Colors.grey),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _isPasswordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      color: Colors.grey,
+                  _gap,
+                  const Text(
+                    "StockVision",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
                     ),
+                  ),
+                  const SizedBox(height: 50),
+                  TextFormField(
+                    controller: _usernameController,
+                    decoration: const InputDecoration(
+                      labelText: "Username",
+                      filled: true,
+                      fillColor: Colors.white,
+                      prefixIcon: Icon(Icons.person, color: Colors.grey),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  _gap,
+                  TextFormField(
+                    controller: _passwordController,
+                    obscureText: !_isPasswordVisible,
+                    decoration: InputDecoration(
+                      labelText: "Password",
+                      filled: true,
+                      fillColor: Colors.white,
+                      prefixIcon: const Icon(Icons.lock, color: Colors.grey),
+                      border: const OutlineInputBorder(),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.grey,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  ElevatedButton(
+                    onPressed: _login,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.red,
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text(
+                      "Login",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  TextButton(
                     onPressed: () {
-                      setState(() {
-                        _isPasswordVisible =
-                            !_isPasswordVisible; // Toggle visibility
-                      });
+                      // "Forgot Password" logic
                     },
+                    child: const Text(
+                      "Forgot Password?",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 30),
-              ElevatedButton(
-                onPressed: _login,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.red,
-                  minimumSize: const Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                  const SizedBox(height: 20),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/register');
+                    },
+                    child: const Text(
+                      "Create New Account",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
                   ),
-                ),
-                child: const Text(
-                  "Login",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
+                ],
               ),
-              const SizedBox(height: 20),
-              TextButton(
-                onPressed: () {
-                  //"Forgot Password" logic here
-                },
-                child: const Text(
-                  "Forgot Password?",
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/register');
-                },
-                child: const Text(
-                  "Create New Account",
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),
