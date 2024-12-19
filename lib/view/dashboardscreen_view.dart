@@ -1,15 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:stockvision_app/model/user.dart';
 import 'package:stockvision_app/core/common/cardsview.dart';
+import 'package:stockvision_app/model/user.dart';
+import 'package:stockvision_app/view/history_view.dart';
+import 'package:stockvision_app/view/products_view.dart';
+import 'package:stockvision_app/view/setting_view.dart';
 
-class DashboardPage extends StatelessWidget {
+class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final User user = ModalRoute.of(context)?.settings.arguments as User;
-    const _gap = SizedBox(height: 15);
+  State<DashboardPage> createState() => _DashboardPageState();
+}
 
+class _DashboardPageState extends State<DashboardPage> {
+  late User user;
+  int _selectedIndex = 0;
+
+  final List<Widget> _lstBottomScreen = [
+    const DashboardPageContent(), // Home (0)
+    const ProductsView(), // Products (1)
+    const HistoryView(), // History (2)
+    const SettingView(), // Settings (3)
+  ];
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    user = ModalRoute.of(context)?.settings.arguments as User;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -68,64 +89,100 @@ class DashboardPage extends StatelessWidget {
           ),
         ],
         backgroundColor: Colors.orange,
-        elevation: 20, // Add shadow to the app bar
+        elevation: 20,
         centerTitle: false,
-        automaticallyImplyLeading: false, // Disable the back button
+        automaticallyImplyLeading: false,
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(10.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // Card 1
-              _gap,
-              MyCard(
-                title: 'card 1',
-                color: Colors.amber,
-                width: double.infinity, // Example size
-              ),
-              _gap,
-              // Cards 2 and 3 side by side with a gap
-              Row(
-                children: [
-                  // Card 2
-                  Expanded(
-                    child: MyCard(
-                      title: 'card 2',
-                      color: Colors.green,
-                      // Adjust width
-                    ),
-                  ),
-                  SizedBox(width: 16), // Add gap between the two cards
-                  // Card 3
-                  Expanded(
-                    child: MyCard(
-                      title: 'card 3',
-                      color: Colors.blue,
-                      // Adjust width
-                    ),
-                  ),
-                ],
-              ),
-              _gap,
-
-              // Card 4
-              MyCard(
-                title: 'card 4',
-                color: Colors.grey,
-                width: 1000.0,
-                height: 500, // Example size
-              ),
-              _gap,
-
-              // Card 5
-              MyCard(
-                title: 'card 5',
-                color: Colors.blue,
-                width: double.infinity, // Example size
-              ),
-            ],
+      body: _lstBottomScreen[_selectedIndex], // Correctly load the screen
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.orange,
+        selectedItemColor: const Color.fromARGB(255, 255, 17, 0),
+        unselectedItemColor: Colors.black,
+        iconSize: 30,
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+            ),
+            label: '',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_bag),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.settings,
+            ),
+            label: '',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class DashboardPageContent extends StatelessWidget {
+  const DashboardPageContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    const gap = SizedBox(height: 15);
+
+    return const Padding(
+      padding: EdgeInsets.all(10.0),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            gap,
+            MyCard(
+              title: 'card 1',
+              color: Colors.amber,
+              width: double.infinity,
+            ),
+            gap,
+            Row(
+              children: [
+                Expanded(
+                  child: MyCard(
+                    title: 'card 2',
+                    color: Colors.green,
+                  ),
+                ),
+                SizedBox(width: 16),
+                Expanded(
+                  child: MyCard(
+                    title: 'card 3',
+                    color: Colors.blue,
+                  ),
+                ),
+              ],
+            ),
+            gap,
+            MyCard(
+              title: 'card 4',
+              color: Colors.grey,
+              width: 1000.0,
+              height: 500,
+            ),
+            gap,
+            MyCard(
+              title: 'card 5',
+              color: Colors.blue,
+              width: double.infinity,
+            ),
+          ],
         ),
       ),
     );
