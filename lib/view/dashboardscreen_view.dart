@@ -17,10 +17,10 @@ class _DashboardPageState extends State<DashboardPage> {
   int _selectedIndex = 0;
 
   final List<Widget> _lstBottomScreen = [
-    const DashboardPageContent(), // Home (0)
-    const ProductsView(), // Products (1)
-    const HistoryView(), // History (2)
-    const SettingView(), // Settings (3)
+    const DashboardPageContent(),
+    const ProductsView(),
+    const HistoryView(),
+    const SettingView(),
   ];
 
   @override
@@ -93,7 +93,7 @@ class _DashboardPageState extends State<DashboardPage> {
         centerTitle: false,
         automaticallyImplyLeading: false,
       ),
-      body: _lstBottomScreen[_selectedIndex], // Correctly load the screen
+      body: _lstBottomScreen[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.orange,
