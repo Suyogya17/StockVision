@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class HistoryView extends StatefulWidget {
   const HistoryView({super.key});
@@ -11,15 +10,10 @@ class HistoryView extends StatefulWidget {
 class _HistoryViewState extends State<HistoryView> {
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text(
         "This is the history page",
-        style: GoogleFonts.theGirlNextDoor(
-          textStyle: const TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        style: TextStyle(fontSize: 40),
       ),
     );
   }

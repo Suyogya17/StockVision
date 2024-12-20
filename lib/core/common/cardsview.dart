@@ -7,12 +7,12 @@ class MyCard extends StatelessWidget {
   final double height;
 
   const MyCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.color,
     this.width = 200.0, // Default width
     this.height = 100.0, // Default height
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

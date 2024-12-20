@@ -139,8 +139,9 @@ class _LoginscreenViewState extends State<LoginscreenView> {
                       ),
                     ),
                     child: const Text(
-                      "Login",
+                      "LOGIN",
                       style: TextStyle(
+                        fontFamily: 'Montserrat Bold',
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stockvision_app/core/app_theme/app_theme.dart';
 import 'package:stockvision_app/model/user.dart';
 import 'package:stockvision_app/view/dashboardscreen_view.dart';
 import 'package:stockvision_app/view/loginscreen_view.dart';
@@ -20,6 +21,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
+      theme: getApplicationTheme(),
       routes: {
         '/': (context) => const OnboardingScreen(),
         '/login': (context) =>
