@@ -151,10 +151,6 @@ class LoginscreenView extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  const Text(
-                    "Don't have an account?",
-                    style: TextStyle(color: Colors.white70),
-                  ),
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(
@@ -167,9 +163,10 @@ class LoginscreenView extends StatelessWidget {
                       );
                     },
                     child: const Text(
-                      " Signup",
+                      " Don't have an account?",
                       style: TextStyle(
-                        color: Color(0xFF0ACF83),
+                        color: Colors.white,
+                        fontSize: 17,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

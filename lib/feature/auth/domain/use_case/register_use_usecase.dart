@@ -9,7 +9,7 @@ class RegisterUserParams extends Equatable {
   final String fname;
   final String lname;
   final String phoneNo;
-
+  final String address;
   final String username;
   final String password;
 
@@ -17,6 +17,7 @@ class RegisterUserParams extends Equatable {
     required this.fname,
     required this.lname,
     required this.phoneNo,
+    required this.address,
     required this.username,
     required this.password,
   });
@@ -26,12 +27,14 @@ class RegisterUserParams extends Equatable {
     required this.fname,
     required this.lname,
     required this.phoneNo,
+    required this.address,
     required this.username,
     required this.password,
   });
 
   @override
-  List<Object?> get props => [fname, lname, phoneNo, username, password];
+  List<Object?> get props =>
+      [fname, lname, phoneNo, address, username, password];
 }
 
 class RegisterUseCase implements UsecaseWithParams<void, RegisterUserParams> {
@@ -45,6 +48,7 @@ class RegisterUseCase implements UsecaseWithParams<void, RegisterUserParams> {
       fName: params.fname,
       lName: params.lname,
       phoneNo: params.phoneNo,
+      address: params.address,
       username: params.username,
       password: params.password,
     );

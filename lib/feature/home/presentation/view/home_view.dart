@@ -26,7 +26,7 @@ class HomeView extends StatelessWidget {
                 color: Colors.red,
               );
 
-              //   context.read<HomeCubit>().logout();
+              // context.read<HomeCubit>().logout();
             },
           ),
           Switch(
@@ -53,20 +53,22 @@ class HomeView extends StatelessWidget {
                 label: 'Dashboard',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.book),
-                label: 'Course',
+                icon: Icon(Icons.card_travel),
+                label: 'Product',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.group),
-                label: 'Batch',
+                icon: Icon(Icons.add_box),
+                label: 'Order',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.account_circle),
-                label: 'Account',
+                icon: Icon(Icons.settings),
+                label: 'Setting',
               ),
             ],
             currentIndex: state.selectedIndex,
-            selectedItemColor: Colors.white,
+            selectedItemColor: Colors.red,
+            unselectedItemColor: Colors.black,
+            backgroundColor: Colors.amber,
             onTap: (index) {
               context.read<HomeCubit>().onTabTapped(index);
             },

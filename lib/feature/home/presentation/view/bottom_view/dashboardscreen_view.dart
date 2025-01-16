@@ -5,13 +5,13 @@ import 'package:stockvision_app/feature/home/presentation/view/bottom_view/produ
 import 'package:stockvision_app/feature/home/presentation/view/bottom_view/setting_view.dart';
 
 class DashboardPage extends StatelessWidget {
-  final user;
+  final customer;
   final int selectedIndex;
   final Function(int) onTabChange;
 
   const DashboardPage({
     super.key,
-    required this.user,
+    required this.customer,
     required this.selectedIndex,
     required this.onTabChange,
   });
@@ -33,7 +33,7 @@ class DashboardPage extends StatelessWidget {
               radius: 20,
               backgroundColor: Colors.white,
               child: Text(
-                user.fname[0].toUpperCase(),
+                customer.fname[0].toUpperCase(),
                 style: const TextStyle(
                   color: Colors.orange,
                   fontWeight: FontWeight.bold,
@@ -45,7 +45,7 @@ class DashboardPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  user.fname,
+                  customer.fname,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
@@ -59,7 +59,7 @@ class DashboardPage extends StatelessWidget {
                       color: Colors.red,
                     ),
                     Text(
-                      user.address,
+                      customer.address,
                       style: const TextStyle(fontSize: 12, color: Colors.white),
                     ),
                   ],
