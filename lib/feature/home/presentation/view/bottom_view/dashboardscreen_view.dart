@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:stockvision_app/core/common/card/cardsview.dart';
-import 'package:stockvision_app/feature/home/presentation/view/bottom_view/history_view.dart';
-import 'package:stockvision_app/feature/home/presentation/view/bottom_view/products_view.dart';
+import 'package:stockvision_app/feature/Product/presentation/view/products_view.dart';
 import 'package:stockvision_app/feature/home/presentation/view/bottom_view/setting_view.dart';
+import 'package:stockvision_app/feature/order/presentation/view/order_view.dart';
 
 class DashboardPage extends StatelessWidget {
-  final customer;
+  final username;
+
   final int selectedIndex;
   final Function(int) onTabChange;
 
   const DashboardPage({
     super.key,
-    required this.customer,
+    required this.username,
     required this.selectedIndex,
     required this.onTabChange,
   });
@@ -19,7 +20,7 @@ class DashboardPage extends StatelessWidget {
   List<Widget> get _lstBottomScreen => [
         const DashboardPageContent(),
         const ProductsView(),
-        const HistoryView(),
+        const OrderView(),
         const SettingView(),
       ];
 
@@ -33,7 +34,7 @@ class DashboardPage extends StatelessWidget {
               radius: 20,
               backgroundColor: Colors.white,
               child: Text(
-                customer.fname[0].toUpperCase(),
+                username.toUpperCase(),
                 style: const TextStyle(
                   color: Colors.orange,
                   fontWeight: FontWeight.bold,
@@ -45,7 +46,7 @@ class DashboardPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  customer.fname,
+                  username,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
@@ -59,7 +60,7 @@ class DashboardPage extends StatelessWidget {
                       color: Colors.red,
                     ),
                     Text(
-                      customer.address,
+                      username.address,
                       style: const TextStyle(fontSize: 12, color: Colors.white),
                     ),
                   ],

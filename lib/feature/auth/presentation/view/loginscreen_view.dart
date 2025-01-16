@@ -147,7 +147,7 @@ class LoginscreenView extends StatelessWidget {
                     },
                     child: const Text(
                       "Forgot Password?",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      style: TextStyle(color: Colors.white, fontSize: 17),
                     ),
                   ),
                   const SizedBox(height: 20),

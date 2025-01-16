@@ -1,5 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stockvision_app/app/di/di.dart';
+import 'package:stockvision_app/feature/Product/presentation/view/products_view.dart';
+import 'package:stockvision_app/feature/Product/presentation/view_model/bloc/product_bloc.dart';
+import 'package:stockvision_app/feature/order/presentation/view/order_view.dart';
+import 'package:stockvision_app/feature/order/presentation/view_model/bloc/order_bloc.dart';
 
 class HomeState extends Equatable {
   final int selectedIndex;
@@ -12,22 +18,22 @@ class HomeState extends Equatable {
 
   // Initial state
   static HomeState initial() {
-    return const HomeState(
+    return HomeState(
       selectedIndex: 0,
       views: [
-        Center(
+        const Center(
           child: Text('Dashboard'),
         ),
-        // BlocProvider(
-        //   create: (context) => getIt<ProductBloc>(),
-        //   child: ProductView(),
-        // ),
-        // BlocProvider(
-        //   create: (context) => getIt<OrderBloc>(),
-        //   child: OrderView(),
-        // ),
-        Center(
-          child: Text('Account'),
+        BlocProvider(
+          create: (context) => getIt<ProductBloc>(),
+          child: const ProductsView(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<OrderBloc>(),
+          child: const OrderView(),
+        ),
+        const Center(
+          child: Text('Setting'),
         ),
       ],
     );

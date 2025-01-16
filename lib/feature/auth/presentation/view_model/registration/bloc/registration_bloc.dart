@@ -32,7 +32,11 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     ));
 
     result.fold(
-      (l) => emit(state.copyWith(isLoading: false, isSuccess: false)),
+      (l) {
+        emit(state.copyWith(isLoading: false, isSuccess: false));
+        showMySnackBar(
+            context: event.context, message: "Registration UnSucessful");
+      },
       (r) {
         emit(state.copyWith(isLoading: false, isSuccess: true));
         showMySnackBar(

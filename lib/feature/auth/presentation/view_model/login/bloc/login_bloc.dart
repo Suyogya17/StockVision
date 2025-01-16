@@ -1,14 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:stockvision_app/app/di/di.dart';
 import 'package:stockvision_app/core/common/snackbar/my_snackbar.dart';
-import 'package:stockvision_app/feature/Product/presentation/view_model/bloc/product_bloc.dart';
 import 'package:stockvision_app/feature/auth/domain/use_case/login_use_usecase.dart';
 import 'package:stockvision_app/feature/auth/presentation/view_model/registration/bloc/registration_bloc.dart';
 import 'package:stockvision_app/feature/home/presentation/view/home_view.dart';
 import 'package:stockvision_app/feature/home/presentation/view_model/home_cubit.dart';
-import 'package:stockvision_app/feature/order/presentation/view_model/bloc/order_bloc.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -33,8 +30,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           MaterialPageRoute(
             builder: (context) => MultiBlocProvider(
               providers: [
-                BlocProvider.value(value: getIt<OrderBloc>()),
-                BlocProvider.value(value: getIt<ProductBloc>()),
+                // BlocProvider.value(value: getIt<OrderBloc>()),
+                // BlocProvider.value(value: getIt<ProductBloc>()),
                 BlocProvider.value(value: _registerBloc),
               ],
               child: event.destination,
@@ -73,7 +70,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             emit(state.copyWith(isLoading: false, isSuccess: false));
             showMySnackBar(
               context: event.context,
-              message: "Invalid Credentials",
+              message: "Invalid Username and Password",
               color: Colors.red,
             );
           },

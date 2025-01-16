@@ -31,14 +31,7 @@ class _RegistrationScreenViewState extends State<RegistrationscreenView> {
       body: BlocListener<RegistrationBloc, RegistrationState>(
         listener: (context, state) {
           if (state.isSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Registration Successful')),
-            );
-          } else if (!state.isLoading && !state.isSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Registration Failed')),
-            );
-          }
+          } else if (!state.isLoading && !state.isSuccess) {}
         },
         child: SafeArea(
           child: SingleChildScrollView(

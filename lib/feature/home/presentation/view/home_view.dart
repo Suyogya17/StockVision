@@ -15,6 +15,7 @@ class HomeView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Home'),
         centerTitle: true,
+        backgroundColor: Colors.orange,
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -26,7 +27,7 @@ class HomeView extends StatelessWidget {
                 color: Colors.red,
               );
 
-              // context.read<HomeCubit>().logout();
+              context.read<HomeCubit>().logout();
             },
           ),
           Switch(
