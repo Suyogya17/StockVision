@@ -18,7 +18,7 @@ class SplashCubit extends Cubit<void> {
           MaterialPageRoute(
             builder: (context) => BlocProvider.value(
               value: _loginBloc,
-              child: LoginscreenView(),
+              child: const LoginscreenView(),
             ),
           ),
         );

@@ -54,11 +54,11 @@ class HomeView extends StatelessWidget {
                 label: 'Dashboard',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.card_travel),
+                icon: Icon(Icons.shopping_cart),
                 label: 'Product',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.add_box),
+                icon: Icon(Icons.card_travel),
                 label: 'Order',
               ),
               BottomNavigationBarItem(

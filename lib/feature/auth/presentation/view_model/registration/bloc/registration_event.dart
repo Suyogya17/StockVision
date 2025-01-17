@@ -13,6 +13,7 @@ class RegisterCustomer extends RegistrationEvent {
   final String lName;
   final String phoneNo;
   final String address;
+  final String email;
   final String username;
   final String password;
 
@@ -20,6 +21,7 @@ class RegisterCustomer extends RegistrationEvent {
     required this.context,
     required this.fName,
     required this.lName,
+    required this.email,
     required this.phoneNo,
     required this.address,
     required this.username,

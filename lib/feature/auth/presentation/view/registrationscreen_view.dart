@@ -16,6 +16,7 @@ class _RegisterViewState extends State<RegistrationscreenView> {
   final _fnameController = TextEditingController(text: "Suyogya");
   final _lnameController = TextEditingController(text: "Shrestha");
   final _phoneController = TextEditingController(text: "9808080808");
+  final _emailController = TextEditingController(text: "Suyogya17@gmail.com");
   final _addressController = TextEditingController(text: "Kathmandu");
   final _usernameController = TextEditingController(text: "Suyogya");
   final _passwordController = TextEditingController(text: "123456");
@@ -123,6 +124,20 @@ class _RegisterViewState extends State<RegistrationscreenView> {
                   ),
                   _gap,
                   TextFormField(
+                    controller: _emailController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: 'email',
+                    ),
+                    validator: ((value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter  email';
+                      }
+                      return null;
+                    }),
+                  ),
+                  _gap,
+                  TextFormField(
                     controller: _addressController,
                     decoration: const InputDecoration(
                       labelText: 'Address',
@@ -173,6 +188,7 @@ class _RegisterViewState extends State<RegistrationscreenView> {
                                   fName: _fnameController.text,
                                   lName: _lnameController.text,
                                   phoneNo: _phoneController.text,
+                                  email: _emailController.text,
                                   address: _addressController.text,
                                   username: _usernameController.text,
                                   password: _passwordController.text,

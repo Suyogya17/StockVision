@@ -5,14 +5,11 @@ import 'package:stockvision_app/feature/home/presentation/view/bottom_view/setti
 import 'package:stockvision_app/feature/order/presentation/view/order_view.dart';
 
 class DashboardPage extends StatelessWidget {
-  final username;
-
   final int selectedIndex;
   final Function(int) onTabChange;
 
   const DashboardPage({
     super.key,
-    required this.username,
     required this.selectedIndex,
     required this.onTabChange,
   });
@@ -28,40 +25,40 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
+        title: const Row(
           children: [
             CircleAvatar(
               radius: 20,
               backgroundColor: Colors.white,
               child: Text(
-                username.toUpperCase(),
-                style: const TextStyle(
+                'A',
+                style: TextStyle(
                   color: Colors.orange,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            const SizedBox(width: 10),
+            SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  username,
-                  style: const TextStyle(
+                  'Username', // Add the missing argument here
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                   ),
                 ),
                 Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.location_on,
                       size: 15,
                       color: Colors.red,
                     ),
                     Text(
-                      username.address,
-                      style: const TextStyle(fontSize: 12, color: Colors.white),
+                      'Location', // Add the missing argument here
+                      style: TextStyle(fontSize: 12, color: Colors.white),
                     ),
                   ],
                 ),

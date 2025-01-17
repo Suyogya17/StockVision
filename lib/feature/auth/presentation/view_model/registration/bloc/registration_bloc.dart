@@ -30,6 +30,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       fname: event.fName,
       lname: event.lName,
       phoneNo: event.phoneNo,
+      email: event.email,
       address: event.address,
       username: event.username,
       password: event.password,
