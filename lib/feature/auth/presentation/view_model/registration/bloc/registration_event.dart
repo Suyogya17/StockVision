@@ -26,3 +26,12 @@ class RegisterCustomer extends RegistrationEvent {
     required this.password,
   });
 }
+
+class NavigateToLoginEvent extends RegistrationEvent {
+  final BuildContext context;
+
+  const NavigateToLoginEvent({required this.context});
+
+  @override
+  List<Object> get props => [context];
+}

@@ -6,16 +6,21 @@ import 'package:stockvision_app/feature/auth/presentation/view_model/login/bloc/
 import 'package:stockvision_app/feature/auth/presentation/view_model/registration/bloc/registration_bloc.dart';
 import 'package:stockvision_app/feature/home/presentation/view/home_view.dart';
 
-class LoginscreenView extends StatelessWidget {
+class LoginscreenView extends StatefulWidget {
   const LoginscreenView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
-    final usernameController = TextEditingController();
-    final passwordController = TextEditingController();
-    bool isPasswordVisible = false; // To track password visibility
+  _LoginscreenViewState createState() => _LoginscreenViewState();
+}
 
+class _LoginscreenViewState extends State<LoginscreenView> {
+  final formKey = GlobalKey<FormState>();
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+  bool isPasswordVisible = false; // To track password visibility
+
+  @override
+  Widget build(BuildContext context) {
     const gap = SizedBox(height: 15);
 
     return Scaffold(
@@ -75,7 +80,8 @@ class LoginscreenView extends StatelessWidget {
                         TextFormField(
                           key: const ValueKey('password'),
                           controller: passwordController,
-                          obscureText: !isPasswordVisible,
+                          obscureText:
+                              !isPasswordVisible, // Dynamically set visibility
                           decoration: InputDecoration(
                             labelText: "Password",
                             filled: true,
@@ -91,7 +97,10 @@ class LoginscreenView extends StatelessWidget {
                                 color: Colors.grey,
                               ),
                               onPressed: () {
-                                isPasswordVisible = !isPasswordVisible;
+                                setState(() {
+                                  isPasswordVisible =
+                                      !isPasswordVisible; // Toggle visibility
+                                });
                               },
                             ),
                           ),
@@ -118,6 +127,14 @@ class LoginscreenView extends StatelessWidget {
                             );
                         if (usernameController.text == 'Suyogya' &&
                             passwordController.text == '123456') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Login Successful!"),
+                              backgroundColor:
+                                  Colors.green, // Green background for success
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
                           context.read<LoginBloc>().add(NavigateHomeScreenEvent(
                               context: context, destination: const HomeView()));
                         }

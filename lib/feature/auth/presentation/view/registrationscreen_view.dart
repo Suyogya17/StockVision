@@ -6,11 +6,13 @@ class RegistrationscreenView extends StatefulWidget {
   const RegistrationscreenView({super.key});
 
   @override
-  State<RegistrationscreenView> createState() => _RegistrationScreenViewState();
+  State<RegistrationscreenView> createState() => _RegisterViewState();
 }
 
-class _RegistrationScreenViewState extends State<RegistrationscreenView> {
-  final _formKey = GlobalKey<FormState>();
+class _RegisterViewState extends State<RegistrationscreenView> {
+  final _gap = const SizedBox(height: 8);
+  final _key = GlobalKey<FormState>();
+
   final _fnameController = TextEditingController(text: "Suyogya");
   final _lnameController = TextEditingController(text: "Shrestha");
   final _phoneController = TextEditingController(text: "9808080808");
@@ -18,97 +20,182 @@ class _RegistrationScreenViewState extends State<RegistrationscreenView> {
   final _usernameController = TextEditingController(text: "Suyogya");
   final _passwordController = TextEditingController(text: "123456");
 
-  final _gap = const SizedBox(height: 15);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Register Customer'),
+        title: BlocBuilder<RegistrationBloc, RegistrationState>(
+          builder: (context, state) {
+            return const Text('---- REGISTRATION ----');
+          },
+        ),
         centerTitle: true,
-        backgroundColor: Colors.orange,
       ),
-      body: BlocListener<RegistrationBloc, RegistrationState>(
-        listener: (context, state) {
-          if (state.isSuccess) {
-          } else if (!state.isLoading && !state.isSuccess) {}
-        },
-        child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(20),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8),
             child: Form(
-              key: _formKey,
+              key: _key,
               child: Column(
                 children: [
-                  const CircleAvatar(
-                    radius: 50,
-                    backgroundImage: AssetImage('assets/images/profile.png'),
+                  InkWell(
+                    onTap: () {
+                      showModalBottomSheet(
+                        backgroundColor: Colors.orange,
+                        context: context,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
+                        ),
+                        builder: (context) => Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: const Icon(Icons.camera),
+                                label: const Text('Camera'),
+                              ),
+                              ElevatedButton.icon(
+                                onPressed: () {},
+                                icon: const Icon(Icons.image),
+                                label: const Text('Gallery'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    child: const SizedBox(
+                      height: 200,
+                      width: 200,
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundImage: AssetImage('assets/images/profile.png')
+                            as ImageProvider,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 25),
                   TextFormField(
                     controller: _fnameController,
-                    decoration: const InputDecoration(labelText: 'First Name'),
-                    validator: (value) =>
-                        value!.isEmpty ? 'Please enter first name' : null,
+                    decoration: const InputDecoration(
+                      labelText: 'First Name',
+                    ),
+                    validator: ((value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter first name';
+                      }
+                      return null;
+                    }),
                   ),
                   _gap,
                   TextFormField(
                     controller: _lnameController,
-                    decoration: const InputDecoration(labelText: 'Last Name'),
-                    validator: (value) =>
-                        value!.isEmpty ? 'Please enter last name' : null,
+                    decoration: const InputDecoration(
+                      labelText: 'Last Name',
+                    ),
+                    validator: ((value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter last name';
+                      }
+                      return null;
+                    }),
                   ),
                   _gap,
                   TextFormField(
                     controller: _phoneController,
-                    decoration:
-                        const InputDecoration(labelText: 'Phone Number'),
-                    keyboardType: TextInputType.phone,
-                    validator: (value) =>
-                        value!.isEmpty ? 'Please enter phone number' : null,
+                    decoration: const InputDecoration(
+                      labelText: 'Phone No',
+                    ),
+                    validator: ((value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter phoneNo';
+                      }
+                      return null;
+                    }),
                   ),
                   _gap,
                   TextFormField(
                     controller: _addressController,
-                    decoration: const InputDecoration(labelText: 'Address'),
-                    validator: (value) =>
-                        value!.isEmpty ? 'Please enter Address' : null,
+                    decoration: const InputDecoration(
+                      labelText: 'Address',
+                    ),
+                    validator: ((value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter address';
+                      }
+                      return null;
+                    }),
                   ),
                   _gap,
                   TextFormField(
                     controller: _usernameController,
-                    decoration: const InputDecoration(labelText: 'Username'),
-                    validator: (value) =>
-                        value!.isEmpty ? 'Please enter username' : null,
+                    decoration: const InputDecoration(
+                      labelText: 'Username',
+                    ),
+                    validator: ((value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter username';
+                      }
+                      return null;
+                    }),
                   ),
                   _gap,
                   TextFormField(
                     controller: _passwordController,
                     obscureText: true,
-                    decoration: const InputDecoration(labelText: 'Password'),
-                    validator: (value) =>
-                        value!.isEmpty ? 'Please enter password' : null,
+                    decoration: const InputDecoration(
+                      labelText: 'Password',
+                    ),
+                    validator: ((value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter password';
+                      }
+                      return null;
+                    }),
                   ),
                   _gap,
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        if (_formKey.currentState!.validate()) {
+                        if (_key.currentState!.validate()) {
                           context.read<RegistrationBloc>().add(
                                 RegisterCustomer(
+                                  context: context,
                                   fName: _fnameController.text,
                                   lName: _lnameController.text,
                                   phoneNo: _phoneController.text,
                                   address: _addressController.text,
                                   username: _usernameController.text,
                                   password: _passwordController.text,
-                                  context: context,
                                 ),
                               );
                         }
                       },
-                      child: const Text('Register'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.orange,
+                        foregroundColor: Colors.white,
+                        minimumSize: const Size(double.infinity, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: const Text(
+                        'Register',
+                        style: TextStyle(
+                          fontFamily: 'Montserrat Bold',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
                     ),
                   ),
                 ],
