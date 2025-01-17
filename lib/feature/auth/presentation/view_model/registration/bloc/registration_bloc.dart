@@ -26,6 +26,8 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     Emitter<RegistrationState> emit,
   ) async {
     emit(state.copyWith(isLoading: true));
+
+    // Call register use case
     final result = await _registerUseCase.call(RegisterUserParams(
       fname: event.fName,
       lname: event.lName,
@@ -36,6 +38,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       password: event.password,
     ));
 
+    // Handle result (success or failure)
     result.fold(
       (failure) {
         emit(state.copyWith(isLoading: false, isSuccess: false));
@@ -46,6 +49,8 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       },
       (success) {
         emit(state.copyWith(isLoading: false, isSuccess: true));
+
+        // Show success snackbar
         showMySnackBar(
           context: event.context,
           message: "Registration Successful",

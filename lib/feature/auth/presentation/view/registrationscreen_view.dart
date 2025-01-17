@@ -125,7 +125,7 @@ class _RegisterViewState extends State<RegistrationscreenView> {
                   _gap,
                   TextFormField(
                     controller: _emailController,
-                    obscureText: true,
+                    obscureText: false,
                     decoration: const InputDecoration(
                       labelText: 'email',
                     ),

@@ -30,8 +30,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           MaterialPageRoute(
             builder: (context) => MultiBlocProvider(
               providers: [
-                // BlocProvider.value(value: getIt<OrderBloc>()),
-                // BlocProvider.value(value: getIt<ProductBloc>()),
                 BlocProvider.value(value: _registerBloc),
               ],
               child: event.destination,
@@ -82,7 +80,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                 destination: const HomeView(),
               ),
             );
-            //_homeCubit.setToken(token);
+            //_homeCubit.setToken(token); // Optional, depending on your app's logic
           },
         );
       },

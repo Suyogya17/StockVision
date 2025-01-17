@@ -1,7 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:stockvision_app/feature/onboarding/presentation/view/onbordingscreen_view.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stockvision_app/feature/splash/presentation/view_model/splash_cubit.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,14 +13,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const OnboardingScreen(),
-        ),
-      );
-    });
+    context.read<SplashCubit>().init(context);
   }
 
   @override
