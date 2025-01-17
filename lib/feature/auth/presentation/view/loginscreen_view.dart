@@ -7,7 +7,8 @@ import 'package:stockvision_app/feature/auth/presentation/view_model/registratio
 import 'package:stockvision_app/feature/home/presentation/view/home_view.dart';
 
 class LoginscreenView extends StatefulWidget {
-  const LoginscreenView({super.key});
+  final List<String>? registeredUsers; // Optional list of registered users
+  const LoginscreenView({super.key, this.registeredUsers});
 
   @override
   _LoginscreenViewState createState() => _LoginscreenViewState();
@@ -17,7 +18,17 @@ class _LoginscreenViewState extends State<LoginscreenView> {
   final formKey = GlobalKey<FormState>();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
-  bool isPasswordVisible = false; // To track password visibility
+  bool isPasswordVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Example: Use the registeredUsers list
+    if (widget.registeredUsers != null) {
+      print("Registered Users: ${widget.registeredUsers}");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,8 +91,7 @@ class _LoginscreenViewState extends State<LoginscreenView> {
                         TextFormField(
                           key: const ValueKey('password'),
                           controller: passwordController,
-                          obscureText:
-                              !isPasswordVisible, // Dynamically set visibility
+                          obscureText: !isPasswordVisible,
                           decoration: InputDecoration(
                             labelText: "Password",
                             filled: true,
@@ -98,8 +108,7 @@ class _LoginscreenViewState extends State<LoginscreenView> {
                               ),
                               onPressed: () {
                                 setState(() {
-                                  isPasswordVisible =
-                                      !isPasswordVisible; // Toggle visibility
+                                  isPasswordVisible = !isPasswordVisible;
                                 });
                               },
                             ),
@@ -130,13 +139,16 @@ class _LoginscreenViewState extends State<LoginscreenView> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text("Login Successful!"),
-                              backgroundColor:
-                                  Colors.green, // Green background for success
+                              backgroundColor: Colors.green,
                               duration: Duration(seconds: 2),
                             ),
                           );
-                          context.read<LoginBloc>().add(NavigateHomeScreenEvent(
-                              context: context, destination: const HomeView()));
+                          context.read<LoginBloc>().add(
+                                NavigateHomeScreenEvent(
+                                  context: context,
+                                  destination: const HomeView(),
+                                ),
+                              );
                         }
                       }
                     },
@@ -180,7 +192,7 @@ class _LoginscreenViewState extends State<LoginscreenView> {
                       );
                     },
                     child: const Text(
-                      " Don't have an account?",
+                      "Don't have an account?",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 17,

@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-
-import '../../../auth/presentation/view/loginscreen_view.dart';
+import 'package:stockvision_app/feature/onboarding/presentation/view/onbordingscreen_view.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const LoginscreenView(),
+          builder: (context) => const OnboardingScreen(),
         ),
       );
     });

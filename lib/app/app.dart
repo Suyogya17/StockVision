@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stockvision_app/app/di/di.dart';
 import 'package:stockvision_app/core/theme/app_theme.dart';
-import 'package:stockvision_app/feature/auth/presentation/view/loginscreen_view.dart';
-import 'package:stockvision_app/feature/auth/presentation/view_model/login/bloc/login_bloc.dart';
+import 'package:stockvision_app/feature/splash/presentation/view/splashscreen_view.dart';
+import 'package:stockvision_app/feature/splash/presentation/view_model/splash_cubit.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -15,8 +15,8 @@ class MyApp extends StatelessWidget {
       title: 'StockVision',
       theme: getApplicationTheme(),
       home: BlocProvider(
-        create: (context) => getIt<LoginBloc>(),
-        child: const LoginscreenView(),
+        create: (context) => getIt<SplashCubit>(),
+        child: const SplashScreen(),
       ),
     );
   }
