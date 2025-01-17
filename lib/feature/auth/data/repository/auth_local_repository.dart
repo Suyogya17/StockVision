@@ -37,7 +37,8 @@ class AuthLocalRepository implements IAuthRepository {
   @override
   Future<Either<Failure, void>> registerCustomer(AuthEntity customer) async {
     try {
-      return Right(_authLocalDataSource.registerCustomer(customer));
+      await _authLocalDataSource.registerCustomer(customer);
+      return const Right(null);
     } catch (e) {
       return Left(LocalDatabaseFailure(message: e.toString()));
     }
@@ -45,6 +46,7 @@ class AuthLocalRepository implements IAuthRepository {
 
   @override
   Future<Either<Failure, String>> uploadProfilePicture(File file) async {
-    throw UnimplementedError();
+    return Left(LocalDatabaseFailure(
+        message: "Profile picture upload is not supported in local storage."));
   }
 }

@@ -24,20 +24,9 @@ class RegisterUserParams extends Equatable {
     required this.password,
   });
 
-  // Initial constructor
-  const RegisterUserParams.initial({
-    required this.fname,
-    required this.lname,
-    required this.email,
-    required this.phoneNo,
-    required this.address,
-    required this.username,
-    required this.password,
-  });
-
   @override
   List<Object?> get props =>
-      [fname, lname, phoneNo, email, address, username, password];
+      [fname, lname, email, phoneNo, address, username, password];
 
   // Validation method
   String? validate() {

@@ -1,10 +1,10 @@
 part of 'registration_bloc.dart';
 
-sealed class RegistrationEvent extends Equatable {
+abstract class RegistrationEvent extends Equatable {
   const RegistrationEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class RegisterCustomer extends RegistrationEvent {
@@ -12,8 +12,8 @@ class RegisterCustomer extends RegistrationEvent {
   final String fName;
   final String lName;
   final String phoneNo;
-  final String address;
   final String email;
+  final String address;
   final String username;
   final String password;
 
@@ -21,12 +21,16 @@ class RegisterCustomer extends RegistrationEvent {
     required this.context,
     required this.fName,
     required this.lName,
-    required this.email,
     required this.phoneNo,
+    required this.email,
     required this.address,
     required this.username,
     required this.password,
   });
+
+  @override
+  List<Object?> get props =>
+      [context, fName, lName, phoneNo, email, address, username, password];
 }
 
 class NavigateToLoginEvent extends RegistrationEvent {
@@ -35,5 +39,5 @@ class NavigateToLoginEvent extends RegistrationEvent {
   const NavigateToLoginEvent({required this.context});
 
   @override
-  List<Object> get props => [context];
+  List<Object?> get props => [context];
 }

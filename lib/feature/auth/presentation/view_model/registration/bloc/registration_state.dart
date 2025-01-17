@@ -1,17 +1,20 @@
 part of 'registration_bloc.dart';
 
-class RegistrationState {
+class RegistrationState extends Equatable {
   final bool isLoading;
   final bool isSuccess;
 
-  RegistrationState({
+  const RegistrationState({
     required this.isLoading,
     required this.isSuccess,
   });
 
-  RegistrationState.initial()
-      : isLoading = false,
-        isSuccess = false;
+  factory RegistrationState.initial() {
+    return const RegistrationState(
+      isLoading: false,
+      isSuccess: false,
+    );
+  }
 
   RegistrationState copyWith({
     bool? isLoading,
@@ -22,4 +25,7 @@ class RegistrationState {
       isSuccess: isSuccess ?? this.isSuccess,
     );
   }
+
+  @override
+  List<Object?> get props => [isLoading, isSuccess];
 }

@@ -37,17 +37,20 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     ));
 
     result.fold(
-      (l) {
+      (failure) {
         emit(state.copyWith(isLoading: false, isSuccess: false));
         showMySnackBar(
-            context: event.context, message: "Registration Unsuccessful");
+          context: event.context,
+          message: "Registration Unsuccessful: ${failure.message}",
+        );
       },
-      (r) {
+      (success) {
         emit(state.copyWith(isLoading: false, isSuccess: true));
         showMySnackBar(
-            context: event.context, message: "Registration Successful");
+          context: event.context,
+          message: "Registration Successful",
+        );
 
-        // Emit the navigation event to go to the login page
         add(NavigateToLoginEvent(context: event.context));
       },
     );
@@ -57,13 +60,12 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     NavigateToLoginEvent event,
     Emitter<RegistrationState> emit,
   ) {
-    // This event will navigate to the login screen
     Navigator.of(event.context).pop(); // Close registration screen
     Navigator.of(event.context).pushReplacement(
       MaterialPageRoute(
         builder: (_) => BlocProvider(
-          create: (context) => getIt<LoginBloc>(), // Initialize the LoginBloc
-          child: const LoginscreenView(), // Navigate to the Login screen
+          create: (context) => getIt<LoginBloc>(),
+          child: const LoginscreenView(),
         ),
       ),
     );
