@@ -67,20 +67,24 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           (failure) {
             emit(state.copyWith(isLoading: false, isSuccess: false));
             showMySnackBar(
-              context: event.context,
-              message: "Invalid Username and Password",
-              color: Colors.red,
-            );
+                context: event.context,
+                message: "Invalid Username and Password",
+                color: Colors.red);
           },
           (token) {
             emit(state.copyWith(isLoading: false, isSuccess: true));
+
+            showMySnackBar(
+              context: event.context,
+              message: "Login Successful!",
+              color: Colors.green,
+            );
             add(
               NavigateHomeScreenEvent(
                 context: event.context,
                 destination: const HomeView(),
               ),
             );
-            //_homeCubit.setToken(token); // Optional, depending on your app's logic
           },
         );
       },
