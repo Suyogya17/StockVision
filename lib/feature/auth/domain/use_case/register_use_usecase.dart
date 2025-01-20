@@ -46,12 +46,6 @@ class RegisterUseCase implements UsecaseWithParams<void, RegisterUserParams> {
 
   @override
   Future<Either<Failure, void>> call(RegisterUserParams params) {
-    final validationError = params.validate();
-    if (validationError != null) {
-      return Future.value(Left(Failure(
-          message: validationError))); // You can return the failure here
-    }
-
     final authEntity = AuthEntity(
       fName: params.fname,
       lName: params.lname,
@@ -59,6 +53,7 @@ class RegisterUseCase implements UsecaseWithParams<void, RegisterUserParams> {
       phoneNo: params.phoneNo,
       address: params.address,
       username: params.username,
+      // age: params.age,
       password: params.password,
     );
     return repository.registerCustomer(authEntity);
