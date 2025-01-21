@@ -1,7 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:stockvision_app/core/network/api_service.dart';
 import 'package:stockvision_app/core/network/hive_service.dart';
+import 'package:stockvision_app/feature/Order/data/data_source/remote_datasource/order_remote_datasource.dart';
 import 'package:stockvision_app/feature/Product/data/data_source/product_local_data_source.dart';
+import 'package:stockvision_app/feature/Product/data/data_source/remote_datasource/product_remote_datasource.dart';
 import 'package:stockvision_app/feature/Product/data/repository/product_local_repository.dart';
+import 'package:stockvision_app/feature/Product/data/repository/product_remote_repository.dart';
 import 'package:stockvision_app/feature/Product/domain/use_case/create_product_usecase.dart';
 import 'package:stockvision_app/feature/Product/domain/use_case/delete_product_usecase.dart';
 import 'package:stockvision_app/feature/Product/domain/use_case/get_all_product_usecase.dart';
@@ -14,7 +19,8 @@ import 'package:stockvision_app/feature/auth/presentation/view_model/login/bloc/
 import 'package:stockvision_app/feature/auth/presentation/view_model/registration/bloc/registration_bloc.dart';
 import 'package:stockvision_app/feature/home/presentation/view_model/home_cubit.dart';
 import 'package:stockvision_app/feature/order/data/data_source/order_local_data_source.dart';
-import 'package:stockvision_app/feature/order/data/repository/course_local_repository.dart';
+import 'package:stockvision_app/feature/order/data/repository/order_local_repository.dart';
+import 'package:stockvision_app/feature/order/data/repository/order_remote_datasource.dart';
 import 'package:stockvision_app/feature/order/domain/use_case/create_order_usecase.dart';
 import 'package:stockvision_app/feature/order/domain/use_case/delete_order_usecase.dart';
 import 'package:stockvision_app/feature/order/domain/use_case/get_all_order_usecase.dart';
@@ -26,6 +32,7 @@ final getIt = GetIt.instance;
 Future<void> initDependencies() async {
   // First initialize hive service
   await _initHiveService();
+  await _initApiService();
 
   await _initProductDependencies();
   await _initOrderDependencies();
@@ -38,6 +45,12 @@ Future<void> initDependencies() async {
 
 _initHiveService() {
   getIt.registerLazySingleton<HiveService>(() => HiveService());
+}
+
+_initApiService() {
+  getIt.registerLazySingleton<Dio>(
+    () => ApiService(Dio()).dio,
+  );
 }
 
 _initRegisterDependencies() {
@@ -66,15 +79,29 @@ _initRegisterDependencies() {
 }
 
 _initOrderDependencies() {
-  // Data Source
+  // local Data Source order
   getIt.registerFactory<OrderLocalDataSource>(
       () => OrderLocalDataSource(hiveService: getIt<HiveService>()));
 
-  // Repository
+  //  Remote Data Source order
+  getIt.registerLazySingleton<OrderRemoteDataSource>(
+    () => OrderRemoteDataSource(
+      dio: getIt<Dio>(),
+    ),
+  );
+
+  // local Repository order
   getIt.registerLazySingleton<OrderLocalRepository>(() => OrderLocalRepository(
       orderLocalDataSource: getIt<OrderLocalDataSource>()));
 
-  // Usecases
+  // remote Repository order
+  getIt.registerLazySingleton(
+    () => OrderRemoteDataSource(
+      dio: getIt<Dio>(),
+    ),
+  );
+
+  // local Usecases order
   getIt.registerLazySingleton<CreateOrderUsecase>(
     () => CreateOrderUsecase(
       orderRepository: getIt<OrderLocalRepository>(),
@@ -83,7 +110,7 @@ _initOrderDependencies() {
 
   getIt.registerLazySingleton<GetAllOrderUsecase>(
     () => GetAllOrderUsecase(
-      orderRepository: getIt<OrderLocalRepository>(),
+      orderRepository: getIt<OrderRemoteRepository>(),
     ),
   );
 
@@ -105,19 +132,33 @@ _initOrderDependencies() {
 }
 
 _initProductDependencies() async {
-  // Data Source
+  // local Data Source Product
   getIt.registerFactory<ProductLocalDataSource>(
       () => ProductLocalDataSource(hiveService: getIt<HiveService>()));
 
-  // Repository
+  //  Remote Data Source product
+  getIt.registerLazySingleton<ProductRemoteDatasource>(
+    () => ProductRemoteDatasource(
+      dio: getIt<Dio>(),
+    ),
+  );
+
+  // local Repository Product
   getIt.registerLazySingleton<ProductLocalRepository>(() =>
       ProductLocalRepository(
           productLocalDataSource: getIt<ProductLocalDataSource>()));
 
-  // Usecases
+  // remote Repository Product
+  getIt.registerLazySingleton(
+    () => ProductRemoteDatasource(
+      dio: getIt<Dio>(),
+    ),
+  );
+
+  // Usecases Product
   getIt.registerLazySingleton<CreateProductUseCase>(
     () => CreateProductUseCase(
-        productRepository: getIt<ProductLocalRepository>()),
+        productRepository: getIt<ProductRemoteRepository>()),
   );
 
   getIt.registerLazySingleton<GetAllProductUseCase>(
