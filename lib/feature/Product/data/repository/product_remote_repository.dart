@@ -5,13 +5,13 @@ import 'package:stockvision_app/feature/Product/domain/entity/product_entity.dar
 import 'package:stockvision_app/feature/Product/domain/repository/product_repository.dart';
 
 class ProductRemoteRepository implements IProductRepository {
-  final ProductRemoteDatasource remoteDatasource;
-  ProductRemoteRepository({required this.remoteDatasource});
+  final ProductRemoteDataSource _productRemoteDatasource;
+  ProductRemoteRepository(this._productRemoteDatasource);
 
   @override
   Future<Either<Failure, void>> createProduct(ProductEntity product) async {
     try {
-      remoteDatasource.createProduct(product);
+      _productRemoteDatasource.createProduct(product);
       return const Right(null);
     } catch (e) {
       return Left(
@@ -29,8 +29,16 @@ class ProductRemoteRepository implements IProductRepository {
   }
 
   @override
-  Future<Either<Failure, List<ProductEntity>>> getProduct() {
-    // TODO: implement getProduct
-    throw UnimplementedError();
+  Future<Either<Failure, List<ProductEntity>>> getProduct() async {
+    try {
+      final product = await _productRemoteDatasource.getProduct();
+      return Right(product);
+    } catch (e) {
+      return Left(
+        ApiFailure(
+          message: e.toString(),
+        ),
+      );
+    }
   }
 }

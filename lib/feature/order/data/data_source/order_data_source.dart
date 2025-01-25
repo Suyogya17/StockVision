@@ -1,4 +1,4 @@
-import 'package:stockvision_app/feature/order/domain/entity/order_entity.dart';
+import 'package:stockvision_app/feature/Order/domain/entity/order_entity.dart';
 
 abstract interface class IOrderDataSource {
   Future<List<OrderEntity>> getOrder();

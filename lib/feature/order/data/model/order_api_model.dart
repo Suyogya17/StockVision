@@ -1,26 +1,38 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:stockvision_app/feature/order/domain/entity/order_entity.dart';
+import 'package:stockvision_app/feature/Order/domain/entity/order_entity.dart';
 
 @JsonSerializable()
 class OrderApiModel extends Equatable {
   @JsonKey(name: '_id')
   final String? orderId;
-  final String orderName;
+  final String? productId;
+  final String date;
+  final String time;
+  final String status;
 
   const OrderApiModel({
     this.orderId,
-    required this.orderName,
+    this.productId,
+    required this.date,
+    required this.time,
+    required this.status,
   });
   const OrderApiModel.empty()
       : orderId = '',
-        orderName = '';
+        productId = '',
+        date = '',
+        time = '',
+        status = '';
 
   // from Json, write full code without generator
   factory OrderApiModel.fromJson(Map<String, dynamic> json) {
     return OrderApiModel(
       orderId: json['_id'],
-      orderName: json['courseName'],
+      productId: json['_id'],
+      date: json['date'],
+      time: json['time'],
+      status: json['status'],
     );
   }
 
@@ -29,7 +41,9 @@ class OrderApiModel extends Equatable {
   Map<String, dynamic> toJson() {
     return {
       // '_id': orderId,
-      'orderName': orderName,
+      'date': date,
+      'time': time,
+      'status': status,
     };
   }
 
@@ -37,7 +51,10 @@ class OrderApiModel extends Equatable {
   factory OrderApiModel.fromEntity(OrderEntity entity) {
     return OrderApiModel(
       orderId: entity.orderId,
-      orderName: entity.orderName,
+      productId: entity.productId,
+      date: entity.date,
+      time: entity.time,
+      status: entity.status,
     );
   }
 
@@ -45,15 +62,18 @@ class OrderApiModel extends Equatable {
   OrderEntity toEntity() {
     return OrderEntity(
       orderId: orderId,
-      orderName: orderName,
+      productId: productId,
+      date: date,
+      time: time,
+      status: status,
     );
   }
 
   // Convert Api Listy  to entity list
-  List<OrderEntity> toEntityList(List<OrderApiModel> models) =>
+  static List<OrderEntity> toEntityList(List<OrderApiModel> models) =>
       models.map((model) => model.toEntity()).toList();
 
   @override
   // TODO: implement props
-  List<Object?> get props => [orderId, orderName];
+  List<Object?> get props => [orderId, productId, date, time, status];
 }

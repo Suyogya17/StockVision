@@ -12,22 +12,47 @@ class ProductHiveModel extends Equatable {
   final String? productId;
   @HiveField(1)
   final String productName;
+  @HiveField(2)
+  final String image;
+  @HiveField(3)
+  final String description;
+  @HiveField(4)
+  final String type;
+  @HiveField(5)
+  final int quantity;
+  @HiveField(6)
+  final int price;
 
   ProductHiveModel({
     String? productId,
     required this.productName,
+    required this.image,
+    required this.description,
+    required this.type,
+    required this.quantity,
+    required this.price,
   }) : productId = productId ?? const Uuid().v4();
 
   // Initail Constructor
   const ProductHiveModel.initial()
       : productId = '',
-        productName = '';
+        productName = '',
+        image = '',
+        description = '',
+        type = '',
+        quantity = 0,
+        price = 0;
 
   // From Entity
   factory ProductHiveModel.fromEntity(ProductEntity entity) {
     return ProductHiveModel(
       productId: entity.productId,
       productName: entity.productName,
+      image: entity.image,
+      description: entity.description,
+      type: entity.type,
+      quantity: entity.quantity,
+      price: entity.price,
     );
   }
 
@@ -36,23 +61,27 @@ class ProductHiveModel extends Equatable {
     return ProductEntity(
       productId: productId,
       productName: productName,
+      image: image,
+      description: description,
+      type: type,
+      quantity: quantity,
+      price: price,
     );
   }
 
   @override
-  List<Object?> get props => [productId, productName];
+  List<Object?> get props =>
+      [productId, productName, image, description, type, quantity, price];
 }
 
+// From Entity List
+List<ProductHiveModel> fromEntityList(List<ProductEntity> entityList) {
+  return entityList
+      .map((entity) => ProductHiveModel.fromEntity(entity))
+      .toList();
+}
 
-
-  // // // From Entity List
-  // // static List<BatchHiveModel> fromEntityList(List<BatchEntity> entityList) {
-  // //   return entityList
-  // //       .map((entity) => BatchHiveModel.fromEntity(entity))
-  // //       .toList();
-  // // }
-
-  // // To Entity List
-  // static List<BatchEntity> toEntityList(List<BatchHiveModel> hiveList) {
-  //   return hiveList.map((hive) => hive.toEntity()).toList();
-  // }
+// To Entity List
+List<ProductEntity> toEntityList(List<ProductHiveModel> hiveList) {
+  return hiveList.map((hive) => hive.toEntity()).toList();
+}

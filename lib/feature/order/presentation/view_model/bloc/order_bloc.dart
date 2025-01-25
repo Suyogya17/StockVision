@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:stockvision_app/feature/order/domain/entity/order_entity.dart';
-import 'package:stockvision_app/feature/order/domain/use_case/create_order_usecase.dart';
-import 'package:stockvision_app/feature/order/domain/use_case/delete_order_usecase.dart';
-import 'package:stockvision_app/feature/order/domain/use_case/get_all_order_usecase.dart';
+import 'package:stockvision_app/feature/Order/domain/entity/order_entity.dart';
+import 'package:stockvision_app/feature/Order/domain/use_case/create_order_usecase.dart';
+import 'package:stockvision_app/feature/Order/domain/use_case/delete_order_usecase.dart';
+import 'package:stockvision_app/feature/Order/domain/use_case/get_all_order_usecase.dart';
 
 part 'order_event.dart';
 part 'order_state.dart';
@@ -45,8 +45,8 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     Emitter<OrderState> emit,
   ) async {
     emit(state.copyWith(isLoading: true));
-    final result = await _createOrderUsecase(
-        CreateOrderParams(orderName: event.orderName));
+    final result = await _createOrderUsecase(CreateOrderParams(
+        date: event.date, time: event.time, status: event.status));
     result.fold(
       (failure) =>
           emit(state.copyWith(isLoading: false, error: failure.message)),

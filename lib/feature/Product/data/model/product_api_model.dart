@@ -7,20 +7,40 @@ class ProductApiModel extends Equatable {
   @JsonKey(name: '_id')
   final String? productId;
   final String productName;
+  final String image;
+  final String description;
+  final String type;
+  final int quantity;
+  final int price;
 
   const ProductApiModel({
     this.productId,
     required this.productName,
+    required this.description,
+    required this.image,
+    required this.type,
+    required this.quantity,
+    required this.price,
   });
   const ProductApiModel.empty()
       : productId = '',
-        productName = '';
+        productName = '',
+        image = '',
+        description = '',
+        type = '',
+        quantity = 0,
+        price = 0;
 
   // from Json, write full code without generator
   factory ProductApiModel.fromJson(Map<String, dynamic> json) {
     return ProductApiModel(
       productId: json['_id'],
       productName: json['productName'],
+      image: json['image'],
+      description: json['description'],
+      type: json['type'],
+      quantity: json['quantity'],
+      price: json['price'],
     );
   }
 
@@ -30,6 +50,11 @@ class ProductApiModel extends Equatable {
     return {
       // '_id': productId,
       'productName': productName,
+      'image': image,
+      'description': description,
+      'type': type,
+      'quantity': quantity,
+      'price': price,
     };
   }
 
@@ -38,6 +63,11 @@ class ProductApiModel extends Equatable {
     return ProductApiModel(
       productId: entity.productId,
       productName: entity.productName,
+      image: entity.image,
+      description: entity.description,
+      type: entity.type,
+      quantity: entity.quantity,
+      price: entity.price,
     );
   }
 
@@ -46,14 +76,20 @@ class ProductApiModel extends Equatable {
     return ProductEntity(
       productId: productId,
       productName: productName,
+      image: image,
+      description: description,
+      type: productName,
+      quantity: quantity,
+      price: price,
     );
   }
 
   // Convert Api Listy  to entity list
-  List<ProductEntity> toEntityList(List<ProductApiModel> models) =>
+  static List<ProductEntity> toEntityList(List<ProductApiModel> models) =>
       models.map((model) => model.toEntity()).toList();
 
   @override
   // TODO: implement props
-  List<Object?> get props => [productId, productName];
+  List<Object?> get props =>
+      [productId, productName, image, description, type, quantity, price];
 }

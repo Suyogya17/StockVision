@@ -43,8 +43,14 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   Future<void> _onAddProduct(
       AddProduct event, Emitter<ProductState> emit) async {
     emit(state.copyWith(isLoading: true));
-    final result = await _createProductUseCase
-        .call(CreateProductParams(productName: event.productName));
+    final result = await _createProductUseCase.call(CreateProductParams(
+      productName: event.productName,
+      image: event.image,
+      description: event.description,
+      type: event.type,
+      quantity: event.quantity,
+      price: event.price,
+    ));
     result.fold(
       (failure) =>
           emit(state.copyWith(isLoading: false, error: failure.message)),

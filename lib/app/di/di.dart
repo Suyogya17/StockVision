@@ -2,7 +2,14 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stockvision_app/core/network/api_service.dart';
 import 'package:stockvision_app/core/network/hive_service.dart';
+import 'package:stockvision_app/feature/Order/data/data_source/order_local_data_source.dart';
 import 'package:stockvision_app/feature/Order/data/data_source/remote_datasource/order_remote_datasource.dart';
+import 'package:stockvision_app/feature/Order/data/repository/order_local_repository.dart';
+import 'package:stockvision_app/feature/Order/data/repository/order_remote_repository.dart';
+import 'package:stockvision_app/feature/Order/domain/use_case/create_order_usecase.dart';
+import 'package:stockvision_app/feature/Order/domain/use_case/delete_order_usecase.dart';
+import 'package:stockvision_app/feature/Order/domain/use_case/get_all_order_usecase.dart';
+import 'package:stockvision_app/feature/Order/presentation/view_model/bloc/order_bloc.dart';
 import 'package:stockvision_app/feature/Product/data/data_source/product_local_data_source.dart';
 import 'package:stockvision_app/feature/Product/data/data_source/remote_datasource/product_remote_datasource.dart';
 import 'package:stockvision_app/feature/Product/data/repository/product_local_repository.dart';
@@ -12,19 +19,14 @@ import 'package:stockvision_app/feature/Product/domain/use_case/delete_product_u
 import 'package:stockvision_app/feature/Product/domain/use_case/get_all_product_usecase.dart';
 import 'package:stockvision_app/feature/Product/presentation/view_model/bloc/product_bloc.dart';
 import 'package:stockvision_app/feature/auth/data/data_source/local_datasource/auth_local_datasource.dart';
-import 'package:stockvision_app/feature/auth/data/repository/auth_local_repository.dart';
+import 'package:stockvision_app/feature/auth/data/data_source/remote_datasource/auth_remote_datasource.dart';
+import 'package:stockvision_app/feature/auth/data/repository/auth_local_repository/auth_local_repository.dart';
+import 'package:stockvision_app/feature/auth/data/repository/remote_repository/auth_remote_repository.dart';
 import 'package:stockvision_app/feature/auth/domain/use_case/login_use_usecase.dart';
 import 'package:stockvision_app/feature/auth/domain/use_case/register_use_usecase.dart';
 import 'package:stockvision_app/feature/auth/presentation/view_model/login/bloc/login_bloc.dart';
 import 'package:stockvision_app/feature/auth/presentation/view_model/registration/bloc/registration_bloc.dart';
 import 'package:stockvision_app/feature/home/presentation/view_model/home_cubit.dart';
-import 'package:stockvision_app/feature/order/data/data_source/order_local_data_source.dart';
-import 'package:stockvision_app/feature/order/data/repository/order_local_repository.dart';
-import 'package:stockvision_app/feature/order/data/repository/order_remote_datasource.dart';
-import 'package:stockvision_app/feature/order/domain/use_case/create_order_usecase.dart';
-import 'package:stockvision_app/feature/order/domain/use_case/delete_order_usecase.dart';
-import 'package:stockvision_app/feature/order/domain/use_case/get_all_order_usecase.dart';
-import 'package:stockvision_app/feature/order/presentation/view_model/bloc/order_bloc.dart';
 import 'package:stockvision_app/feature/splash/presentation/view_model/splash_cubit.dart';
 
 final getIt = GetIt.instance;
@@ -36,8 +38,8 @@ Future<void> initDependencies() async {
 
   await _initProductDependencies();
   await _initOrderDependencies();
-  await _initRegisterDependencies();
   await _initHomeDependencies();
+  await _initRegisterDependencies();
   await _initLoginDependencies();
 
   await _initSplashScreenDependencies();
@@ -58,16 +60,27 @@ _initRegisterDependencies() {
   getIt.registerLazySingleton(
     () => AuthLocalDataSource(getIt<HiveService>()),
   );
+  //  Remote Data Source course
+  getIt.registerFactory<AuthRemoteDatasource>(
+    () => AuthRemoteDatasource(
+      getIt<Dio>(),
+    ),
+  );
 
   // init local repository
   getIt.registerLazySingleton(
     () => AuthLocalRepository(getIt<AuthLocalDataSource>()),
   );
 
+  // remote Repository register
+  getIt.registerLazySingleton(
+    () => AuthRemoteRepository(getIt<AuthRemoteDatasource>()),
+  );
+
   // register use usecase
   getIt.registerLazySingleton<RegisterUseCase>(
     () => RegisterUseCase(
-      getIt<AuthLocalRepository>(),
+      getIt<AuthRemoteRepository>(),
     ),
   );
 
@@ -84,9 +97,9 @@ _initOrderDependencies() {
       () => OrderLocalDataSource(hiveService: getIt<HiveService>()));
 
   //  Remote Data Source order
-  getIt.registerLazySingleton<OrderRemoteDataSource>(
+  getIt.registerFactory<OrderRemoteDataSource>(
     () => OrderRemoteDataSource(
-      dio: getIt<Dio>(),
+      getIt<Dio>(),
     ),
   );
 
@@ -95,16 +108,13 @@ _initOrderDependencies() {
       orderLocalDataSource: getIt<OrderLocalDataSource>()));
 
   // remote Repository order
-  getIt.registerLazySingleton(
-    () => OrderRemoteDataSource(
-      dio: getIt<Dio>(),
-    ),
-  );
+  getIt.registerLazySingleton<OrderRemoteRepository>(
+      () => OrderRemoteRepository(getIt<OrderRemoteDataSource>()));
 
-  // local Usecases order
-  getIt.registerLazySingleton<CreateOrderUsecase>(
+  //  Usecases order
+  getIt.registerFactory<CreateOrderUsecase>(
     () => CreateOrderUsecase(
-      orderRepository: getIt<OrderLocalRepository>(),
+      orderRepository: getIt<OrderRemoteRepository>(),
     ),
   );
 
@@ -116,7 +126,7 @@ _initOrderDependencies() {
 
   getIt.registerLazySingleton<DeleteOrderUsecase>(
     () => DeleteOrderUsecase(
-      orderRepository: getIt<OrderLocalRepository>(),
+      orderRepository: getIt<OrderRemoteRepository>(),
     ),
   );
 
@@ -137,9 +147,9 @@ _initProductDependencies() async {
       () => ProductLocalDataSource(hiveService: getIt<HiveService>()));
 
   //  Remote Data Source product
-  getIt.registerLazySingleton<ProductRemoteDatasource>(
-    () => ProductRemoteDatasource(
-      dio: getIt<Dio>(),
+  getIt.registerFactory<ProductRemoteDataSource>(
+    () => ProductRemoteDataSource(
+      getIt<Dio>(),
     ),
   );
 
@@ -149,11 +159,8 @@ _initProductDependencies() async {
           productLocalDataSource: getIt<ProductLocalDataSource>()));
 
   // remote Repository Product
-  getIt.registerLazySingleton(
-    () => ProductRemoteDatasource(
-      dio: getIt<Dio>(),
-    ),
-  );
+  getIt.registerLazySingleton<ProductRemoteRepository>(
+      () => ProductRemoteRepository(getIt<ProductRemoteDataSource>()));
 
   // Usecases Product
   getIt.registerLazySingleton<CreateProductUseCase>(
@@ -163,12 +170,12 @@ _initProductDependencies() async {
 
   getIt.registerLazySingleton<GetAllProductUseCase>(
     () => GetAllProductUseCase(
-        productRepository: getIt<ProductLocalRepository>()),
+        productRepository: getIt<ProductRemoteRepository>()),
   );
 
   getIt.registerLazySingleton<DeleteProductUsecase>(
     () => DeleteProductUsecase(
-        productRepository: getIt<ProductLocalRepository>()),
+        productRepository: getIt<ProductRemoteRepository>()),
   );
 
   // Bloc
@@ -190,7 +197,7 @@ _initHomeDependencies() async {
 _initLoginDependencies() async {
   getIt.registerLazySingleton<LoginUseCase>(
     () => LoginUseCase(
-      getIt<AuthLocalRepository>(),
+      getIt<AuthRemoteRepository>(),
     ),
   );
 

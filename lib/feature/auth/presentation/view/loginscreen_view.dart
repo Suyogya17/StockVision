@@ -21,16 +21,6 @@ class _LoginscreenViewState extends State<LoginscreenView> {
   bool isPasswordVisible = false;
 
   @override
-  void initState() {
-    super.initState();
-
-    // Example: Use the registeredUsers list
-    if (widget.registeredUsers != null) {
-      print("Registered Users: ${widget.registeredUsers}");
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     const gap = SizedBox(height: 15);
 
@@ -134,8 +124,7 @@ class _LoginscreenViewState extends State<LoginscreenView> {
                                 password: passwordController.text,
                               ),
                             );
-                        if (usernameController.text == 'Suyogya' &&
-                            passwordController.text == '123456') {
+                        {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text("Login Successful!"),

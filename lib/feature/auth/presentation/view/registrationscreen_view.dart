@@ -13,13 +13,13 @@ class _RegisterViewState extends State<RegistrationscreenView> {
   final _gap = const SizedBox(height: 8);
   final _key = GlobalKey<FormState>();
 
-  final _fnameController = TextEditingController(text: "Suyogya");
-  final _lnameController = TextEditingController(text: "Shrestha");
-  final _phoneController = TextEditingController(text: "9808080808");
-  final _emailController = TextEditingController(text: "Suyogya17@gmail.com");
-  final _addressController = TextEditingController(text: "Kathmandu");
-  final _usernameController = TextEditingController(text: "Suyogya");
-  final _passwordController = TextEditingController(text: "123456");
+  final _fnameController = TextEditingController();
+  final _lnameController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +78,7 @@ class _RegisterViewState extends State<RegistrationscreenView> {
                       width: 200,
                       child: CircleAvatar(
                         radius: 50,
-                        backgroundImage: AssetImage('assets/images/profile.png')
+                        backgroundImage: AssetImage('assets/images/logo.png')
                             as ImageProvider,
                       ),
                     ),

@@ -21,16 +21,16 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<NavigateToLoginEvent>(_onNavigateToLoginEvent);
   }
 
-  void _onRegisterEvent(
+  // Handles the registration event
+  Future<void> _onRegisterEvent(
     RegisterCustomer event,
     Emitter<RegistrationState> emit,
   ) async {
-    emit(state.copyWith(isLoading: true));
+    emit(state.copyWith(isLoading: true)); // Set loading state to true
 
-    // Call register use case
     final result = await _registerUseCase.call(RegisterUserParams(
-      fname: event.fName,
-      lname: event.lName,
+      fName: event.fName,
+      lName: event.lName,
       phoneNo: event.phoneNo,
       email: event.email,
       address: event.address,
@@ -38,29 +38,27 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       password: event.password,
     ));
 
-    // Handle result (success or failure)
+    // Handle the result
     result.fold(
       (failure) {
         emit(state.copyWith(isLoading: false, isSuccess: false));
         showMySnackBar(
           context: event.context,
-          message: "Registration Unsuccessful: ${failure.message}",
+          color: Colors.red,
+          message: "Registration Failed: ${failure.message}",
         );
       },
       (success) {
         emit(state.copyWith(isLoading: false, isSuccess: true));
-
-        // Show success snackbar
         showMySnackBar(
           context: event.context,
           message: "Registration Successful",
         );
-
-        add(NavigateToLoginEvent(context: event.context));
       },
     );
   }
 
+  // Handles navigation to the login screen
   void _onNavigateToLoginEvent(
     NavigateToLoginEvent event,
     Emitter<RegistrationState> emit,

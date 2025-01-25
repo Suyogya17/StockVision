@@ -23,11 +23,12 @@ class AuthLocalRepository implements IAuthRepository {
 
   @override
   Future<Either<Failure, String>> loginCustomer(
-    String email,
+    String username,
     String password,
   ) async {
     try {
-      final token = await _authLocalDataSource.loginCustomer(email, password);
+      final token =
+          await _authLocalDataSource.loginCustomer(username, password);
       return Right(token);
     } catch (e) {
       return Left(LocalDatabaseFailure(message: e.toString()));
@@ -46,7 +47,7 @@ class AuthLocalRepository implements IAuthRepository {
 
   @override
   Future<Either<Failure, String>> uploadProfilePicture(File file) async {
-    return Left(LocalDatabaseFailure(
+    return const Left(LocalDatabaseFailure(
         message: "Profile picture upload is not supported in local storage."));
   }
 }

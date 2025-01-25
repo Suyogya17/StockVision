@@ -1,15 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:stockvision_app/app/constants/api_endpoints.dart';
 import 'package:stockvision_app/feature/Product/data/data_source/product_data_source.dart';
+import 'package:stockvision_app/feature/Product/data/dto/get_all_product_dto.dart';
 import 'package:stockvision_app/feature/Product/data/model/product_api_model.dart';
 import 'package:stockvision_app/feature/Product/domain/entity/product_entity.dart';
 
-class ProductRemoteDatasource implements IProductDataSource {
+class ProductRemoteDataSource implements IProductDataSource {
   final Dio _dio;
-
-  ProductRemoteDatasource({
-    required Dio dio,
-  }) : _dio = dio;
+  ProductRemoteDataSource(this._dio);
 
   @override
   Future<void> createProduct(ProductEntity product) async {
@@ -33,9 +31,21 @@ class ProductRemoteDatasource implements IProductDataSource {
   }
 
   @override
-  Future<List<ProductEntity>> getProduct() {
-    // TODO: implement getProduct
-    throw UnimplementedError();
+  Future<List<ProductEntity>> getProduct() async {
+    try {
+      var response = await _dio.get(ApiEndpoints.getAllProduct);
+      if (response.statusCode == 200) {
+        GetAllProductDTO productAddDTO =
+            GetAllProductDTO.fromJson(response.data);
+        return ProductApiModel.toEntityList(productAddDTO.data);
+      } else {
+        throw Exception(response.statusMessage);
+      }
+    } on DioException catch (e) {
+      throw Exception(e);
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 
   @override

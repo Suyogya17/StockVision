@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:stockvision_app/app/usecase/usease.dart';
 import 'package:stockvision_app/core/error/failure.dart';
-import 'package:stockvision_app/feature/order/domain/repository/order_repository.dart';
+import 'package:stockvision_app/feature/Order/domain/repository/order_repository.dart';
 
 class DeleteOrderParams extends Equatable {
   final String id;

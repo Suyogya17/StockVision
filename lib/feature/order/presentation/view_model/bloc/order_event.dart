@@ -10,12 +10,18 @@ sealed class OrderEvent extends Equatable {
 class OrderLoad extends OrderEvent {}
 
 class CreateOrder extends OrderEvent {
-  final String orderName;
+  final String date;
+  final String time;
+  final String status;
 
-  const CreateOrder({required this.orderName});
+  const CreateOrder({
+    required this.date,
+    required this.time,
+    required this.status,
+  });
 
   @override
-  List<Object> get props => [orderName];
+  List<Object> get props => [date, time, status];
 }
 
 class DeleteOrder extends OrderEvent {

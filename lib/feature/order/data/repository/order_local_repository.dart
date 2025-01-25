@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:stockvision_app/core/error/failure.dart';
-import 'package:stockvision_app/feature/order/data/data_source/order_local_data_source.dart';
-import 'package:stockvision_app/feature/order/domain/entity/order_entity.dart';
-import 'package:stockvision_app/feature/order/domain/repository/order_repository.dart';
+import 'package:stockvision_app/feature/Order/data/data_source/order_local_data_source.dart';
+import 'package:stockvision_app/feature/Order/domain/entity/order_entity.dart';
+import 'package:stockvision_app/feature/Order/domain/repository/order_repository.dart';
 
 class OrderLocalRepository implements IOrderRepository {
   final OrderLocalDataSource _orderLocalDataSource;

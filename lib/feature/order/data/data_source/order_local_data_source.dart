@@ -1,42 +1,43 @@
-import 'package:stockvision_app/core/error/failure.dart';
 import 'package:stockvision_app/core/network/hive_service.dart';
-import 'package:stockvision_app/feature/order/data/data_source/order_data_source.dart';
+import 'package:stockvision_app/feature/Order/data/data_source/order_data_source.dart';
+import 'package:stockvision_app/feature/Order/domain/entity/order_entity.dart';
 import 'package:stockvision_app/feature/order/data/model/order_hive_model.dart';
-import 'package:stockvision_app/feature/order/domain/entity/order_entity.dart';
 
 class OrderLocalDataSource implements IOrderDataSource {
-  final HiveService _hiveService;
+  final HiveService hiveService;
 
-  OrderLocalDataSource({required HiveService hiveService})
-      : _hiveService = hiveService;
+  OrderLocalDataSource({required this.hiveService});
 
   @override
   Future<void> createOrder(OrderEntity order) async {
     try {
-      // Convert order entity to order model
-      final courseHiveModel = OrderHiveModel.fromEntity(order);
-      _hiveService.addOrder(courseHiveModel);
+      // Convert ProductEntity to ProductHiveModel
+      final orderHiveModel = OrderHiveModel.fromEntity(order);
+      await hiveService.addOrder(orderHiveModel);
     } catch (e) {
-      throw LocalDatabaseFailure(message: e.toString());
+      throw Exception(e);
     }
   }
 
   @override
   Future<void> deleteOrder(String id) async {
     try {
-      _hiveService.deleteOrder(id);
+      await hiveService.deleteOrder(id);
     } catch (e) {
-      throw LocalDatabaseFailure(message: e.toString());
+      throw Exception(e);
     }
   }
 
   @override
-  Future<List<OrderEntity>> getOrder() async {
+  Future<List<OrderEntity>> getOrder() {
     try {
-      final orderHiveModelList = await _hiveService.getAllOrder();
-      return OrderHiveModel.toEntityList(orderHiveModelList);
+      return hiveService.getAllOrder().then(
+        (value) {
+          return value.map((e) => e.toEntity()).toList();
+        },
+      );
     } catch (e) {
-      throw LocalDatabaseFailure(message: e.toString());
+      throw Exception(e);
     }
   }
 }
