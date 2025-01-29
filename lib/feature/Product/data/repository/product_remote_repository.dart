@@ -23,9 +23,17 @@ class ProductRemoteRepository implements IProductRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deleteProduct(String id) {
-    // TODO: implement deleteBatch
-    throw UnimplementedError();
+  Future<Either<Failure, void>> deleteProduct(String id, String? token) async {
+    try {
+      _productRemoteDatasource.deleteProduct(id, token);
+      return const Right(null);
+    } catch (e) {
+      return Left(
+        ApiFailure(
+          message: e.toString(),
+        ),
+      );
+    }
   }
 
   @override

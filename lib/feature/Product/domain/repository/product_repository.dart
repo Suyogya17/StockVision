@@ -5,5 +5,5 @@ import 'package:stockvision_app/feature/Product/domain/entity/product_entity.dar
 abstract interface class IProductRepository {
   Future<Either<Failure, List<ProductEntity>>> getProduct();
   Future<Either<Failure, void>> createProduct(ProductEntity product);
-  Future<Either<Failure, void>> deleteProduct(String id);
+  Future<Either<Failure, void>> deleteProduct(String id, String? token);
 }

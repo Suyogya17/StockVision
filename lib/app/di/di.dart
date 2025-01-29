@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stockvision_app/app/shared_prefs/token_shared_prefs.dart';
 import 'package:stockvision_app/core/network/api_service.dart';
 import 'package:stockvision_app/core/network/hive_service.dart';
 import 'package:stockvision_app/feature/Order/data/data_source/order_local_data_source.dart';
@@ -10,7 +12,7 @@ import 'package:stockvision_app/feature/Order/domain/use_case/create_order_useca
 import 'package:stockvision_app/feature/Order/domain/use_case/delete_order_usecase.dart';
 import 'package:stockvision_app/feature/Order/domain/use_case/get_all_order_usecase.dart';
 import 'package:stockvision_app/feature/Order/presentation/view_model/bloc/order_bloc.dart';
-import 'package:stockvision_app/feature/Product/data/data_source/product_local_data_source.dart';
+import 'package:stockvision_app/feature/Product/data/data_source/product_local_datasource/product_local_data_source.dart';
 import 'package:stockvision_app/feature/Product/data/data_source/remote_datasource/product_remote_datasource.dart';
 import 'package:stockvision_app/feature/Product/data/repository/product_local_repository.dart';
 import 'package:stockvision_app/feature/Product/data/repository/product_remote_repository.dart';
@@ -36,7 +38,7 @@ Future<void> initDependencies() async {
   // First initialize hive service
   await _initHiveService();
   await _initApiService();
-
+  await _initSharedPrefrences();
   await _initProductDependencies();
   await _initOrderDependencies();
   await _initHomeDependencies();
@@ -44,6 +46,11 @@ Future<void> initDependencies() async {
   await _initLoginDependencies();
 
   await _initSplashScreenDependencies();
+}
+
+Future<void> _initSharedPrefrences() async {
+  final sharedPreferences = await SharedPreferences.getInstance();
+  getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 }
 
 _initHiveService() {
@@ -183,7 +190,9 @@ _initProductDependencies() async {
 
   getIt.registerLazySingleton<DeleteProductUsecase>(
     () => DeleteProductUsecase(
-        productRepository: getIt<ProductRemoteRepository>()),
+      productRepository: getIt<ProductRemoteRepository>(),
+      tokenSharedPrefs: getIt<TokenSharedPrefs>(),
+    ),
   );
 
   // Bloc
@@ -203,9 +212,16 @@ _initHomeDependencies() async {
 }
 
 _initLoginDependencies() async {
+  // ===========token Shared Prefrences ===========
+  getIt.registerLazySingleton<TokenSharedPrefs>(
+    () => TokenSharedPrefs(getIt<SharedPreferences>()),
+  );
+
+//  ============usecase ==============
   getIt.registerLazySingleton<LoginUseCase>(
     () => LoginUseCase(
       getIt<AuthRemoteRepository>(),
+      getIt<TokenSharedPrefs>(),
     ),
   );
 

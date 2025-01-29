@@ -49,8 +49,25 @@ class ProductRemoteDataSource implements IProductDataSource {
   }
 
   @override
-  Future<void> deleteProduct(String id) {
-    // TODO: implement deleteProduct
-    throw UnimplementedError();
+  Future<void> deleteProduct(String id, String? token) async {
+    try {
+      var response = await _dio.delete(
+        ApiEndpoints.deleteProduct + id,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        return;
+      } else {
+        throw Exception(response.statusMessage);
+      }
+    } on DioException catch (e) {
+      throw Exception(e);
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 }

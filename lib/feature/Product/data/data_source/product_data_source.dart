@@ -3,5 +3,5 @@ import 'package:stockvision_app/feature/Product/domain/entity/product_entity.dar
 abstract interface class IProductDataSource {
   Future<List<ProductEntity>> getProduct();
   Future<void> createProduct(ProductEntity product);
-  Future<void> deleteProduct(String id);
+  Future<void> deleteProduct(String id, String? token);
 }

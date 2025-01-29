@@ -20,7 +20,7 @@ class ProductLocalDataSource implements IProductDataSource {
   }
 
   @override
-  Future<void> deleteProduct(String id) async {
+  Future<void> deleteProduct(String id, String? token) async {
     try {
       await hiveService.deleteProduct(id);
     } catch (e) {

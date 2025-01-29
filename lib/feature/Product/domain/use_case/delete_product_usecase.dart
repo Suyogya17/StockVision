@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:stockvision_app/app/shared_prefs/token_shared_prefs.dart';
 import 'package:stockvision_app/app/usecase/usease.dart';
 import 'package:stockvision_app/core/error/failure.dart';
 import 'package:stockvision_app/feature/Product/domain/repository/product_repository.dart';
@@ -20,11 +21,19 @@ class DeleteProductParams extends Equatable {
 class DeleteProductUsecase
     implements UsecaseWithParams<void, DeleteProductParams> {
   final IProductRepository productRepository;
+  final TokenSharedPrefs tokenSharedPrefs;
 
-  DeleteProductUsecase({required this.productRepository});
+  DeleteProductUsecase(
+      {required this.productRepository, required this.tokenSharedPrefs});
 
   @override
   Future<Either<Failure, void>> call(DeleteProductParams params) async {
-    return await productRepository.deleteProduct(params.productId);
+    //  Get token
+    final token = await tokenSharedPrefs.getToken();
+    return token.fold((l) {
+      return Left(l);
+    }, (r) async {
+      return await productRepository.deleteProduct(params.productId, r);
+    });
   }
 }

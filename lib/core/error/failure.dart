@@ -19,5 +19,10 @@ class ApiFailure extends Failure {
     this.statusCode,
     required super.message,
   });
-  
+}
+
+class SharedPrefsFailure extends Failure {
+  const SharedPrefsFailure({
+    required super.message,
+  });
 }

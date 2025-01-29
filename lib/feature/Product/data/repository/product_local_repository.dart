@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:stockvision_app/core/error/failure.dart';
-import 'package:stockvision_app/feature/Product/data/data_source/product_local_data_source.dart';
+import 'package:stockvision_app/feature/Product/data/data_source/product_local_datasource/product_local_data_source.dart';
 import 'package:stockvision_app/feature/Product/domain/entity/product_entity.dart';
 import 'package:stockvision_app/feature/Product/domain/repository/product_repository.dart';
 
@@ -22,9 +22,9 @@ class ProductLocalRepository implements IProductRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deleteProduct(String id) {
+  Future<Either<Failure, void>> deleteProduct(String id, String? token) {
     try {
-      _productLocalDataSource.deleteProduct(id);
+      _productLocalDataSource.deleteProduct(id, token);
       return Future.value(const Right(null));
     } catch (e) {
       return Future.value(Left(LocalDatabaseFailure(message: e.toString())));
