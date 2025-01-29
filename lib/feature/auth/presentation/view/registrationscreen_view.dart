@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:stockvision_app/feature/auth/presentation/view_model/registration/bloc/registration_bloc.dart';
 
 class RegistrationscreenView extends StatefulWidget {
@@ -20,6 +24,33 @@ class _RegisterViewState extends State<RegistrationscreenView> {
   final _addressController = TextEditingController();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  checkCameraPermission() async {
+    if (await Permission.camera.request().isRestricted ||
+        await Permission.camera.request().isDenied) {
+      await Permission.camera.request();
+    }
+  }
+
+  File? _img;
+  Future _browseImage(ImageSource imagesource) async {
+    try {
+      final image = await ImagePicker().pickImage(source: imagesource);
+      if (image != null) {
+        setState(() {
+          _img = File(image.path);
+          // sending image to server
+          context.read<RegistrationBloc>().add(
+                LoadImage(file: _img!),
+              );
+        });
+      } else {
+        return;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,13 +89,18 @@ class _RegisterViewState extends State<RegistrationscreenView> {
                             children: [
                               ElevatedButton.icon(
                                 onPressed: () {
+                                  checkCameraPermission();
+                                  _browseImage(ImageSource.camera);
                                   Navigator.pop(context);
                                 },
                                 icon: const Icon(Icons.camera),
                                 label: const Text('Camera'),
                               ),
                               ElevatedButton.icon(
-                                onPressed: () {},
+                                onPressed: () {
+                                  checkCameraPermission();
+                                  _browseImage(ImageSource.gallery);
+                                },
                                 icon: const Icon(Icons.image),
                                 label: const Text('Gallery'),
                               ),
@@ -73,13 +109,18 @@ class _RegisterViewState extends State<RegistrationscreenView> {
                         ),
                       );
                     },
-                    child: const SizedBox(
+                    child: SizedBox(
                       height: 200,
                       width: 200,
                       child: CircleAvatar(
                         radius: 50,
-                        backgroundImage: AssetImage('assets/images/logo.png')
-                            as ImageProvider,
+                        backgroundImage: _img != null
+                            ? FileImage(_img!)
+                            : const AssetImage('assets/images/userlogo.jpg')
+                                as ImageProvider,
+                        // backgroundImage:
+                        //     AssetImage('assets/images/userlogo.jpg')
+                        //         as ImageProvider,
                       ),
                     ),
                   ),
@@ -182,6 +223,9 @@ class _RegisterViewState extends State<RegistrationscreenView> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (_key.currentState!.validate()) {
+                          final registrationState =
+                              context.read<RegistrationBloc>().state;
+                          final imageName = registrationState.imageName;
                           context.read<RegistrationBloc>().add(
                                 RegisterCustomer(
                                   context: context,
@@ -192,6 +236,7 @@ class _RegisterViewState extends State<RegistrationscreenView> {
                                   address: _addressController.text,
                                   username: _usernameController.text,
                                   password: _passwordController.text,
+                                  image: imageName,
                                 ),
                               );
                         }

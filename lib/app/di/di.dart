@@ -24,6 +24,7 @@ import 'package:stockvision_app/feature/auth/data/repository/auth_local_reposito
 import 'package:stockvision_app/feature/auth/data/repository/remote_repository/auth_remote_repository.dart';
 import 'package:stockvision_app/feature/auth/domain/use_case/login_use_usecase.dart';
 import 'package:stockvision_app/feature/auth/domain/use_case/register_use_usecase.dart';
+import 'package:stockvision_app/feature/auth/domain/use_case/uploadimage_use_usecase.dart';
 import 'package:stockvision_app/feature/auth/presentation/view_model/login/bloc/login_bloc.dart';
 import 'package:stockvision_app/feature/auth/presentation/view_model/registration/bloc/registration_bloc.dart';
 import 'package:stockvision_app/feature/home/presentation/view_model/home_cubit.dart';
@@ -84,9 +85,16 @@ _initRegisterDependencies() {
     ),
   );
 
+  getIt.registerLazySingleton<UploadImageUsecase>(
+    () => UploadImageUsecase(
+      getIt<AuthRemoteRepository>(),
+    ),
+  );
+
   getIt.registerFactory<RegistrationBloc>(
     () => RegistrationBloc(
       registerUseCase: getIt(),
+      uploadImageUsecase: getIt(),
     ),
   );
 }

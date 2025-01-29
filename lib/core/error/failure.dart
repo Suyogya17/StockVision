@@ -19,4 +19,5 @@ class ApiFailure extends Failure {
     this.statusCode,
     required super.message,
   });
+  
 }

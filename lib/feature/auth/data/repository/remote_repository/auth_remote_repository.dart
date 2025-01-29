@@ -30,15 +30,20 @@ class AuthRemoteRepository implements IAuthRepository {
   @override
   Future<Either<Failure, void>> registerCustomer(AuthEntity customer) async {
     try {
-      return Right(_authRemoteDatasource.registerCustomer(customer));
+      await _authRemoteDatasource.registerCustomer(customer);
+      return const Right(null);
     } catch (e) {
       return Left(LocalDatabaseFailure(message: e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, String>> uploadProfilePicture(File file) {
-    // TODO: implement uploadProfilePicture
-    throw UnimplementedError();
+  Future<Either<Failure, String>> uploadProfilePicture(File file) async {
+    try {
+      final imageName = await _authRemoteDatasource.uploadProfilePicture(file);
+      return Right(imageName);
+    } catch (e) {
+      return Left(ApiFailure(message: e.toString()));
+    }
   }
 }

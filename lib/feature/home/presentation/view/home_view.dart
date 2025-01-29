@@ -1,45 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:stockvision_app/core/common/snackbar/my_snackbar.dart';
 import 'package:stockvision_app/feature/home/presentation/view_model/home_cubit.dart';
 import 'package:stockvision_app/feature/home/presentation/view_model/home_state.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
-  final bool _isDarkTheme = false;
+  // final bool _isDarkTheme = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('StockVision'),
         centerTitle: true,
         backgroundColor: Colors.orange,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              // Logout code
-              showMySnackBar(
-                context: context,
-                message: 'Logging out...',
-                color: Colors.red,
-              );
+        // actions: [
+        //   // IconButton(
+        //   //   icon: const Icon(Icons.logout),
+        //   //   onPressed: () {
+        //   //     // Logout code
+        //   //     showMySnackBar(
+        //   //       context: context,
+        //   //       message: 'Logging out...',
+        //   //       color: Colors.red,
+        //   //     );
 
-              // context.read<HomeCubit>().logout();
-            },
-          ),
-          Switch(
-            value: _isDarkTheme,
-            onChanged: (value) {
-              // Change theme
-              // setState(() {
-              //   _isDarkTheme = value;
-              // });
-            },
-          ),
-        ],
+        //   //     // context.read<HomeCubit>().logout();
+        //   //   },
+        //   // ),
+        //   // Switch(
+        //   //   value: _isDarkTheme,
+        //   //   onChanged: (value) {
+        //   //     // Change theme
+        //   //     // setState(() {
+        //   //     //   _isDarkTheme = value;
+        //   //     // });
+        //   //   },
+        //   // ),
+        // ],
       ),
       // body: _views.elementAt(_selectedIndex),
       body: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
@@ -50,6 +49,7 @@ class HomeView extends StatelessWidget {
           return BottomNavigationBar(
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
+                backgroundColor: Colors.orange,
                 icon: Icon(Icons.dashboard),
                 label: 'Dashboard',
               ),
@@ -67,9 +67,8 @@ class HomeView extends StatelessWidget {
               ),
             ],
             currentIndex: state.selectedIndex,
-            selectedItemColor: Colors.red,
+            selectedItemColor: Colors.white,
             unselectedItemColor: Colors.black,
-            backgroundColor: Colors.amber,
             onTap: (index) {
               context.read<HomeCubit>().onTabTapped(index);
             },
