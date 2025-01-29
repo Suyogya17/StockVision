@@ -25,7 +25,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         super(LoginState.initial()) {
     on<NavigateRegisterScreenEvent>(
       (event, emit) {
-        Navigator.pushReplacement(
+        Navigator.push(
           event.context,
           MaterialPageRoute(
             builder: (context) => MultiBlocProvider(
@@ -67,13 +67,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           (failure) {
             emit(state.copyWith(isLoading: false, isSuccess: false));
             showMySnackBar(
-                context: event.context,
-                message: "Invalid Username and Password",
-                color: Colors.red);
+              context: event.context,
+              message: "Invalid Username and Password",
+              color: Colors.red,
+            );
           },
           (token) {
             emit(state.copyWith(isLoading: false, isSuccess: true));
-
             showMySnackBar(
               context: event.context,
               message: "Login Successful!",

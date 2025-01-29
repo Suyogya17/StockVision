@@ -44,7 +44,7 @@ Future<void> initDependencies() async {
   await _initHomeDependencies();
   await _initRegisterDependencies();
   await _initLoginDependencies();
-
+  // await _initOnboardingDependencies();
   await _initSplashScreenDependencies();
 }
 
@@ -100,8 +100,8 @@ _initRegisterDependencies() {
 
   getIt.registerFactory<RegistrationBloc>(
     () => RegistrationBloc(
-      registerUseCase: getIt(),
-      uploadImageUsecase: getIt(),
+      registerUseCase: getIt<RegisterUseCase>(),
+      uploadImageUsecase: getIt<UploadImageUsecase>(),
     ),
   );
 }
@@ -233,6 +233,12 @@ _initLoginDependencies() async {
     ),
   );
 }
+
+// _initOnboardingDependencies() async {
+//   getIt.registerFactory<OnboardingBloc>(
+//     () => OnboardingBloc(),
+//   );
+// }
 
 _initSplashScreenDependencies() async {
   getIt.registerFactory<SplashCubit>(

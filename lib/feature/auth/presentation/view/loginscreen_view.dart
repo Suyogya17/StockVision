@@ -4,7 +4,6 @@ import 'package:stockvision_app/app/di/di.dart';
 import 'package:stockvision_app/feature/auth/presentation/view/registrationscreen_view.dart';
 import 'package:stockvision_app/feature/auth/presentation/view_model/login/bloc/login_bloc.dart';
 import 'package:stockvision_app/feature/auth/presentation/view_model/registration/bloc/registration_bloc.dart';
-import 'package:stockvision_app/feature/home/presentation/view/home_view.dart';
 
 class LoginscreenView extends StatefulWidget {
   final List<String>? registeredUsers; // Optional list of registered users
@@ -119,26 +118,10 @@ class _LoginscreenViewState extends State<LoginscreenView> {
                       if (formKey.currentState!.validate()) {
                         context.read<LoginBloc>().add(
                               LoginCustomerEvent(
-                                context: context,
-                                username: usernameController.text,
-                                password: passwordController.text,
-                              ),
+                                  username: usernameController.text,
+                                  password: passwordController.text,
+                                  context: context),
                             );
-                        {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Login Successful!"),
-                              backgroundColor: Colors.green,
-                              duration: Duration(seconds: 2),
-                            ),
-                          );
-                          context.read<LoginBloc>().add(
-                                NavigateHomeScreenEvent(
-                                  context: context,
-                                  destination: const HomeView(),
-                                ),
-                              );
-                        }
                       }
                     },
                     style: ElevatedButton.styleFrom(

@@ -23,7 +23,7 @@ class AuthRemoteRepository implements IAuthRepository {
           await _authRemoteDatasource.loginCustomer(username, password);
       return Right(token);
     } catch (e) {
-      return Left(LocalDatabaseFailure(message: e.toString()));
+      return Left(ApiFailure(message: e.toString()));
     }
   }
 
@@ -33,7 +33,7 @@ class AuthRemoteRepository implements IAuthRepository {
       await _authRemoteDatasource.registerCustomer(customer);
       return const Right(null);
     } catch (e) {
-      return Left(LocalDatabaseFailure(message: e.toString()));
+      return Left(ApiFailure(message: e.toString()));
     }
   }
 
