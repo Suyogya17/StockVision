@@ -19,6 +19,7 @@ import 'package:stockvision_app/feature/Product/data/repository/product_remote_r
 import 'package:stockvision_app/feature/Product/domain/use_case/create_product_usecase.dart';
 import 'package:stockvision_app/feature/Product/domain/use_case/delete_product_usecase.dart';
 import 'package:stockvision_app/feature/Product/domain/use_case/get_all_product_usecase.dart';
+import 'package:stockvision_app/feature/Product/domain/use_case/upload_image_usecase.dart';
 import 'package:stockvision_app/feature/Product/presentation/view_model/bloc/product_bloc.dart';
 import 'package:stockvision_app/feature/auth/data/data_source/local_datasource/auth_local_datasource.dart';
 import 'package:stockvision_app/feature/auth/data/data_source/remote_datasource/auth_remote_datasource.dart';
@@ -62,6 +63,7 @@ _initApiService() {
     () => ApiService(Dio()).dio,
   );
 }
+// ==================================== Register =============================
 
 _initRegisterDependencies() {
   // init local data source
@@ -106,6 +108,7 @@ _initRegisterDependencies() {
   );
 }
 
+// ==================================== Order =============================
 _initOrderDependencies() {
   // local Data Source order
   getIt.registerFactory<OrderLocalDataSource>(
@@ -156,6 +159,7 @@ _initOrderDependencies() {
   );
 }
 
+// ==================================== Product =============================
 _initProductDependencies() async {
   // local Data Source Product
   getIt.registerFactory<ProductLocalDataSource>(
@@ -174,8 +178,11 @@ _initProductDependencies() async {
           productLocalDataSource: getIt<ProductLocalDataSource>()));
 
   // remote Repository Product
-  getIt.registerLazySingleton<ProductRemoteRepository>(
-      () => ProductRemoteRepository(getIt<ProductRemoteDataSource>()));
+  getIt.registerLazySingleton(
+    () => ProductRemoteRepository(
+      getIt<ProductRemoteDataSource>(),
+    ),
+  );
 
   // Usecases Product
   getIt.registerLazySingleton<CreateProductUseCase>(
@@ -195,12 +202,18 @@ _initProductDependencies() async {
     ),
   );
 
-  // Bloc
+  getIt.registerLazySingleton<UploadProductImageUsecase>(
+    () => UploadProductImageUsecase(
+      getIt<ProductRemoteRepository>(),
+    ),
+  );
+
   getIt.registerFactory<ProductBloc>(
     () => ProductBloc(
       createProductUseCase: getIt<CreateProductUseCase>(),
       getAllProductUseCase: getIt<GetAllProductUseCase>(),
       deleteProductUsecase: getIt<DeleteProductUsecase>(),
+      uploadProductImageUsecase: getIt<UploadProductImageUsecase>(),
     ),
   );
 }
@@ -210,14 +223,15 @@ _initHomeDependencies() async {
     () => HomeCubit(),
   );
 }
+// ==================================== Login =============================
 
 _initLoginDependencies() async {
-  // ===========token Shared Prefrences ===========
+  // ===========token Shared Prefrences ===================================
   getIt.registerLazySingleton<TokenSharedPrefs>(
     () => TokenSharedPrefs(getIt<SharedPreferences>()),
   );
 
-//  ============usecase ==============
+//  ============usecase =====================================
   getIt.registerLazySingleton<LoginUseCase>(
     () => LoginUseCase(
       getIt<AuthRemoteRepository>(),
@@ -239,6 +253,8 @@ _initLoginDependencies() async {
 //     () => OnboardingBloc(),
 //   );
 // }
+
+// ==================================== Splash =============================
 
 _initSplashScreenDependencies() async {
   getIt.registerFactory<SplashCubit>(

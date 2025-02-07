@@ -54,14 +54,17 @@ class HomeView extends StatelessWidget {
                 label: 'Dashboard',
               ),
               BottomNavigationBarItem(
+                backgroundColor: Colors.orange,
                 icon: Icon(Icons.shopping_cart),
                 label: 'Product',
               ),
               BottomNavigationBarItem(
+                backgroundColor: Colors.orange,
                 icon: Icon(Icons.card_travel),
                 label: 'Order',
               ),
               BottomNavigationBarItem(
+                backgroundColor: Colors.orange,
                 icon: Icon(Icons.settings),
                 label: 'Setting',
               ),

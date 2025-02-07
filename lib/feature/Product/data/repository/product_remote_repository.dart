@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:stockvision_app/core/error/failure.dart';
 import 'package:stockvision_app/feature/Product/data/data_source/remote_datasource/product_remote_datasource.dart';
@@ -48,5 +50,11 @@ class ProductRemoteRepository implements IProductRepository {
         ),
       );
     }
+  }
+
+  @override
+  Future<Either<Failure, String>> uploadProductPicture(File file) {
+    // TODO: implement uploadProductPicture
+    throw UnimplementedError();
   }
 }

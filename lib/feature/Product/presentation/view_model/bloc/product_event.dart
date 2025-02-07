@@ -4,30 +4,38 @@ sealed class ProductEvent extends Equatable {
   const ProductEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
-final class LoadProduct extends ProductEvent {}
+class LoadProduct extends ProductEvent {}
 
-final class AddProduct extends ProductEvent {
+class LoadProductImage extends ProductEvent {
+  final File file;
+
+  const LoadProductImage({
+    required this.file,
+  });
+}
+
+class AddProduct extends ProductEvent {
   final String productName;
-  final String image;
+  final String? image;
   final String description;
   final String type;
   final int quantity;
   final int price;
 
-  const AddProduct(
-    this.productName,
+  const AddProduct({
+    required this.productName,
     this.image,
-    this.description,
-    this.type,
-    this.quantity,
-    this.price,
-  );
+    required this.description,
+    required this.type,
+    required this.quantity,
+    required this.price,
+  });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         productName,
         image,
         description,

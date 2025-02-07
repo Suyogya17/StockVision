@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:stockvision_app/core/error/failure.dart';
 import 'package:stockvision_app/feature/Product/data/data_source/product_local_datasource/product_local_data_source.dart';
@@ -42,5 +44,11 @@ class ProductLocalRepository implements IProductRepository {
     } catch (e) {
       return Future.value(Left(LocalDatabaseFailure(message: e.toString())));
     }
+  }
+
+  @override
+  Future<Either<Failure, String>> uploadProductPicture(File file) {
+    // TODO: implement uploadProductPicture
+    throw UnimplementedError();
   }
 }

@@ -26,7 +26,7 @@ class HomeState extends Equatable {
         ),
         BlocProvider(
           create: (context) => getIt<ProductBloc>(),
-          child: const ProductsView(),
+          child: ProductsView(),
         ),
         BlocProvider(
           create: (context) => getIt<OrderBloc>(),
