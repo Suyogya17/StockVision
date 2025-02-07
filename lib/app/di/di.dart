@@ -220,7 +220,7 @@ _initProductDependencies() async {
 
 _initHomeDependencies() async {
   getIt.registerFactory<HomeCubit>(
-    () => HomeCubit(),
+    () => HomeCubit(authRepository: getIt<AuthRemoteRepository>()),
   );
 }
 // ==================================== Login =============================

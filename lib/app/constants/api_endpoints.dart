@@ -22,8 +22,8 @@ class ApiEndpoints {
 
   // ======== Products ============
 
-  static const String createProduct = "product/createProduct";
-  static const String getAllProduct = "product/getAllProduct";
+  static const String createProduct = "product/createproduct";
+  static const String getAllProduct = "product/getAllproduct";
   static const String deleteProduct = "product/";
 
   // ======== order  =============

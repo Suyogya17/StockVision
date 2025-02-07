@@ -12,33 +12,39 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('StockVision'),
-        centerTitle: true,
+        // title: const Text('StockVision'),
+        // centerTitle: true,
+        title: const Row(
+          children: [
+            CircleAvatar(
+              backgroundImage: AssetImage('assets/images/logo.png'),
+            ),
+          ],
+        ),
         backgroundColor: Colors.orange,
-        // actions: [
-        //   // IconButton(
-        //   //   icon: const Icon(Icons.logout),
-        //   //   onPressed: () {
-        //   //     // Logout code
-        //   //     showMySnackBar(
-        //   //       context: context,
-        //   //       message: 'Logging out...',
-        //   //       color: Colors.red,
-        //   //     );
+        actions: [
+          // IconButton(
+          //   icon: const Icon(Icons.logout),
+          //   onPressed: () {
+          //     // Logout code
+          //     showMySnackBar(
+          //       context: context,
+          //       message: 'Logging out...',
+          //       color: Colors.red,
+          //     );
 
-        //   //     // context.read<HomeCubit>().logout();
-        //   //   },
-        //   // ),
-        //   // Switch(
-        //   //   value: _isDarkTheme,
-        //   //   onChanged: (value) {
-        //   //     // Change theme
-        //   //     // setState(() {
-        //   //     //   _isDarkTheme = value;
-        //   //     // });
-        //   //   },
-        //   // ),
-        // ],
+          //     context.read<HomeCubit>().logout(context);
+          //   },
+          // ),
+          IconButton(
+            icon: const Icon(Icons.qr_code_scanner),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.notifications_none_outlined),
+            onPressed: () {},
+          ),
+        ],
       ),
       // body: _views.elementAt(_selectedIndex),
       body: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
