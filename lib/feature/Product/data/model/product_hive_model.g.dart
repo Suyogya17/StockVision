@@ -19,11 +19,11 @@ class ProductHiveModelAdapter extends TypeAdapter<ProductHiveModel> {
     return ProductHiveModel(
       productId: fields[0] as String?,
       productName: fields[1] as String,
-      image: fields[2] as String,
+      image: fields[2] as String?,
       description: fields[3] as String,
       type: fields[4] as String,
-      quantity: fields[5] as int,
-      price: fields[6] as int,
+      quantity: fields[5] as String,
+      price: fields[6] as String,
     );
   }
 

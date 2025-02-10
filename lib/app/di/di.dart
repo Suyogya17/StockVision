@@ -192,7 +192,8 @@ _initProductDependencies() async {
 
   getIt.registerLazySingleton<GetAllProductUseCase>(
     () => GetAllProductUseCase(
-        productRepository: getIt<ProductRemoteRepository>()),
+        productRepository: getIt<ProductRemoteRepository>(),
+        tokenSharedPrefs: getIt<TokenSharedPrefs>()),
   );
 
   getIt.registerLazySingleton<DeleteProductUsecase>(

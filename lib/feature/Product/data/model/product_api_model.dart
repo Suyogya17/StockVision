@@ -12,8 +12,8 @@ class ProductApiModel extends Equatable {
   final String? image;
   final String description;
   final String type;
-  final int quantity;
-  final int price;
+  final String quantity;
+  final String price;
 
   const ProductApiModel({
     this.productId,
@@ -39,19 +39,20 @@ class ProductApiModel extends Equatable {
       type: type,
       quantity: quantity,
       price: price,
-      image: '',
+      image: image ?? '',
     );
   }
 
   // From Entity
   factory ProductApiModel.fromEntity(ProductEntity entity) {
     return ProductApiModel(
+      productId: entity.productId,
       productName: entity.productName,
       description: entity.description,
       type: entity.type,
       quantity: entity.quantity,
       price: entity.price,
-      image: '',
+      image: entity.image,
     );
   }
 

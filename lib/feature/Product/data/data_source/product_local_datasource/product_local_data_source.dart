@@ -29,7 +29,7 @@ class ProductLocalDataSource implements IProductDataSource {
   }
 
   @override
-  Future<List<ProductEntity>> getProduct() {
+  Future<List<ProductEntity>> getProduct(String? token) {
     try {
       return hiveService.getAllProduct().then(
         (value) {

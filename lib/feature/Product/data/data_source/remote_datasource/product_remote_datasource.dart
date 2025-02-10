@@ -31,20 +31,27 @@ class ProductRemoteDataSource implements IProductDataSource {
   }
 
   @override
-  Future<List<ProductEntity>> getProduct() async {
+  Future<List<ProductEntity>> getProduct(String? token) async {
+    if (token == null || token.isEmpty) {
+      throw Exception("Access denied: No token provided");
+    }
+
     try {
-      var response = await _dio.get(ApiEndpoints.getAllProduct);
-      if (response.statusCode == 200) {
-        GetAllProductDTO productAddDTO =
-            GetAllProductDTO.fromJson(response.data);
-        return ProductApiModel.toEntityList(productAddDTO.data);
-      } else {
-        throw Exception(response.statusMessage);
-      }
+      var response = await _dio.get(
+        ApiEndpoints.getAllProduct,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+
+      GetAllProductDTO productDTO = GetAllProductDTO.fromJson(response.data);
+      return ProductApiModel.toEntityList(productDTO.data);
     } on DioException catch (e) {
-      throw Exception(e);
+      throw Exception((e));
     } catch (e) {
-      throw Exception(e);
+      throw Exception(e.toString());
     }
   }
 

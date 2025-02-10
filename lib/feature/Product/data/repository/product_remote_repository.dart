@@ -39,9 +39,9 @@ class ProductRemoteRepository implements IProductRepository {
   }
 
   @override
-  Future<Either<Failure, List<ProductEntity>>> getProduct() async {
+  Future<Either<Failure, List<ProductEntity>>> getProduct(String? token) async {
     try {
-      final product = await _productRemoteDatasource.getProduct();
+      final product = await _productRemoteDatasource.getProduct(token);
       return Right(product);
     } catch (e) {
       return Left(

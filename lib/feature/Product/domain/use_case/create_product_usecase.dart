@@ -11,8 +11,8 @@ class CreateProductParams extends Equatable {
   final String image;
   final String description;
   final String type;
-  final int quantity;
-  final int price;
+  final String quantity;
+  final String price;
 
   const CreateProductParams({
     required this.productName,
@@ -29,8 +29,8 @@ class CreateProductParams extends Equatable {
         image = '_empty.image',
         description = '_empty.description',
         type = '_empty.type',
-        quantity = 0,
-        price = 0;
+        quantity = '_empty.type',
+        price = '_empty.type';
 
   @override
   List<Object?> get props => [productName];

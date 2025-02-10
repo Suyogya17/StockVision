@@ -13,20 +13,20 @@ class ProductHiveModel extends Equatable {
   @HiveField(1)
   final String productName;
   @HiveField(2)
-  final String image;
+  final String? image;
   @HiveField(3)
   final String description;
   @HiveField(4)
   final String type;
   @HiveField(5)
-  final int quantity;
+  final String quantity;
   @HiveField(6)
-  final int price;
+  final String price;
 
   ProductHiveModel({
     String? productId,
     required this.productName,
-    required this.image,
+    this.image,
     required this.description,
     required this.type,
     required this.quantity,
@@ -40,8 +40,8 @@ class ProductHiveModel extends Equatable {
         image = '',
         description = '',
         type = '',
-        quantity = 0,
-        price = 0;
+        quantity = '',
+        price = '';
 
   // From Entity
   factory ProductHiveModel.fromEntity(ProductEntity entity) {

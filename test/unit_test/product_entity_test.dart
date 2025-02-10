@@ -11,8 +11,8 @@ void main() {
         image: 'shoes.jpg',
         description: 'A pair of running shoes',
         type: 'Footwear',
-        quantity: 10,
-        price: 100,
+        quantity: '10',
+        price: '100',
       );
       const product2 = ProductEntity(
         productId: '123',
@@ -20,8 +20,8 @@ void main() {
         image: 'shoes.jpg',
         description: 'A pair of running shoes',
         type: 'Footwear',
-        quantity: 10,
-        price: 100,
+        quantity: '10',
+        price: '100',
       );
       expect(product1, equals(product2));
     });
@@ -33,8 +33,8 @@ void main() {
         image: 'shoes.jpg',
         description: 'A pair of running shoes',
         type: 'Footwear',
-        quantity: 10,
-        price: 100,
+        quantity: '10',
+        price: '100',
       );
       expect(product.props, [
         '123',
@@ -54,8 +54,8 @@ void main() {
         image: 'shoes.jpg',
         description: 'A pair of running shoes',
         type: 'Footwear',
-        quantity: 10,
-        price: 100,
+        quantity: '10',
+        price: '100',
       );
       expect(product.productId, isNull);
     });
@@ -68,8 +68,8 @@ void main() {
         image: 'shoes.jpg',
         description: 'A pair of running shoes',
         type: 'Footwear',
-        quantity: 10,
-        price: 100,
+        quantity: '10',
+        price: '100',
       );
       const product2 = ProductEntity(
         productId: '124',
@@ -77,8 +77,8 @@ void main() {
         image: 'sneakers.jpg',
         description: 'A pair of stylish sneakers',
         type: 'Footwear',
-        quantity: 5,
-        price: 120,
+        quantity: '5',
+        price: '120',
       );
       expect(product1, isNot(equals(product2)));
     });
@@ -90,8 +90,8 @@ void main() {
         image: 'shoes.jpg',
         description: 'A pair of running shoes',
         type: 'Footwear',
-        quantity: 10,
-        price: 100,
+        quantity: '10',
+        price: '100',
       );
       expect(product, isA<Equatable>());
     });

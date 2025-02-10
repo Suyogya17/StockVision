@@ -27,23 +27,25 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         _deleteProductUsecase = deleteProductUsecase,
         _uploadProductImageUsecase = uploadProductImageUsecase,
         super(ProductState.initial()) {
-    on<LoadProduct>(_onLoadProduct);
+    on<GetAllProduct>(_onGetAllProduct);
     on<AddProduct>(_onAddProduct);
     on<DeleteProduct>(_onDeleteProduct);
     on<LoadProductImage>(_onLoadProductImage);
 
     // Call this event whenever the bloc is created to load the Productes
-    add(LoadProduct());
+    add(GetAllProduct());
   }
 
-  Future<void> _onLoadProduct(
-      LoadProduct event, Emitter<ProductState> emit) async {
-    emit(state.copyWith(isLoading: true));
+  Future<void> _onGetAllProduct(
+      GetAllProduct event, Emitter<ProductState> emit) async {
+    emit(state.copyWith(isLoading: true, error: null));
     final result = await _getAllProductUseCase.call();
     result.fold(
-      (failure) =>
-          emit(state.copyWith(isLoading: false, error: failure.message)),
-      (product) => emit(state.copyWith(isLoading: false)),
+      (failure) {
+        print("Error: ${failure.message}");
+        emit(state.copyWith(isLoading: false, error: failure.message));
+      },
+      (products) => emit(state.copyWith(isLoading: false, product: products)),
     );
   }
 
@@ -64,7 +66,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       (product) {
         emit(state.copyWith(isLoading: false, error: null));
 
-        add(LoadProduct());
+        add(GetAllProduct());
       },
     );
   }
@@ -79,7 +81,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           emit(state.copyWith(isLoading: false, error: failure.message)),
       (product) {
         emit(state.copyWith(isLoading: false, error: null));
-        add(LoadProduct());
+        add(GetAllProduct());
       },
     );
   }

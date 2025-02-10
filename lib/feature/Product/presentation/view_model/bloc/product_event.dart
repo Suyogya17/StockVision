@@ -7,7 +7,7 @@ sealed class ProductEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class LoadProduct extends ProductEvent {}
+class GetAllProduct extends ProductEvent {}
 
 class LoadProductImage extends ProductEvent {
   final File file;
@@ -22,8 +22,8 @@ class AddProduct extends ProductEvent {
   final String? image;
   final String description;
   final String type;
-  final int quantity;
-  final int price;
+  final String quantity;
+  final String price;
 
   const AddProduct({
     required this.productName,

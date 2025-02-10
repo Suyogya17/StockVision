@@ -34,9 +34,9 @@ class ProductLocalRepository implements IProductRepository {
   }
 
   @override
-  Future<Either<Failure, List<ProductEntity>>> getProduct() {
+  Future<Either<Failure, List<ProductEntity>>> getProduct(String? token) {
     try {
-      return _productLocalDataSource.getProduct().then(
+      return _productLocalDataSource.getProduct(token).then(
         (value) {
           return Right(value);
         },
