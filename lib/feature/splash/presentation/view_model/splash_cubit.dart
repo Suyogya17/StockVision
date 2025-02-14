@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:stockvision_app/feature/auth/presentation/view/loginscreen_view.dart';
-import 'package:stockvision_app/feature/auth/presentation/view_model/login/bloc/login_bloc.dart';
+import 'package:stockvision_app/feature/onboarding/presentation/view/onbordingscreen_view.dart';
+import 'package:stockvision_app/feature/onboarding/presentation/view_model/cubit/onboarding_cubit.dart';
 
 class SplashCubit extends Cubit<void> {
-  SplashCubit(this._loginBloc) : super(null);
+  SplashCubit(this._onboardingCubit) : super(null);
 
-  final LoginBloc _loginBloc;
+  final OnboardingCubit _onboardingCubit;
 
   Future<void> init(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 2), () async {
@@ -17,8 +17,8 @@ class SplashCubit extends Cubit<void> {
           context,
           MaterialPageRoute(
             builder: (context) => BlocProvider.value(
-              value: _loginBloc,
-              child: const LoginscreenView(),
+              value: _onboardingCubit,
+              child: const OnboardingScreen(),
             ),
           ),
         );

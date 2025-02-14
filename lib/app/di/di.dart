@@ -31,6 +31,7 @@ import 'package:stockvision_app/feature/auth/domain/use_case/uploadimage_use_use
 import 'package:stockvision_app/feature/auth/presentation/view_model/login/bloc/login_bloc.dart';
 import 'package:stockvision_app/feature/auth/presentation/view_model/registration/bloc/registration_bloc.dart';
 import 'package:stockvision_app/feature/home/presentation/view_model/home_cubit.dart';
+import 'package:stockvision_app/feature/onboarding/presentation/view_model/cubit/onboarding_cubit.dart';
 import 'package:stockvision_app/feature/splash/presentation/view_model/splash_cubit.dart';
 
 final getIt = GetIt.instance;
@@ -45,7 +46,7 @@ Future<void> initDependencies() async {
   await _initHomeDependencies();
   await _initRegisterDependencies();
   await _initLoginDependencies();
-  // await _initOnboardingDependencies();
+  await _initOnboardingDependencies();
   await _initSplashScreenDependencies();
 }
 
@@ -249,16 +250,16 @@ _initLoginDependencies() async {
   );
 }
 
-// _initOnboardingDependencies() async {
-//   getIt.registerFactory<OnboardingBloc>(
-//     () => OnboardingBloc(),
-//   );
-// }
+_initOnboardingDependencies() async {
+  getIt.registerFactory<OnboardingCubit>(
+    () => OnboardingCubit(),
+  );
+}
 
 // ==================================== Splash =============================
 
 _initSplashScreenDependencies() async {
   getIt.registerFactory<SplashCubit>(
-    () => SplashCubit(getIt<LoginBloc>()),
+    () => SplashCubit(getIt<OnboardingCubit>()),
   );
 }
