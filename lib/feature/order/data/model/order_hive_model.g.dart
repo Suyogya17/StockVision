@@ -18,27 +18,39 @@ class OrderHiveModelAdapter extends TypeAdapter<OrderHiveModel> {
     };
     return OrderHiveModel(
       orderId: fields[0] as String?,
-      productId: fields[1] as String?,
-      time: fields[3] as String,
-      date: fields[2] as String,
-      status: fields[4] as String,
+      customerId: fields[1] as String,
+      customerUserName: fields[2] as String,
+      products: (fields[3] as List).cast<ProductHiveModel>(),
+      totalPrice: fields[4] as String,
+      shippingAddress: fields[5] as String,
+      status: fields[6] as String,
+      paymentStatus: fields[7] as String,
+      orderDate: fields[8] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, OrderHiveModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.orderId)
       ..writeByte(1)
-      ..write(obj.productId)
+      ..write(obj.customerId)
       ..writeByte(2)
-      ..write(obj.date)
+      ..write(obj.customerUserName)
       ..writeByte(3)
-      ..write(obj.time)
+      ..write(obj.products)
       ..writeByte(4)
-      ..write(obj.status);
+      ..write(obj.totalPrice)
+      ..writeByte(5)
+      ..write(obj.shippingAddress)
+      ..writeByte(6)
+      ..write(obj.status)
+      ..writeByte(7)
+      ..write(obj.paymentStatus)
+      ..writeByte(8)
+      ..write(obj.orderDate);
   }
 
   @override

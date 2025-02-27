@@ -4,6 +4,7 @@ import 'package:stockvision_app/feature/Order/domain/entity/order_entity.dart';
 import 'package:stockvision_app/feature/Order/domain/use_case/create_order_usecase.dart';
 import 'package:stockvision_app/feature/Order/domain/use_case/delete_order_usecase.dart';
 import 'package:stockvision_app/feature/Order/domain/use_case/get_all_order_usecase.dart';
+import 'package:stockvision_app/feature/Product/domain/entity/product_entity.dart';
 
 part 'order_event.dart';
 part 'order_state.dart';
@@ -23,7 +24,6 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     on<OrderLoad>(_onOrderLoad);
     on<CreateOrder>(_onCreateOrder);
     on<DeleteOrder>(_onDeleteOrder);
-
     add(OrderLoad());
   }
 
@@ -36,7 +36,10 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     result.fold(
       (failure) =>
           emit(state.copyWith(isLoading: false, error: failure.message)),
-      (order) => emit(state.copyWith(isLoading: false, order: order)),
+      (order) {
+        print('Fetched Orders: $order');
+        emit(state.copyWith(isLoading: false, order: order));
+      },
     );
   }
 
@@ -46,7 +49,15 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   ) async {
     emit(state.copyWith(isLoading: true));
     final result = await _createOrderUsecase(CreateOrderParams(
-        date: event.date, time: event.time, status: event.status));
+      status: event.status,
+      customerId: event.customer,
+      customerUsername: event.customer,
+      products: event.products as List<ProductEntity>,
+      totalPrice: event.totalPrice,
+      shippingAddress: event.shippingAddress,
+      paymentStatus: event.paymentStatus,
+      orderDate: DateTime.parse(event.orderdate),
+    ));
     result.fold(
       (failure) =>
           emit(state.copyWith(isLoading: false, error: failure.message)),

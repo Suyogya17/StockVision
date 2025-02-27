@@ -25,8 +25,24 @@ class ProductApiModel extends Equatable {
     required this.price,
   });
 
-  factory ProductApiModel.fromJson(Map<String, dynamic> json) =>
-      _$ProductApiModelFromJson(json);
+  factory ProductApiModel.fromJson(Map<String, dynamic> json) {
+    try {
+      print("PRODUCTSSS:: $json");
+
+      return ProductApiModel(
+        productId: json['_id']?.toString() ?? '',
+        productName: json['productName']?.toString() ?? '',
+        image: json['image']?.toString() ?? '',
+        description: json['description']?.toString() ?? '',
+        type: json['type']?.toString() ?? '',
+        quantity: json['quantity'].toString() ?? '',
+        price: json['price'].toString() ?? '',
+      );
+    } catch (e) {
+      print("Error parsing ProductApiModel: $e");
+      rethrow;
+    }
+  }
 
   Map<String, dynamic> toJson() => _$ProductApiModelToJson(this);
 

@@ -2,9 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stockvision_app/app/shared_prefs/token_shared_prefs.dart';
+import 'package:stockvision_app/app/shared_prefs/userId_shared_prefs.dart%207-49-15-915%E2%80%AFPM.dart';
 import 'package:stockvision_app/core/network/api_service.dart';
 import 'package:stockvision_app/core/network/hive_service.dart';
-import 'package:stockvision_app/feature/Order/data/data_source/order_local_data_source.dart';
+import 'package:stockvision_app/feature/Order/data/data_source/local_data_source/order_local_data_source.dart';
 import 'package:stockvision_app/feature/Order/data/data_source/remote_datasource/order_remote_datasource.dart';
 import 'package:stockvision_app/feature/Order/data/repository/order_local_repository.dart';
 import 'package:stockvision_app/feature/Order/data/repository/order_remote_repository.dart';
@@ -74,18 +75,20 @@ _initRegisterDependencies() {
   //  Remote Data Source course
   getIt.registerFactory<AuthRemoteDatasource>(
     () => AuthRemoteDatasource(
-      getIt<Dio>(),
+      getIt<Dio>(), getIt<UserIdSharedPrefs>(),
     ),
   );
 
-  // init local repository
+  // init locsal repository
   getIt.registerLazySingleton(
     () => AuthLocalRepository(getIt<AuthLocalDataSource>()),
   );
 
   // remote Repository register
   getIt.registerLazySingleton(
-    () => AuthRemoteRepository(getIt<AuthRemoteDatasource>()),
+    () => AuthRemoteRepository(
+      getIt<AuthRemoteDatasource>(),
+    ),
   );
 
   // register use usecase
@@ -140,6 +143,8 @@ _initOrderDependencies() {
   getIt.registerLazySingleton<GetAllOrderUsecase>(
     () => GetAllOrderUsecase(
       orderRepository: getIt<OrderRemoteRepository>(),
+      tokenSharedPrefs: getIt<TokenSharedPrefs>(),
+      userIdSharedPrefs: getIt<UserIdSharedPrefs>(),
     ),
   );
 
@@ -230,9 +235,16 @@ _initHomeDependencies() async {
 _initLoginDependencies() async {
   // ===========token Shared Prefrences ===================================
   getIt.registerLazySingleton<TokenSharedPrefs>(
-    () => TokenSharedPrefs(getIt<SharedPreferences>()),
+    () => TokenSharedPrefs(
+      getIt<SharedPreferences>(),
+    ),
   );
-
+  // ===========userId Shared Prefrences ===================================
+  getIt.registerLazySingleton<UserIdSharedPrefs>(
+    () => UserIdSharedPrefs(
+      getIt<SharedPreferences>(),
+    ),
+  );
 //  ============usecase =====================================
   getIt.registerLazySingleton<LoginUseCase>(
     () => LoginUseCase(

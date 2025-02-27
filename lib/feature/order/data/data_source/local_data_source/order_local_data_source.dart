@@ -1,3 +1,4 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:stockvision_app/core/network/hive_service.dart';
 import 'package:stockvision_app/feature/Order/data/data_source/order_data_source.dart';
 import 'package:stockvision_app/feature/Order/domain/entity/order_entity.dart';
@@ -29,9 +30,9 @@ class OrderLocalDataSource implements IOrderDataSource {
   }
 
   @override
-  Future<List<OrderEntity>> getOrder() {
+  Future<List<OrderEntity>> getOrder(String? token, String userId) async {
     try {
-      return hiveService.getAllOrder().then(
+      return hiveService.getOrder(userId).then(
         (value) {
           return value.map((e) => e.toEntity()).toList();
         },
