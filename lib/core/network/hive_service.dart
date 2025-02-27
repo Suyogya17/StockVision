@@ -168,10 +168,23 @@ class HiveService {
     await box.delete(id);
   }
 
-  Future<List<OrderHiveModel>> getAllOrder() async {
-    var box = await Hive.openBox<OrderHiveModel>(HiveTableConstant.orderBox);
-    var order = box.values.toList();
-    return order;
+  Future<List<OrderHiveModel>> getOrder(String userId) async {
+    try {
+      if (userId.isEmpty) {
+        throw Exception('Customer ID cannot be null or empty');
+      }
+
+      // Fetching orders for the given customerId from Hive or local database
+      final orderBox = await Hive.openBox<OrderHiveModel>('ordersBox');
+      final allOrders =
+          orderBox.values.where((order) => order.customerId == userId).toList();
+
+      return allOrders; // Return the list of orders for that customer
+    } catch (e) {
+      // Handle any errors that may occur
+      print('Error fetching orders: $e');
+      return []; // Return an empty list in case of error
+    }
   }
 
   // Customer Queries

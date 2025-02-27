@@ -13,6 +13,7 @@ class ApiEndpoints {
   static const String login = "auth/login";
   static const String register = "auth/register";
   static const String getAllCustomer = "auth/getAllCustomer";
+  static const String getCustomerbyId = "auth/userfindbyid";
   static const String getCustomerByProduct = "auth/getCustomerByProduct/";
   static const String getCustomerByOrder = "auth/getCustomerByOrder/";
   static const String updateCustomer = "auth/updateCustomer/";
@@ -22,12 +23,13 @@ class ApiEndpoints {
 
   // ======== Products ============
 
-  static const String createProduct = "product/createproduct";
+  static const String createProduct = "product/createProduct";
   static const String getAllProduct = "product/getAllproduct";
   static const String deleteProduct = "product/";
 
   // ======== order  =============
   static const String createOrder = "order/createOrder";
   static const String getAllOrder = "order/getAllOrder";
-  static const String deleteOrder = "order/deletebyId";
+  static const String deleteOrder = "order/deleteOrder/"; 
+  static const String getUserOrder = "order/getuserorders/"; 
 }

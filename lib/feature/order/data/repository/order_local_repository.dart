@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:stockvision_app/core/error/failure.dart';
-import 'package:stockvision_app/feature/Order/data/data_source/order_local_data_source.dart';
+import 'package:stockvision_app/feature/Order/data/data_source/local_data_source/order_local_data_source.dart';
 import 'package:stockvision_app/feature/Order/domain/entity/order_entity.dart';
 import 'package:stockvision_app/feature/Order/domain/repository/order_repository.dart';
 
@@ -31,9 +31,9 @@ class OrderLocalRepository implements IOrderRepository {
   }
 
   @override
-  Future<Either<Failure, List<OrderEntity>>> getOrder() {
+  Future<Either<Failure, List<OrderEntity>>> getOrder(String? token, String userId) {
     try {
-      return _orderLocalDataSource.getOrder().then(
+      return _orderLocalDataSource.getOrder( token, userId).then(
         (value) {
           return Right(value);
         },
@@ -42,4 +42,16 @@ class OrderLocalRepository implements IOrderRepository {
       return Future.value(Left(LocalDatabaseFailure(message: e.toString())));
     }
   }
+  
+//   @override
+//   Future<Either<Failure, List<OrderEntity>>> getOrderByCustomerId(String customerId, String? token) async {
+//   try {
+//     // Assuming you retrieve a list of OrderProductEntity from your local data source
+//     final orderProducts = await _orderLocalDataSource.getOrderByCustomerId(customerId, token);
+//     return Future.value(Right(orderProducts));
+//   } catch (e) {
+//     return Future.value(Left(LocalDatabaseFailure(message: e.toString())));
+//   }
+// }
+
 }

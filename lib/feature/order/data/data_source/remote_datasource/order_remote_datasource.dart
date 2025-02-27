@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:stockvision_app/app/constants/api_endpoints.dart';
 import 'package:stockvision_app/feature/Order/data/data_source/order_data_source.dart';
-import 'package:stockvision_app/feature/Order/data/dto/get_all_order_dto.dart';
 import 'package:stockvision_app/feature/Order/data/model/order_api_model.dart';
 import 'package:stockvision_app/feature/Order/domain/entity/order_entity.dart';
 
@@ -37,19 +36,28 @@ class OrderRemoteDataSource implements IOrderDataSource {
   }
 
   @override
-  Future<List<OrderEntity>> getOrder() async {
+  Future<List<OrderEntity>> getOrder(String? token, String userId) async {
+    if (userId.isEmpty) {
+      throw Exception("Access denied: No id provided");
+    }
     try {
-      var response = await _dio.get(ApiEndpoints.getAllOrder);
+      print("DATA::: $token, $userId");
+      var response = await _dio.get(
+        ApiEndpoints.getUserOrder + userId, // Ensure proper URL formatting
+        options: Options(headers: {"Authorization": "Bearer $token"}),
+      );
+
       if (response.statusCode == 200) {
-        GetAllOrderDTO orderAddDTO = GetAllOrderDTO.fromJson(response.data);
-        return OrderApiModel.toEntityList(orderAddDTO.data);
+        final List<dynamic> data = response.data['data'];
+        print("DATA1::: $data");
+        return data
+            .map((order) => OrderApiModel.fromJson(order).toEntity())
+            .toList();
       } else {
-        throw Exception(response.statusMessage);
+        throw Exception('Failed to fetch customer orders');
       }
-    } on DioException catch (e) {
-      throw Exception(e);
     } catch (e) {
-      throw Exception(e);
+      throw Exception(e.toString());
     }
   }
 }

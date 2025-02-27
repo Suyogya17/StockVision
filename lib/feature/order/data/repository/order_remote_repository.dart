@@ -21,10 +21,19 @@ class OrderRemoteRepository implements IOrderRepository {
   }
 
   @override
-  Future<Either<Failure, List<OrderEntity>>> getOrder() async {
+  Future<Either<Failure, List<OrderEntity>>> getOrder(
+      String? token, String userId) async {
     try {
-      final order = await _orderRemoteDatasource.getOrder();
-      return Right(order);
+      final response = await _orderRemoteDatasource.getOrder(token, userId);
+      final orderList = response.map((dynamic orderJson) {
+        if (orderJson is Map<String, dynamic>) {
+          return OrderEntity.fromJson(orderJson);
+        } else {
+          throw Exception('Invalid data format');
+        }
+      }).toList();
+
+      return Right(orderList);
     } catch (e) {
       return Left(
         ApiFailure(
