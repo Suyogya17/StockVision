@@ -37,14 +37,19 @@ class OrderApiModel extends Equatable {
 
       List<ProductApiModel> productList = [];
       if (json['products'] is List) {
+        var products = json['products'];
+        print('Product Detailsss:: ${json['products']}');
+
         // Iterate over the products list
         for (var productJson in json['products']) {
           if (productJson is Map && productJson.containsKey('product')) {
-            var productDetails =
-                productJson['product']; // Extract the 'product' key
+            var productDetails = productJson['product'];
+            var quantity = productJson['quantity'];
             if (productDetails is Map<String, dynamic>) {
               productDetails.remove('__v');
               print('Parsing Product: $productDetails');
+              productDetails['quantity'] = quantity;
+              // productDetails['quantity'] =
               // Map product data to ProductApiModel
               productList.add(ProductApiModel.fromJson(productDetails));
             } else {

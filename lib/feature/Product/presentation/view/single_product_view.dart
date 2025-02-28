@@ -30,16 +30,12 @@ class _ProductDetailViewState extends State<ProductDetailView> {
     }
 
     try {
-      // Assuming you would save this order info to a database or API
-      // Simulating a delay for placing the order
       await Future.delayed(const Duration(seconds: 2));
 
-      // Update the UI to show the success screen with the bill
       setState(() {
         _isOrderPlaced = true;
       });
 
-      // Show a success message
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Order placed successfully!'),

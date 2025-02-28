@@ -109,12 +109,11 @@ class _ProductsViewState extends State<ProductsView> {
                                   borderRadius: BorderRadius.circular(12)),
                               child: InkWell(
                                 onTap: () {
-                                  // Navigate to the Product Details Screen
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          ProductDetailView(product: product),
+                                          ProductDetailView(product: product ),
                                     ),
                                   );
                                 },
