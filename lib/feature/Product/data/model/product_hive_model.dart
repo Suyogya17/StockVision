@@ -46,27 +46,25 @@ class ProductHiveModel extends Equatable {
   // From Entity
   factory ProductHiveModel.fromEntity(ProductEntity entity) {
     return ProductHiveModel(
-      productId: entity.productId,
-      productName: entity.productName,
-      image: entity.image,
-      description: entity.description,
-      type: entity.type,
-      quantity: entity.quantity,
-      price: entity.price,
-    );
+        productId: entity.productId,
+        productName: entity.productName,
+        image: entity.image,
+        description: entity.description,
+        type: entity.type,
+        quantity: entity.quantity,
+        price: entity.price);
   }
 
   // To Entity
   ProductEntity toEntity() {
     return ProductEntity(
-      productId: productId,
-      productName: productName,
-      image: image,
-      description: description,
-      type: type,
-      quantity: quantity,
-      price: price,
-    );
+        productId: productId,
+        productName: productName,
+        image: image,
+        description: description,
+        type: type,
+        quantity: quantity,
+        price: price);
   }
 
   @override

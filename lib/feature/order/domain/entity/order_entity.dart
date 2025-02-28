@@ -10,7 +10,7 @@ class OrderEntity extends Equatable {
   final String shippingAddress;
   final String status;
   final String paymentStatus;
-  final DateTime orderDate;
+  final String orderDate;
 
   const OrderEntity({
     this.orderId,
@@ -49,7 +49,7 @@ class OrderEntity extends Equatable {
       shippingAddress: json['shippingAddress'],
       status: json['status'],
       paymentStatus: json['paymentStatus'],
-      orderDate: DateTime.parse(json['orderDate']),
+      orderDate: json['orderDate'],
     );
   }
 

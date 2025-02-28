@@ -75,7 +75,7 @@ _initRegisterDependencies() {
   //  Remote Data Source course
   getIt.registerFactory<AuthRemoteDatasource>(
     () => AuthRemoteDatasource(
-      getIt<Dio>(), getIt<UserIdSharedPrefs>(),
+      getIt<Dio>(), getIt<TokenSharedPrefs>(),
     ),
   );
 

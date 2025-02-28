@@ -16,7 +16,7 @@ class OrderApiModel extends Equatable {
   final String shippingAddress;
   final String status;
   final String paymentStatus;
-  final DateTime orderDate;
+  final String orderDate;
 
   const OrderApiModel({
     this.orderId,
@@ -35,68 +35,59 @@ class OrderApiModel extends Equatable {
       print(
           'Full JSON: $json'); // Print the entire JSON structure for debugging
 
-      if (json['products'] != null) {
-        print(
-            'PRODUCTS:: ${json['products'].runtimeType}'); // Type of products field
-
-        // Ensure products is a list before iterating over it
-        if (json['products'] is List) {
-          for (var product in json['products']) {
-            print(
-                'Product runtimeType: ${product.runtimeType}'); // Check type of each product entry
-
-            // Check for the 'product' key and print fields inside the product
-            if (product is Map && product.containsKey('product')) {
-              var productDetails = product['product'];
-              if (productDetails is Map) {
-                productDetails.forEach((key, value) {
-                  print('Product Field: $key, Type: ${value.runtimeType}');
-                });
-              } 
+      List<ProductApiModel> productList = [];
+      if (json['products'] is List) {
+        // Iterate over the products list
+        for (var productJson in json['products']) {
+          if (productJson is Map && productJson.containsKey('product')) {
+            var productDetails =
+                productJson['product']; // Extract the 'product' key
+            if (productDetails is Map<String, dynamic>) {
+              productDetails.remove('__v');
+              print('Parsing Product: $productDetails');
+              // Map product data to ProductApiModel
+              productList.add(ProductApiModel.fromJson(productDetails));
+            } else {
+              print(
+                  'Expected a Map<String, dynamic> for product details, got: ${productDetails.runtimeType}');
             }
+          } else {
+            print(
+                'Invalid product entry, expected Map with "product" key, got: ${productJson.runtimeType}');
           }
-        } else {
-          print(
-              'Expected products to be a List, but got: ${json['products'].runtimeType}');
         }
       } else {
-        print('No products found in the JSON response.');
+        print(
+            'Expected products to be a List, but got: ${json['products'].runtimeType}');
       }
+      print('ProductList:: $productList');
+      print(
+          "OrderDate:: ${json['orderDate']} ${json['orderDate'].runtimeType}");
 
       return OrderApiModel(
-        orderId: json['_id'] ?? '', // Handle null
-        customerId: json['customer']?['_id'] ?? '', // Handle null
-        customerUsername: json['customer']?['username'] ?? '', // Handle null
-        products: json['products'] != null
-            ? (json['products'] as List<dynamic>).map((productJson) {
-                // Access the 'product' field within each product
-                var product = productJson['product'];
-                return product != null
-                    ? ProductApiModel.fromJson(product)
-                    : null; // Handle null product
-              }).toList()
-            : [],
-        totalPrice: json['totalPrice'] ?? '',
-        shippingAddress: json['shippingAddress'] ?? '',
-        status: json['status'] ?? '',
-        paymentStatus: json['paymentStatus'] ?? '',
-        orderDate: json['orderDate'] != null
-            ? DateTime.parse(json['orderDate'])
-            : DateTime.now(), // Handle null safely
+        orderId: json['_id']?.toString() ?? '',
+        customerId: json['customer']?['_id']?.toString() ?? '',
+        customerUsername: json['customer']?['username']?.toString() ?? '',
+        products: productList,
+        totalPrice: json['totalPrice']?.toString() ?? '',
+        shippingAddress: json['shippingAddress']?.toString() ?? '',
+        status: json['status']?.toString() ?? '',
+        paymentStatus: json['paymentStatus']?.toString() ?? '',
+        orderDate: json['orderDate'] ?? '',
       );
     } catch (e, stackTrace) {
       print("Error parsing OrderApiModel: $e");
       print("StackTrace: $stackTrace");
-      return OrderApiModel(
+      return const OrderApiModel(
         orderId: '',
         customerId: '',
         customerUsername: '',
-        products: const [],
+        products: [],
         totalPrice: '',
         shippingAddress: '',
         status: '',
         paymentStatus: '',
-        orderDate: DateTime.now(),
+        orderDate: '',
       );
     }
   }

@@ -4,6 +4,7 @@ import 'package:stockvision_app/feature/Order/domain/entity/order_entity.dart';
 import 'package:stockvision_app/feature/Order/domain/use_case/create_order_usecase.dart';
 import 'package:stockvision_app/feature/Order/domain/use_case/delete_order_usecase.dart';
 import 'package:stockvision_app/feature/Order/domain/use_case/get_all_order_usecase.dart';
+import 'package:stockvision_app/feature/Product/data/model/product_api_model.dart';
 import 'package:stockvision_app/feature/Product/domain/entity/product_entity.dart';
 
 part 'order_event.dart';
@@ -52,11 +53,11 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       status: event.status,
       customerId: event.customer,
       customerUsername: event.customer,
-      products: event.products as List<ProductEntity>,
+      products: event.products,
       totalPrice: event.totalPrice,
       shippingAddress: event.shippingAddress,
       paymentStatus: event.paymentStatus,
-      orderDate: DateTime.parse(event.orderdate),
+      orderDate: event.orderdate,
     ));
     result.fold(
       (failure) =>

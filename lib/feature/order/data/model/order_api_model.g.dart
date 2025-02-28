@@ -20,7 +20,7 @@ OrderApiModel _$OrderApiModelFromJson(Map<String, dynamic> json) =>
       shippingAddress: json['shippingAddress'] as String,
       status: json['status'] as String,
       paymentStatus: json['paymentStatus'] as String,
-      orderDate: DateTime.parse(json['orderDate'] as String),
+      orderDate: json['orderDate'] as String,
     );
 
 Map<String, dynamic> _$OrderApiModelToJson(OrderApiModel instance) =>
@@ -33,5 +33,5 @@ Map<String, dynamic> _$OrderApiModelToJson(OrderApiModel instance) =>
       'shippingAddress': instance.shippingAddress,
       'status': instance.status,
       'paymentStatus': instance.paymentStatus,
-      'orderDate': instance.orderDate.toIso8601String(),
+      'orderDate': instance.orderDate,
     };

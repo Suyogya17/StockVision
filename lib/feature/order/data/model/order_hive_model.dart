@@ -26,7 +26,7 @@ class OrderHiveModel extends Equatable {
   @HiveField(7)
   final String paymentStatus;
   @HiveField(8)
-  final DateTime orderDate;
+  final String orderDate;
 
   OrderHiveModel({
     String? orderId,
@@ -50,7 +50,7 @@ class OrderHiveModel extends Equatable {
         shippingAddress = '',
         status = 'pending',
         paymentStatus = 'pending',
-        orderDate = DateTime.now();
+        orderDate = '';
 
   // From Entity
   factory OrderHiveModel.fromEntity(OrderEntity entity) {

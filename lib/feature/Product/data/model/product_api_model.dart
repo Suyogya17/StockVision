@@ -27,17 +27,24 @@ class ProductApiModel extends Equatable {
 
   factory ProductApiModel.fromJson(Map<String, dynamic> json) {
     try {
+      json.remove("__v");
       print("PRODUCTSSS:: $json");
-
+      print("productId Type: ${json['_id']?.runtimeType}");
+      print("productId type: ${json['_id']?.runtimeType}");
+      print("productName type: ${json['productName']?.runtimeType}");
+      print("image type: ${json['image']?.runtimeType}");
+      print("description type: ${json['description']?.runtimeType}");
+      print("type type: ${json['type']?.runtimeType}");
+      print("quantity type: ${json['quantity']?.runtimeType}");
+      print("price type: ${json['price']?.runtimeType}");
       return ProductApiModel(
-        productId: json['_id']?.toString() ?? '',
-        productName: json['productName']?.toString() ?? '',
-        image: json['image']?.toString() ?? '',
-        description: json['description']?.toString() ?? '',
-        type: json['type']?.toString() ?? '',
-        quantity: json['quantity'].toString() ?? '',
-        price: json['price'].toString() ?? '',
-      );
+          productId: json['_id']?.toString() ?? '',
+          productName: json['productName']?.toString() ?? '',
+          image: json['image']?.toString() ?? '',
+          description: json['description']?.toString() ?? '',
+          type: json['type']?.toString() ?? '',
+          quantity: json['quantity'].toString() ?? '',
+          price: json['price'].toString() ?? '');
     } catch (e) {
       print("Error parsing ProductApiModel: $e");
       rethrow;

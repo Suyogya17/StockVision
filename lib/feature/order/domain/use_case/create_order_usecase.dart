@@ -14,7 +14,7 @@ class CreateOrderParams extends Equatable {
   final String shippingAddress;
   final String status;
   final String paymentStatus;
-  final DateTime orderDate;
+  final String orderDate;
 
   const CreateOrderParams({
     required this.customerId,

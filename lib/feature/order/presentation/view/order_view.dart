@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stockvision_app/feature/Order/presentation/view_model/bloc/order_bloc.dart';
 
 class OrdersView extends StatelessWidget {
@@ -9,7 +8,7 @@ class OrdersView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     context.read<OrderBloc>().add(OrderLoad());
-    SharedPreferences sharedPreferences;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Orders"),

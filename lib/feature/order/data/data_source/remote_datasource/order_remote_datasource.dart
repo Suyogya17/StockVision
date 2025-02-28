@@ -36,6 +36,7 @@ class OrderRemoteDataSource implements IOrderDataSource {
   }
 
   @override
+  
   Future<List<OrderEntity>> getOrder(String? token, String userId) async {
     if (userId.isEmpty) {
       throw Exception("Access denied: No id provided");
@@ -48,16 +49,21 @@ class OrderRemoteDataSource implements IOrderDataSource {
       );
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = response.data['data'];
-        print("DATA1::: $data");
-        return data
+        // final List<dynamic> data = response.data['data'];
+        List<Map<String, dynamic>> data =
+            List<Map<String, dynamic>>.from(response.data['data']);
+        print("DATATYPE:: ${data.runtimeType}");
+        var val = data
             .map((order) => OrderApiModel.fromJson(order).toEntity())
             .toList();
+        print('VAR::: $val');
+        print('VAR::: ${val.runtimeType}');
+        return val;
       } else {
         throw Exception('Failed to fetch customer orders');
       }
     } catch (e) {
-      throw Exception(e.toString());
+      throw Exception("Error from datasource: ${e.toString()}");
     }
   }
 }

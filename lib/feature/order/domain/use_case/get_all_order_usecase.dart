@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stockvision_app/app/shared_prefs/token_shared_prefs.dart';
 import 'package:stockvision_app/app/shared_prefs/userId_shared_prefs.dart%207-49-15-915%E2%80%AFPM.dart';
+// import 'package:stockvision_app/app/shared_prefs/userId_shared_prefs.dart%207-49-15-915%E2%80%AFPM.dart';
 import 'package:stockvision_app/app/usecase/usease.dart';
 import 'package:stockvision_app/core/error/failure.dart';
 import 'package:stockvision_app/feature/Order/domain/entity/order_entity.dart';
@@ -15,10 +16,10 @@ class GetAllOrderUsecase implements UsecaseWithoutParams<List<OrderEntity>> {
   GetAllOrderUsecase({
     required IOrderRepository orderRepository,
     required TokenSharedPrefs tokenSharedPrefs,
-    required UserIdSharedPrefs userIdSharedPrefs,
+    required UserIdSharedPrefs userIdSharedPrefs
   })  : _orderRepository = orderRepository,
         _tokenSharedPrefs = tokenSharedPrefs,
-        _userIdSharedPrefs = userIdSharedPrefs;
+        _userIdSharedPrefs=userIdSharedPrefs;
 
   @override
   Future<Either<Failure, List<OrderEntity>>> call() async {
@@ -26,8 +27,7 @@ class GetAllOrderUsecase implements UsecaseWithoutParams<List<OrderEntity>> {
       print("Calling GetAllOrderUsecase...");
 
       final tokenResult = await _tokenSharedPrefs.getToken();
-      // final userResult = await _userIdSharedPrefs.getUserId();
-      final user = await _userIdSharedPrefs.getUser();
+      final user = await _tokenSharedPrefs.getUser();
       final userResult = user?['_id'];
       print("Id datatype:: ${userResult.runtimeType}");
       print('USERRR:: $user');
@@ -54,7 +54,7 @@ class GetAllOrderUsecase implements UsecaseWithoutParams<List<OrderEntity>> {
                 SharedPrefsFailure(message: 'No user ID available'));
           }
 
-          print("Retrieved User ID: $userResult");
+          print("Retrieved User ID: ${userResult.runtimeType}");
           print("Retrieved User Token: ${token.runtimeType}");
 
           final ordersResult =
