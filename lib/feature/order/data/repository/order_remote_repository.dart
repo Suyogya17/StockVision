@@ -9,9 +9,18 @@ class OrderRemoteRepository implements IOrderRepository {
   OrderRemoteRepository(this._orderRemoteDatasource);
 
   @override
-  Future<Either<Failure, void>> createOrder(OrderEntity order) {
-    // TODO: implement createOrder
-    throw UnimplementedError();
+  Future<Either<Failure, void>> createOrder(OrderEntity order) async {
+    try {
+      final response1 = await _orderRemoteDatasource.createOrder(order);
+
+      return Right(response1);
+      
+    } catch (e) {
+      // Catch any errors and return a failure
+      return Left(ApiFailure(
+        message: 'REMOTE REPO ERROR, ${e.toString()}',
+      ));
+    }
   }
 
   @override

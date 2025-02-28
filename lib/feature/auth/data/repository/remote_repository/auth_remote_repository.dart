@@ -10,7 +10,7 @@ class AuthRemoteRepository implements IAuthRepository {
   final AuthRemoteDatasource _authRemoteDatasource;
   AuthRemoteRepository(this._authRemoteDatasource);
   @override
-  Future<Either<Failure, AuthEntity>> getCurrentUser() {
+  Future<Either<Failure, AuthEntity>> getCurrentUser(String? token, String userId) {
     // TODO: implement getCurrentUser
     throw UnimplementedError();
   }

@@ -32,8 +32,6 @@ class OrderApiModel extends Equatable {
 
   factory OrderApiModel.fromJson(Map<String, dynamic> json) {
     try {
-      print(
-          'Full JSON: $json'); // Print the entire JSON structure for debugging
 
       List<ProductApiModel> productList = [];
       if (json['products'] is List) {
@@ -61,13 +59,7 @@ class OrderApiModel extends Equatable {
                 'Invalid product entry, expected Map with "product" key, got: ${productJson.runtimeType}');
           }
         }
-      } else {
-        print(
-            'Expected products to be a List, but got: ${json['products'].runtimeType}');
-      }
-      print('ProductList:: $productList');
-      print(
-          "OrderDate:: ${json['orderDate']} ${json['orderDate'].runtimeType}");
+      } 
 
       return OrderApiModel(
         orderId: json['_id']?.toString() ?? '',
@@ -97,7 +89,11 @@ class OrderApiModel extends Equatable {
     }
   }
 
-  Map<String, dynamic> toJson() => _$OrderApiModelToJson(this);
+  Map<String, dynamic> toJson() {
+    print('INSIDE JSON ');
+
+    return _$OrderApiModelToJson(this);
+  }
 
   // To Entity
   OrderEntity toEntity() {

@@ -6,6 +6,8 @@ import 'package:stockvision_app/feature/Order/presentation/view/order_view.dart'
 import 'package:stockvision_app/feature/Order/presentation/view_model/bloc/order_bloc.dart';
 import 'package:stockvision_app/feature/Product/presentation/view/products_view.dart';
 import 'package:stockvision_app/feature/Product/presentation/view_model/bloc/product_bloc.dart';
+import 'package:stockvision_app/feature/auth/presentation/view_model/profile/bloc/profile_bloc.dart';
+import 'package:stockvision_app/feature/auth/presentation/view/setting_view.dart';
 
 class HomeState extends Equatable {
   final int selectedIndex;
@@ -32,8 +34,9 @@ class HomeState extends Equatable {
           create: (context) => getIt<OrderBloc>(),
           child: const OrdersView(),
         ),
-        const Center(
-          child: Text('Setting'),
+        BlocProvider(
+          create: (context) => getIt<ProfileBloc>(),
+          child: const SettingView(),
         ),
       ],
     );

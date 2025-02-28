@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:stockvision_app/feature/Product/presentation/view/single_product_view.dart';
+import 'package:stockvision_app/feature/Order/presentation/view/single_product_view.dart';
 import 'package:stockvision_app/feature/Product/presentation/view_model/bloc/product_bloc.dart';
 
 class ProductsView extends StatefulWidget {
@@ -109,11 +109,14 @@ class _ProductsViewState extends State<ProductsView> {
                                   borderRadius: BorderRadius.circular(12)),
                               child: InkWell(
                                 onTap: () {
+                                  print('PRODUCT:: $product');
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          ProductDetailView(product: product ),
+                                      builder: (context) => ProductDetailView(
+                                        product: product,
+                                        orderProduct: [],
+                                      ),
                                     ),
                                   );
                                 },
