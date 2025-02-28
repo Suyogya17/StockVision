@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stockvision_app/app/shared_prefs/token_shared_prefs.dart';
-import 'package:stockvision_app/app/shared_prefs/userId_shared_prefs.dart%207-49-15-915%E2%80%AFPM.dart';
+import 'package:stockvision_app/app/shared_prefs/userId_shared_prefs.dart';
 // import 'package:stockvision_app/app/shared_prefs/userId_shared_prefs.dart%207-49-15-915%E2%80%AFPM.dart';
 import 'package:stockvision_app/app/usecase/usease.dart';
 import 'package:stockvision_app/core/error/failure.dart';
@@ -13,13 +13,13 @@ class GetAllOrderUsecase implements UsecaseWithoutParams<List<OrderEntity>> {
   final TokenSharedPrefs _tokenSharedPrefs;
   final UserIdSharedPrefs _userIdSharedPrefs;
 
-  GetAllOrderUsecase({
-    required IOrderRepository orderRepository,
-    required TokenSharedPrefs tokenSharedPrefs,
-    required UserIdSharedPrefs userIdSharedPrefs
-  })  : _orderRepository = orderRepository,
+  GetAllOrderUsecase(
+      {required IOrderRepository orderRepository,
+      required TokenSharedPrefs tokenSharedPrefs,
+      required UserIdSharedPrefs userIdSharedPrefs})
+      : _orderRepository = orderRepository,
         _tokenSharedPrefs = tokenSharedPrefs,
-        _userIdSharedPrefs=userIdSharedPrefs;
+        _userIdSharedPrefs = userIdSharedPrefs;
 
   @override
   Future<Either<Failure, List<OrderEntity>>> call() async {

@@ -65,7 +65,9 @@ class _OrdersViewState extends State<OrdersView> {
                             ),
                           ),
                           onChanged: (value) {
-                            setState(() {}); // Refresh the filtered list
+                            setState(() {
+                              // Trigger rebuild of widget when search text changes
+                            });
                           },
                         ),
                       ),
@@ -101,7 +103,7 @@ class _OrdersViewState extends State<OrdersView> {
                                 : "http://10.0.2.2:3000";
                             final String imageUrl =
                                 "$baseUrl/uploads/$imageFileName";
-                            print('PRODUCT IN VIEW:: $product');
+
                             return Card(
                               elevation: 5,
                               margin: const EdgeInsets.symmetric(
@@ -128,7 +130,7 @@ class _OrdersViewState extends State<OrdersView> {
                                   ),
                                 ),
                                 title: Text(
-                                  "Product: ${product?.productName ?? 'N/A'}",
+                                  product?.productName ?? 'N/A',
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,

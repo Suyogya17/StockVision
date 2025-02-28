@@ -10,34 +10,46 @@ sealed class OrderEvent extends Equatable {
 class OrderLoad extends OrderEvent {}
 
 class CreateOrder extends OrderEvent {
-  final String customer;
-  final List<ProductEntity> products;
+  final BuildContext context;
+  final String? orderId;
+  final String customerId;
+  final String customerUsername;
+  final List<ProductEntity?> products;
   final String totalPrice;
   final String shippingAddress;
   final String status;
   final String paymentStatus;
-  final String orderdate;
+  final String orderDate;
 
   const CreateOrder({
-    required this.customer,
+    this.orderId,
+    required this.context,
+    required this.customerId,
+    required this.customerUsername,
     required this.products,
     required this.totalPrice,
     required this.shippingAddress,
     required this.status,
     required this.paymentStatus,
-    required this.orderdate,
+    required this.orderDate,
   });
-
   @override
   List<Object> get props => [
-        customer,
+        context,
+        customerId,
+        customerUsername,
         products,
         totalPrice,
         shippingAddress,
-        paymentStatus,
         status,
-        orderdate
+        paymentStatus,
+        orderDate,
       ];
+}
+
+class NavigateToOrder extends OrderEvent {
+  final BuildContext context;
+  const NavigateToOrder({required this.context});
 }
 
 class DeleteOrder extends OrderEvent {

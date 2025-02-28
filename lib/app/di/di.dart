@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stockvision_app/app/shared_prefs/token_shared_prefs.dart';
-import 'package:stockvision_app/app/shared_prefs/userId_shared_prefs.dart%207-49-15-915%E2%80%AFPM.dart';
+import 'package:stockvision_app/app/shared_prefs/userId_shared_prefs.dart';
 import 'package:stockvision_app/core/network/api_service.dart';
 import 'package:stockvision_app/core/network/hive_service.dart';
 import 'package:stockvision_app/feature/Order/data/data_source/local_data_source/order_local_data_source.dart';
@@ -26,10 +26,12 @@ import 'package:stockvision_app/feature/auth/data/data_source/local_datasource/a
 import 'package:stockvision_app/feature/auth/data/data_source/remote_datasource/auth_remote_datasource.dart';
 import 'package:stockvision_app/feature/auth/data/repository/auth_local_repository/auth_local_repository.dart';
 import 'package:stockvision_app/feature/auth/data/repository/remote_repository/auth_remote_repository.dart';
+import 'package:stockvision_app/feature/auth/domain/use_case/get_user_usecase.dart';
 import 'package:stockvision_app/feature/auth/domain/use_case/login_use_usecase.dart';
 import 'package:stockvision_app/feature/auth/domain/use_case/register_use_usecase.dart';
 import 'package:stockvision_app/feature/auth/domain/use_case/uploadimage_use_usecase.dart';
 import 'package:stockvision_app/feature/auth/presentation/view_model/login/bloc/login_bloc.dart';
+import 'package:stockvision_app/feature/auth/presentation/view_model/profile/bloc/profile_bloc.dart';
 import 'package:stockvision_app/feature/auth/presentation/view_model/registration/bloc/registration_bloc.dart';
 import 'package:stockvision_app/feature/home/presentation/view_model/home_cubit.dart';
 import 'package:stockvision_app/feature/onboarding/presentation/view_model/cubit/onboarding_cubit.dart';
@@ -49,6 +51,7 @@ Future<void> initDependencies() async {
   await _initLoginDependencies();
   await _initOnboardingDependencies();
   await _initSplashScreenDependencies();
+  await _initProfileDependencies();
 }
 
 Future<void> _initSharedPrefrences() async {
@@ -75,11 +78,12 @@ _initRegisterDependencies() {
   //  Remote Data Source course
   getIt.registerFactory<AuthRemoteDatasource>(
     () => AuthRemoteDatasource(
-      getIt<Dio>(), getIt<TokenSharedPrefs>(),
+      getIt<Dio>(),
+      getIt<TokenSharedPrefs>(),
     ),
   );
 
-  // init locsal repository
+  // init local repository
   getIt.registerLazySingleton(
     () => AuthLocalRepository(getIt<AuthLocalDataSource>()),
   );
@@ -275,3 +279,18 @@ _initSplashScreenDependencies() async {
     () => SplashCubit(getIt<OnboardingCubit>()),
   );
 }
+
+_initProfileDependencies() async {
+  getIt.registerLazySingleton<GetUserUsecase>(
+    () => GetUserUsecase(
+      tokenSharedPrefs: getIt<TokenSharedPrefs>(),
+    ),
+  );
+
+  getIt.registerFactory<ProfileBloc>(
+    () => ProfileBloc(
+        tokenSharedPrefs: getIt<TokenSharedPrefs>(),
+        getUserUsecase: getIt<GetUserUsecase>()),
+  );
+}
+  

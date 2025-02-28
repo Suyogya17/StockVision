@@ -11,7 +11,7 @@ class AuthLocalDataSource implements IAuthDataSource {
   AuthLocalDataSource(this._hiveService);
 
   @override
-  Future<AuthEntity> getCurrentUser() async {
+  Future<AuthEntity> getCurrentUser(String? token, String userId) async {
     // Return Empty AuthEntity
     return Future.value(const AuthEntity(
       userId: "1",

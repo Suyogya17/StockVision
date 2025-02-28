@@ -17,6 +17,7 @@ class ApiEndpoints {
   static const String getCustomerByProduct = "auth/getCustomerByProduct/";
   static const String getCustomerByOrder = "auth/getCustomerByOrder/";
   static const String updateCustomer = "auth/updateCustomer/";
+  static const String getUser = "auth/userfindbyid";
   static const String deleteCustomer = "auth/deleteCustomer/";
   static const String imageUrl = "http://10.0.2.2:3000/uploads/";
   static const String uploadImage = "auth/uploadImage";
@@ -30,6 +31,6 @@ class ApiEndpoints {
   // ======== order  =============
   static const String createOrder = "order/createOrder";
   static const String getAllOrder = "order/getAllOrder";
-  static const String deleteOrder = "order/deleteOrder/"; 
-  static const String getUserOrder = "order/getuserorders/"; 
+  static const String deleteOrder = "order/deleteOrder/";
+  static const String getUserOrder = "order/getuserorders/";
 }

@@ -13,11 +13,13 @@ class OrderRemoteDataSource implements IOrderDataSource {
     try {
       //Convert entity into model
       var orderApiModel = OrderApiModel.fromEntity(order);
+      print('ORDER ENTITY:: $order');
       var response = await _dio.post(
         ApiEndpoints.createOrder,
         data: orderApiModel.toJson(),
       );
       if (response.statusCode == 201) {
+        print("Order Createdd:: $orderApiModel");
         return;
       } else {
         throw Exception(response.statusMessage);
@@ -36,7 +38,6 @@ class OrderRemoteDataSource implements IOrderDataSource {
   }
 
   @override
-  
   Future<List<OrderEntity>> getOrder(String? token, String userId) async {
     if (userId.isEmpty) {
       throw Exception("Access denied: No id provided");

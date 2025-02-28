@@ -23,6 +23,34 @@ class AuthEntity extends Equatable {
     required this.password,
   });
 
+  // from JSON
+  factory AuthEntity.fromJson(Map<String, dynamic> json) {
+    return AuthEntity(
+      // Ensure all fields are treated as String
+      userId: json['_id']?.toString(),
+      fName: json['fName']?.toString() ?? '',
+      lName: json['lName']?.toString() ?? '',
+      email: json['email']?.toString() ?? '',
+      address: json['address']?.toString() ?? '',
+      username: json['username']?.toString() ?? '',
+      phoneNo: json['phoneNo']?.toString() ?? '',
+      image: json['image']?.toString(),
+      password: json['password']?.toString() ?? '',
+    );
+  }
+
+  // to JSON
+  Map<String, dynamic> toJson() => {
+        '_id': userId,
+        'fName': fName,
+        'lName': lName,
+        'email': email,
+        'address': address,
+        'username': username,
+        'phoneNo': phoneNo,
+        'image': image,
+      };
+
   @override
   List<Object?> get props => [
         userId,

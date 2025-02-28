@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
 import 'package:stockvision_app/feature/Order/domain/entity/order_entity.dart';
 import 'package:stockvision_app/feature/Order/domain/use_case/create_order_usecase.dart';
 import 'package:stockvision_app/feature/Order/domain/use_case/delete_order_usecase.dart';
 import 'package:stockvision_app/feature/Order/domain/use_case/get_all_order_usecase.dart';
-import 'package:stockvision_app/feature/Product/data/model/product_api_model.dart';
 import 'package:stockvision_app/feature/Product/domain/entity/product_entity.dart';
 
 part 'order_event.dart';
@@ -49,15 +49,16 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     Emitter<OrderState> emit,
   ) async {
     emit(state.copyWith(isLoading: true));
-    final result = await _createOrderUsecase(CreateOrderParams(
+    // var products = {'product':product,'quantity':quantity};
+    final result = await _createOrderUsecase.call(CreateOrderParams(
       status: event.status,
-      customerId: event.customer,
-      customerUsername: event.customer,
-      products: event.products,
+      customerId: event.customerId,
+      customerUsername: event.customerId,
+      products: event.products.whereType<ProductEntity>().toList(),
       totalPrice: event.totalPrice,
       shippingAddress: event.shippingAddress,
       paymentStatus: event.paymentStatus,
-      orderDate: event.orderdate,
+      orderDate: event.orderDate,
     ));
     result.fold(
       (failure) =>
