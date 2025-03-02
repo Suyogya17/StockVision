@@ -58,4 +58,10 @@ class AuthLocalDataSource implements IAuthDataSource {
   Future<String> getUserById(String username) {
     throw UnimplementedError();
   }
+  
+  @override
+  Future<AuthEntity> updateUser(AuthEntity userId) {
+    // TODO: implement updateUser
+    throw UnimplementedError();
+  }
 }

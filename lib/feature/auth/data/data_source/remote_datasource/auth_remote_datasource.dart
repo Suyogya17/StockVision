@@ -13,10 +13,10 @@ class AuthRemoteDatasource implements IAuthDataSource {
   @override
   Future<AuthEntity> getCurrentUser(String? token, String userId) async {
     try {
-      Response response = await _dio.get(ApiEndpoints.getUser, data: {
-        "token": token,
-        "cred": userId,
-      });
+      Response response = await _dio.get(
+        ApiEndpoints.getUser,
+        data: {"token": token, "cred": userId},
+      );
       if (response.statusCode == 200) {
         userIdSharedPrefs.setUser(userId as Map<String, dynamic>);
         print("USER SAVED:::: $userId");
@@ -45,16 +45,13 @@ class AuthRemoteDatasource implements IAuthDataSource {
     try {
       Response response = await _dio.post(
         ApiEndpoints.login,
-        data: {
-          "username": username,
-          "password": password,
-        },
+        data: {"username": username, "password": password},
       );
       if (response.statusCode == 200) {
         final str = response.data['token'];
         final cred = response.data['cred'];
         userIdSharedPrefs.setUser(cred);
-        print("USER SAVED:::: $cred");
+        // print("USER SAVED:::: $cred");
         return str;
       } else {
         throw Exception(response.statusMessage);
@@ -105,14 +102,12 @@ class AuthRemoteDatasource implements IAuthDataSource {
   Future<String> uploadProfilePicture(File file) async {
     try {
       String fileName = file.path.split('/').last;
-      FormData formData = FormData.fromMap(
-        {
-          'profilePicture': await MultipartFile.fromFile(
-            file.path,
-            filename: fileName,
-          ),
-        },
-      );
+      FormData formData = FormData.fromMap({
+        'profilePicture': await MultipartFile.fromFile(
+          file.path,
+          filename: fileName,
+        ),
+      });
       Response response = await _dio.post(
         ApiEndpoints.uploadImage,
         data: formData,
@@ -133,5 +128,76 @@ class AuthRemoteDatasource implements IAuthDataSource {
   Future<String> getUserById(String username) {
     // TODO: implement getUserById
     throw UnimplementedError();
+  }
+
+  @override
+  Future<AuthEntity> updateUser(AuthEntity updatedUser) async {
+    try {
+      // First, get the current user data from SharedPreferences
+      var currentUser = await userIdSharedPrefs.getUser();
+      // Map<String, dynamic>? currentUser =
+      print("Current user before update: $currentUser");
+
+      // Prepare updated data by merging the current user data and the new data
+      try {
+        currentUser?['fName'] = updatedUser.fName;
+        currentUser?['lName'] = updatedUser.lName;
+        currentUser?['email'] = updatedUser.email;
+        currentUser?['phoneNo'] = updatedUser.phoneNo;
+        currentUser?['address'] = updatedUser.address;
+        currentUser?['username'] = updatedUser.username;
+      } catch (e) {
+        print('Error $e');
+      }
+      var id = currentUser?['_id'];
+      if (updatedUser.image != null) {
+        currentUser?['image'] =
+            await MultipartFile.fromFile(updatedUser.image!);
+      } else {
+        currentUser!.remove('image');
+      }
+
+      print("abc::: $currentUser");
+      var tokenResult = await userIdSharedPrefs.getToken();
+      String? token = tokenResult.fold(
+        (failure) => null, // Handle failure case
+        (successToken) => successToken, // Extract the token
+      );
+
+      if (token == null) {
+        throw Exception("Failed to retrieve token");
+      }
+      currentUser?.remove('__v');
+
+      // Send the update request to the backend API
+      Response response = await _dio.put(ApiEndpoints.updateCustomer + id,
+          data: currentUser,
+          options: Options(
+            headers: {
+              "Authorization": "Bearer $token",
+              "Accept": "application/json",
+              "Content-Type": "application/json",
+            },
+          ));
+      print("API Endpoint: $response");
+
+      if (response.statusCode == 200) {
+        // On success, update the local SharedPreferences with the new user data
+        Map<String, dynamic> newUserData = response.data['data'];
+        await userIdSharedPrefs.updateUser(
+          newUserData,
+        ); // Save updated user data in SharedPreferences
+
+        print("Updated user data saved in SharedPreferences: $newUserData");
+
+        // Return the updated user entity
+        return AuthEntity.fromJson(newUserData);
+      } else {
+        print("No Data updated $currentUser");
+        throw Exception('Failed to update user: ${response.statusMessage}');
+      }
+    } catch (e) {
+      throw Exception('Error updating user: $e');
+    }
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stockvision_app/app/di/di.dart';
 import 'package:stockvision_app/feature/Order/presentation/view/order_view.dart';
-import 'package:stockvision_app/feature/Order/presentation/view_model/bloc/order_bloc.dart';
+import 'package:stockvision_app/feature/Order/presentation/view_model/order/bloc/order_bloc.dart';
 import 'package:stockvision_app/feature/Product/presentation/view/products_view.dart';
 import 'package:stockvision_app/feature/Product/presentation/view_model/bloc/product_bloc.dart';
 import 'package:stockvision_app/feature/auth/presentation/view_model/profile/bloc/profile_bloc.dart';
@@ -33,6 +33,7 @@ class HomeState extends Equatable {
         BlocProvider(
           create: (context) => getIt<OrderBloc>(),
           child: const OrdersView(),
+          
         ),
         BlocProvider(
           create: (context) => getIt<ProfileBloc>(),

@@ -115,7 +115,7 @@ class _ProductsViewState extends State<ProductsView> {
                                     MaterialPageRoute(
                                       builder: (context) => ProductDetailView(
                                         product: product,
-                                        orderProduct: [],
+                                        orderProduct: const [],
                                       ),
                                     ),
                                   );
@@ -193,7 +193,15 @@ class _ProductsViewState extends State<ProductsView> {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8)),
                     ),
-                    items: ["Shoe", "Clothing", "Accessory"]
+                    items: [
+                      "Shoes",
+                      "T-Shirt",
+                      "Cap",
+                      "Socks",
+                      "Wallet",
+                      "Belt",
+                      "Shirt"
+                    ]
                         .map((type) =>
                             DropdownMenuItem(value: type, child: Text(type)))
                         .toList(),

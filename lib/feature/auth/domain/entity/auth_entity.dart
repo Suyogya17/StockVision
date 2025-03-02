@@ -49,6 +49,7 @@ class AuthEntity extends Equatable {
         'username': username,
         'phoneNo': phoneNo,
         'image': image,
+        'password': password,
       };
 
   @override

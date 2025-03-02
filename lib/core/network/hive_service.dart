@@ -123,6 +123,11 @@ class HiveService {
     var box = await Hive.openBox<AuthHiveModel>(HiveTableConstant.customerBox);
     return box.values.toList();
   }
+  Future<void> updateUser(AuthHiveModel user) async {
+    var box =
+        await Hive.openBox<AuthHiveModel>(HiveTableConstant.customerBox);
+    await box.put(user.customerId, user);
+  }
 
   // Product Queries
   Future<void> addProduct(ProductHiveModel product) async {

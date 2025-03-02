@@ -15,3 +15,12 @@ class NavigatetoProfile extends ProfileEvent {
 }
 
 class UpdateProfilePicture extends ProfileEvent {}
+
+class UpdateUserEvent extends ProfileEvent {
+  final AuthEntity user;
+
+  const UpdateUserEvent({required this.user});
+
+  @override
+  List<Object> get props => [user];
+}
