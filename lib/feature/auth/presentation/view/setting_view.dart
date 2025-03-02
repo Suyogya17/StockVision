@@ -3,7 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:stockvision_app/core/common/snackbar/my_snackbar.dart';
+import 'package:stockvision_app/feature/auth/domain/entity/auth_entity.dart';
 import 'package:stockvision_app/feature/auth/presentation/view_model/profile/bloc/profile_bloc.dart';
+import 'package:stockvision_app/feature/home/presentation/view_model/home_cubit.dart';
 
 class SettingView extends StatefulWidget {
   const SettingView({super.key});
@@ -23,6 +26,7 @@ class _SettingViewState extends State<SettingView> {
   final _usernameController = TextEditingController();
 
   File? _img;
+
   Future _browseImage(ImageSource imagesource) async {
     try {
       final image = await ImagePicker().pickImage(source: imagesource);
@@ -143,17 +147,41 @@ class _SettingViewState extends State<SettingView> {
                       const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {
-                          // Handle update action
+                          // Create an updated user object with the new data
+                          final updatedUser = AuthEntity(
+                            fName: _fnameController.text,
+                            lName: _lnameController.text,
+                            phoneNo: _phoneController.text,
+                            email: _emailController.text,
+                            address: _addressController.text,
+                            username: _usernameController.text,
+                            image: _img?.path,
+                            password: '', // Include the new image if available
+                          );
+
+                          // Trigger the update event in the ProfileBloc
+                          context
+                              .read<ProfileBloc>()
+                              .add(UpdateUserEvent(user: updatedUser));
                         },
                         child: const Text("Update"),
                       ),
                       const SizedBox(height: 10),
                       ElevatedButton(
                         onPressed: () {
-                          // Handle logout action
+                          // Show the logout snack bar
+                          showMySnackBar(
+                            context: context,
+                            message: 'Logging out...',
+                            color: Colors.red,
+                          );
+
+                          // Logout action
+                          context.read<HomeCubit>().logout(context);
                         },
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red),
+                          backgroundColor: Colors.red,
+                        ),
                         child: const Text(
                           'Logout',
                           style: TextStyle(color: Colors.white),
@@ -175,7 +203,6 @@ class _SettingViewState extends State<SettingView> {
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: TextFormField(
         controller: controller,
-        readOnly: true,
         decoration: InputDecoration(
           labelText: label,
           labelStyle: const TextStyle(fontWeight: FontWeight.bold),

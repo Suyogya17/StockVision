@@ -12,7 +12,7 @@ import 'package:stockvision_app/feature/Order/data/repository/order_remote_repos
 import 'package:stockvision_app/feature/Order/domain/use_case/create_order_usecase.dart';
 import 'package:stockvision_app/feature/Order/domain/use_case/delete_order_usecase.dart';
 import 'package:stockvision_app/feature/Order/domain/use_case/get_all_order_usecase.dart';
-import 'package:stockvision_app/feature/Order/presentation/view_model/bloc/order_bloc.dart';
+import 'package:stockvision_app/feature/Order/presentation/view_model/order/bloc/order_bloc.dart';
 import 'package:stockvision_app/feature/Product/data/data_source/product_local_datasource/product_local_data_source.dart';
 import 'package:stockvision_app/feature/Product/data/data_source/remote_datasource/product_remote_datasource.dart';
 import 'package:stockvision_app/feature/Product/data/repository/product_local_repository.dart';
@@ -29,6 +29,7 @@ import 'package:stockvision_app/feature/auth/data/repository/remote_repository/a
 import 'package:stockvision_app/feature/auth/domain/use_case/get_user_usecase.dart';
 import 'package:stockvision_app/feature/auth/domain/use_case/login_use_usecase.dart';
 import 'package:stockvision_app/feature/auth/domain/use_case/register_use_usecase.dart';
+import 'package:stockvision_app/feature/auth/domain/use_case/update_user_usecase.dart';
 import 'package:stockvision_app/feature/auth/domain/use_case/uploadimage_use_usecase.dart';
 import 'package:stockvision_app/feature/auth/presentation/view_model/login/bloc/login_bloc.dart';
 import 'package:stockvision_app/feature/auth/presentation/view_model/profile/bloc/profile_bloc.dart';
@@ -92,6 +93,7 @@ _initRegisterDependencies() {
   getIt.registerLazySingleton(
     () => AuthRemoteRepository(
       getIt<AuthRemoteDatasource>(),
+      getIt<TokenSharedPrefs>(),
     ),
   );
 
@@ -286,11 +288,17 @@ _initProfileDependencies() async {
       tokenSharedPrefs: getIt<TokenSharedPrefs>(),
     ),
   );
+  getIt.registerLazySingleton<UpdateUserUsecase>(
+    () => UpdateUserUsecase(
+      getIt<AuthRemoteRepository>(),
+    ),
+  );
 
   getIt.registerFactory<ProfileBloc>(
     () => ProfileBloc(
-        tokenSharedPrefs: getIt<TokenSharedPrefs>(),
-        getUserUsecase: getIt<GetUserUsecase>()),
+      tokenSharedPrefs: getIt<TokenSharedPrefs>(),
+      getUserUsecase: getIt<GetUserUsecase>(),
+      updateUserUsecase: getIt<UpdateUserUsecase>(),
+    ),
   );
 }
-  

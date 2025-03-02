@@ -1,8 +1,7 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:stockvision_app/feature/Order/presentation/view_model/bloc/order_bloc.dart';
+import 'package:stockvision_app/feature/Order/presentation/view_model/order/bloc/order_bloc.dart';
 
 class OrdersView extends StatefulWidget {
   const OrdersView({super.key});

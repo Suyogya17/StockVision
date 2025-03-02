@@ -11,15 +11,16 @@ class OrderRemoteRepository implements IOrderRepository {
   @override
   Future<Either<Failure, void>> createOrder(OrderEntity order) async {
     try {
-      final response1 = await _orderRemoteDatasource.createOrder(order);
-
-      return Right(response1);
-      
+      await _orderRemoteDatasource.createOrder(order);
+      print("Order Placed");
+      return Right(null);
     } catch (e) {
       // Catch any errors and return a failure
-      return Left(ApiFailure(
-        message: 'REMOTE REPO ERROR, ${e.toString()}',
-      ));
+      return Left(
+        ApiFailure(
+          message: 'REMOTE REPO ERROR, ${e.toString()}',
+        ),
+      );
     }
   }
 
