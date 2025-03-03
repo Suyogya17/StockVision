@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stockvision_app/app/di/di.dart';
 import 'package:stockvision_app/feature/Order/presentation/view/single_product_view.dart';
+import 'package:stockvision_app/feature/Order/presentation/view_model/order/bloc/order_bloc.dart';
 import 'package:stockvision_app/feature/Product/presentation/view_model/bloc/product_bloc.dart';
 
 class ProductsView extends StatefulWidget {
@@ -110,12 +112,13 @@ class _ProductsViewState extends State<ProductsView> {
                               child: InkWell(
                                 onTap: () {
                                   print('PRODUCT:: $product');
-                                  Navigator.push(
-                                    context,
+                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) => ProductDetailView(
-                                        product: product,
-                                        orderProduct: const [],
+                                      builder: (_) => BlocProvider(
+                                        create: (context) => getIt<OrderBloc>(),
+                                        child: ProductDetailView(
+                                          product: product,
+                                        ),
                                       ),
                                     ),
                                   );

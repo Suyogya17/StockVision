@@ -6,10 +6,11 @@ import 'package:stockvision_app/feature/Product/data/model/product_api_model.dar
 part 'order_api_model.g.dart';
 
 @JsonSerializable()
+// ignore: must_be_immutable
 class OrderApiModel extends Equatable {
   @JsonKey(name: '_id')
-  final String? orderId;
-  final String customerId;
+  String? orderId;
+  String customerId;
   final String customerUsername;
   final List<ProductApiModel?> products;
   final String totalPrice;
@@ -18,7 +19,7 @@ class OrderApiModel extends Equatable {
   final String paymentStatus;
   final String orderDate;
 
-  const OrderApiModel({
+  OrderApiModel({
     this.orderId,
     required this.customerId,
     required this.customerUsername,
@@ -32,7 +33,6 @@ class OrderApiModel extends Equatable {
 
   factory OrderApiModel.fromJson(Map<String, dynamic> json) {
     try {
-
       List<ProductApiModel> productList = [];
       if (json['products'] is List) {
         var products = json['products'];
@@ -59,7 +59,7 @@ class OrderApiModel extends Equatable {
                 'Invalid product entry, expected Map with "product" key, got: ${productJson.runtimeType}');
           }
         }
-      } 
+      }
 
       return OrderApiModel(
         orderId: json['_id']?.toString() ?? '',
@@ -75,11 +75,11 @@ class OrderApiModel extends Equatable {
     } catch (e, stackTrace) {
       print("Error parsing OrderApiModel: $e");
       print("StackTrace: $stackTrace");
-      return const OrderApiModel(
+      return OrderApiModel(
         orderId: '',
         customerId: '',
         customerUsername: '',
-        products: [],
+        products: const [],
         totalPrice: '',
         shippingAddress: '',
         status: '',

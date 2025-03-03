@@ -44,6 +44,17 @@ class AddProduct extends ProductEvent {
         price,
       ];
 }
+class NavigateSingleProductScreenEvent extends ProductEvent {
+  final BuildContext context;
+  final Widget destination;
+  final ProductEntity product;
+
+  const NavigateSingleProductScreenEvent({
+    required this.context,
+    required this.destination,
+    required this.product
+  });
+}
 
 final class DeleteProduct extends ProductEvent {
   final String productId;
