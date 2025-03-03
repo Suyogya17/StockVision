@@ -52,9 +52,9 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     // var products = {'product':product,'quantity':quantity};
     final result = await _createOrderUsecase.call(CreateOrderParams(
       status: event.status,
-      customerId: event.customerId,
-      customerUsername: event.customerId,
-      products: event.products.whereType<ProductEntity>().toList(),
+      customerId: event.customer,
+      customerUsername: 'saxh',
+      products: event.productsList.whereType<ProductEntity>().toList(),
       totalPrice: event.totalPrice,
       shippingAddress: event.shippingAddress,
       paymentStatus: event.paymentStatus,

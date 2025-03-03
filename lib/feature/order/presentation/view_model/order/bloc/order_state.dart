@@ -34,3 +34,18 @@ class OrderState extends Equatable {
   @override
   List<Object> get props => [isLoading, order, error];
 }
+
+class OrderLoadingState extends OrderState {
+  OrderLoadingState() : super(isLoading: true, order: [], error: '');
+}
+
+class OrderSuccessState extends OrderState {
+  const OrderSuccessState(List<OrderEntity> order)
+      : super(isLoading: false, order: order, error: '');
+}
+
+class OrderFailureState extends OrderState {
+  final String errorMessage;
+  OrderFailureState({required this.errorMessage})
+      : super(isLoading: false, order: [], error: errorMessage);
+}

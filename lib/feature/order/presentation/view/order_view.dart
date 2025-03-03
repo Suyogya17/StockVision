@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stockvision_app/feature/Order/presentation/view_model/order/bloc/order_bloc.dart';
@@ -90,8 +91,8 @@ class _OrdersViewState extends State<OrdersView> {
                           itemBuilder: (BuildContext context, index) {
                             final order = filteredOrders[index];
 
-                            // Assuming each order has a list of products
-                            final product = order.products.isNotEmpty
+                            // Assuming each order has a list of productsList
+                            final product = (order.products.isNotEmpty)
                                 ? order.products[0]
                                 : null;
 

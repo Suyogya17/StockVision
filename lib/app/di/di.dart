@@ -126,9 +126,7 @@ _initOrderDependencies() {
 
   //  Remote Data Source order
   getIt.registerFactory<OrderRemoteDataSource>(
-    () => OrderRemoteDataSource(
-      getIt<Dio>(),
-    ),
+    () => OrderRemoteDataSource(getIt<Dio>(), getIt<TokenSharedPrefs>()),
   );
 
   // local Repository order
@@ -223,6 +221,7 @@ _initProductDependencies() async {
 
   getIt.registerFactory<ProductBloc>(
     () => ProductBloc(
+      orderBloc: getIt<OrderBloc>(),
       createProductUseCase: getIt<CreateProductUseCase>(),
       getAllProductUseCase: getIt<GetAllProductUseCase>(),
       deleteProductUsecase: getIt<DeleteProductUsecase>(),

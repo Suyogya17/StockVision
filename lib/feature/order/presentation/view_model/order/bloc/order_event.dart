@@ -1,6 +1,6 @@
 part of 'order_bloc.dart';
 
-sealed class OrderEvent extends Equatable {
+class OrderEvent extends Equatable {
   const OrderEvent();
 
   @override
@@ -12,9 +12,8 @@ class OrderLoad extends OrderEvent {}
 class CreateOrder extends OrderEvent {
   final BuildContext context;
   final String? orderId;
-  final String customerId;
-  final String customerUsername;
-  final List<ProductEntity?> products;
+  final String customer;
+  final List<ProductEntity?> productsList;
   final String totalPrice;
   final String shippingAddress;
   final String status;
@@ -24,9 +23,8 @@ class CreateOrder extends OrderEvent {
   const CreateOrder({
     this.orderId,
     required this.context,
-    required this.customerId,
-    required this.customerUsername,
-    required this.products,
+    required this.customer,
+    required this.productsList,
     required this.totalPrice,
     required this.shippingAddress,
     required this.status,
@@ -36,9 +34,8 @@ class CreateOrder extends OrderEvent {
   @override
   List<Object> get props => [
         context,
-        customerId,
-        customerUsername,
-        products,
+        customer,
+        productsList,
         totalPrice,
         shippingAddress,
         status,
