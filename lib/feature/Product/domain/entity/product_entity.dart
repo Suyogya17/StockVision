@@ -49,6 +49,28 @@ class ProductEntity extends Equatable {
         'price': price,
       };
 
+   // Adding copyWith method
+  ProductEntity copyWith({
+    String? productId,
+    String? productName,
+    String? image,
+    String? description,
+    String? type,
+    String? quantity,
+    String? price,
+  }) {
+    return ProductEntity(
+      productId: productId ?? this.productId,
+      productName: productName ?? this.productName,
+      image: image ?? this.image,
+      description: description ?? this.description,
+      type: type ?? this.type,
+      quantity: quantity ?? this.quantity,
+      price: price ?? this.price,
+    );
+  }
+
+
   @override
   List<Object?> get props => [
         productId,

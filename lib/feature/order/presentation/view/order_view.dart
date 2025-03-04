@@ -91,10 +91,14 @@ class _OrdersViewState extends State<OrdersView> {
                           itemBuilder: (BuildContext context, index) {
                             final order = filteredOrders[index];
 
-                            // Assuming each order has a list of productsList
-                            final product = (order.products.isNotEmpty)
+                            // Assuming each order has a list of products, access the first product (or a specific one)
+                            final product = order.products.isNotEmpty
                                 ? order.products[0]
                                 : null;
+
+                            // Get the quantity from the specific product in the order
+                            final String productQuantity =
+                                product?.quantity.toString() ?? 'N/A';
 
                             final String imageFileName =
                                 product?.image?.split('/').last ?? "";
@@ -168,8 +172,9 @@ class _OrdersViewState extends State<OrdersView> {
                                             : Colors.green,
                                       ),
                                     ),
+                                    // Show the specific product quantity
                                     Text(
-                                      "Quantity: ${product?.quantity ?? ''}",
+                                      "Quantity: $productQuantity",
                                       style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stockvision_app/core/common/snackbar/my_snackbar.dart';
-// import 'package:stockvision_app/feature/Order/presentation/view_model/bloc/order_bloc.dart';
 import 'package:stockvision_app/feature/Order/presentation/view_model/order/bloc/order_bloc.dart';
 import 'package:stockvision_app/feature/Product/domain/entity/product_entity.dart';
 
@@ -15,76 +14,78 @@ class ProductDetailView extends StatefulWidget {
 }
 
 class _ProductDetailViewState extends State<ProductDetailView> {
-  // Controllers to capture user inputs
   final _key = GlobalKey<FormState>();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
 
-  final bool _isOrderPlaced = false; // Flag to check if the order was placed
+  bool _isOrderPlaced = false;
 
-  // Function to place order
   Future<void> _placeOrder() async {
     if (_addressController.text.isEmpty || _quantityController.text.isEmpty) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please fill in all fields!'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+      showMySnackBar(
+        context: context,
+        message: 'Please fill in all fields!',
+        color: Colors.red,
+      );
       return;
     }
-    try {
-      print('a');
-      final int quantity = int.tryParse(_quantityController.text) ?? 1;
-      final String totalAmount = widget.product.price * quantity;
-      final OrderState = context.read<OrderBloc>().state;
 
-      // Dispatch the order creation event to the Bloc
+    final int quantity = int.tryParse(_quantityController.text) ?? 1;
+    if (quantity <= 0) {
+      showMySnackBar(
+        context: context,
+        message: 'Quantity must be greater than 0!',
+        color: Colors.red,
+      );
+      return;
+    }
+
+    final String totalAmount =
+        (double.parse(widget.product.price) * quantity).toString();
+
+    try {
       context.read<OrderBloc>().add(CreateOrder(
             context: context,
-            customer: 'sadjhhgsd',
-            productsList: [widget.product],
+            customer: 'customer_id', // Replace with actual customer ID
+            productsList: [
+              widget.product.copyWith(
+                  quantity: quantity.toString()) // Send the entered quantity
+            ],
             totalPrice: totalAmount,
             shippingAddress: _addressController.text,
             status: 'pending',
             paymentStatus: 'pending',
             orderDate: DateTime.now().toString(),
           ));
-          // Show success snack bar after placing the order
-    showMySnackBar(
-      context: context,
-      message: 'Order placed successfully!',
-      color: Colors.green,  // You can change the color as per your preference
-    );
 
-      print('b $OrderState');
+      showMySnackBar(
+        context: context,
+        message: 'Order placed successfully!',
+        color: Colors.green,
+      );
+
+      setState(() {
+        _isOrderPlaced = true;
+      });
     } catch (error) {
-      print('ERROR:: $error');
-      // If there's an error, show an error message
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Failed to place the order. Try again!'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+      showMySnackBar(
+        context: context,
+        message: 'Failed to place the order. Try again!',
+        color: Colors.red,
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Construct the network image URL
     final String imageUrl = widget.product.image != null
         ? "http://localhost:3000/${widget.product.image!.replaceAll('public/', '')}"
         : "";
 
     if (_isOrderPlaced) {
-      // Display the Bill screen after the order is placed
       final int quantity = int.tryParse(_quantityController.text) ?? 1;
-      final String totalAmount = widget.product.price * quantity;
+      final String totalAmount =
+          (double.parse(widget.product.price) * quantity).toString();
 
       return Scaffold(
         appBar: AppBar(
@@ -92,153 +93,166 @@ class _ProductDetailViewState extends State<ProductDetailView> {
           backgroundColor: Colors.orange,
           elevation: 0,
         ),
-        body: BlocBuilder<OrderBloc, OrderState>(builder: (context, state) {
-          return Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Order Summary',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  'Product: ${widget.product.productName}',
-                  style: const TextStyle(fontSize: 18),
-                ),
-                Text(
-                  'Quantity: $_quantityController.text',
-                  style: const TextStyle(fontSize: 18),
-                ),
-                Text(
-                  'Total Amount: $totalAmount',
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.orange,
-                  ),
-                ),
-              ],
-            ),
-          );
-        }),
-      );
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.product.productName,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Colors.orange,
-        elevation: 0,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: SingleChildScrollView(
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Product Image
-              Center(
-                child: widget.product.image != null &&
-                        widget.product.image!.isNotEmpty
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Image.network(
-                          imageUrl,
-                          height: 350,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return const Icon(
-                              Icons.image_not_supported,
-                              size: 250,
-                              color: Colors.grey,
-                            );
-                          },
-                        ),
-                      )
-                    : ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: const Icon(
-                          Icons.image_not_supported,
-                          size: 250,
-                          color: Colors.grey,
-                        ),
-                      ),
-              ),
-              const SizedBox(height: 20),
-
-              // Product Name
-              Text(
-                widget.product.productName,
-                style: const TextStyle(
-                  fontSize: 28,
+              const Text(
+                'Order Summary',
+                style: TextStyle(
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 10),
-
-              // Product Price
-              Text(
-                "Price: ${widget.product.price}",
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.orange,
+              const SizedBox(height: 15),
+              Text('Product: ${widget.product.productName}',
+                  style: const TextStyle(fontSize: 18)),
+              Text('Price: Rs${widget.product.price}',
+                  style: const TextStyle(fontSize: 18)),
+              Text('Quantity: $quantity', style: const TextStyle(fontSize: 18)),
+              Text('Total: Rs $totalAmount',
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 25),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 15.0, horizontal: 30.0),
+                  backgroundColor: Colors.orange, // Button color
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
                 ),
-              ),
-              const SizedBox(height: 10),
-
-              // Product Quantity Input
-              TextField(
-                controller: _quantityController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Quantity',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 10),
-
-              // Shipping Address Input
-              TextField(
-                controller: _addressController,
-                decoration: const InputDecoration(
-                  labelText: 'Shipping Address',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 20),
-
-              // Place Order Button
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: _placeOrder, // Call the _placeOrder method
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    elevation: 5,
-                  ),
-                  child: const Text(
-                    "Place Order",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ),
+                onPressed: () {
+                  setState(() {
+                    _isOrderPlaced = false;
+                  });
+                  Navigator.pop(context);
+                },
+                child: const Text('Back to Orders'),
               ),
             ],
           ),
         ),
-      ),
-    );
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text("Product Details"),
+          backgroundColor: Colors.orange,
+          elevation: 0,
+        ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: Form(
+            key: _key,
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Image.network(
+                    imageUrl,
+                    height: 250,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  widget.product.productName,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text('Price: ${widget.product.price}',
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 20),
+                // Product Quantity
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Text(
+                  'Total Quantity Left: ${widget.product.quantity}',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey[700],
+                  ),
+                  textAlign: TextAlign.justify,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                // Shipping Address Field
+                TextFormField(
+                  controller: _addressController,
+                  decoration: InputDecoration(
+                    labelText: 'Shipping Address',
+                    labelStyle: const TextStyle(color: Colors.orange),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: Colors.orange),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 20),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter your address';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                // Quantity Field
+                TextFormField(
+                  controller: _quantityController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: 'Quantity',
+                    labelStyle: const TextStyle(color: Colors.orange),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: Colors.orange),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 20),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter quantity';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 30),
+                // Place Order Button
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15.0, horizontal: 30.0),
+                    backgroundColor: Colors.orange, // Button color
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                  ),
+                  onPressed: () {
+                    if (_key.currentState!.validate()) {
+                      _placeOrder();
+                    }
+                  },
+                  child: const Text('Place Order'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
   }
 }
