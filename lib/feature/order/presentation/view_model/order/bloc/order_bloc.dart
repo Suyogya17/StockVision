@@ -25,6 +25,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     on<OrderLoad>(_onOrderLoad);
     on<CreateOrder>(_onCreateOrder);
     on<DeleteOrder>(_onDeleteOrder);
+
     add(OrderLoad());
   }
 
@@ -43,6 +44,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       },
     );
   }
+
 
   Future<void> _onCreateOrder(
     CreateOrder event,

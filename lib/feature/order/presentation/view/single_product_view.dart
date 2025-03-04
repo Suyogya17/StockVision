@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stockvision_app/core/common/snackbar/my_snackbar.dart';
 // import 'package:stockvision_app/feature/Order/presentation/view_model/bloc/order_bloc.dart';
 import 'package:stockvision_app/feature/Order/presentation/view_model/order/bloc/order_bloc.dart';
 import 'package:stockvision_app/feature/Product/domain/entity/product_entity.dart';
@@ -51,6 +52,13 @@ class _ProductDetailViewState extends State<ProductDetailView> {
             paymentStatus: 'pending',
             orderDate: DateTime.now().toString(),
           ));
+          // Show success snack bar after placing the order
+    showMySnackBar(
+      context: context,
+      message: 'Order placed successfully!',
+      color: Colors.green,  // You can change the color as per your preference
+    );
+
       print('b $OrderState');
     } catch (error) {
       print('ERROR:: $error');
@@ -179,7 +187,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
 
               // Product Price
               Text(
-                "Price: ₹${widget.product.price}",
+                "Price: ${widget.product.price}",
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w600,

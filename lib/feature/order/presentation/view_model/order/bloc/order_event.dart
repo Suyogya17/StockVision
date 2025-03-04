@@ -31,6 +31,7 @@ class CreateOrder extends OrderEvent {
     required this.paymentStatus,
     required this.orderDate,
   });
+
   @override
   List<Object> get props => [
         context,
@@ -56,4 +57,8 @@ class DeleteOrder extends OrderEvent {
 
   @override
   List<Object> get props => [id];
+}
+
+class OrderSearchFilter extends OrderEvent{
+
 }

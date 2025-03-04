@@ -281,6 +281,8 @@ _initSplashScreenDependencies() async {
   );
 }
 
+// ======================== profile ===========================
+
 _initProfileDependencies() async {
   getIt.registerLazySingleton<GetUserUsecase>(
     () => GetUserUsecase(
