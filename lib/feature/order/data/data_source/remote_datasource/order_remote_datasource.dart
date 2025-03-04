@@ -56,37 +56,37 @@ class OrderRemoteDataSource implements IOrderDataSource {
 
   @override
   Future<void> deleteOrder(String id) async {
-   try {
-    var tokenResult = await tokenSharedPrefs.getToken();
-    var userResult = await tokenSharedPrefs.getUser();
+    try {
+      var tokenResult = await tokenSharedPrefs.getToken();
+      var userResult = await tokenSharedPrefs.getUser();
 
-    var token = tokenResult.fold(
-      (failure) => throw Exception("Failed to get token"),
-      (token) => token,
-    );
+      var token = tokenResult.fold(
+        (failure) => throw Exception("Failed to get token"),
+        (token) => token,
+      );
 
-    String? userId = userResult != null ? userResult['_id'] : null;
-    if (userId == null) {
-      throw Exception("Failed to get user ID");
+      String? userId = userResult != null ? userResult['_id'] : null;
+      if (userId == null) {
+        throw Exception("Failed to get user ID");
+      }
+
+      // Make the DELETE request with the necessary headers and ID
+      var response = await _dio.delete(
+        ApiEndpoints.deleteOrder + id, // The endpoint for deleting an order
+        options: Options(headers: {"Authorization": "Bearer $token"}),
+      );
+
+      if (response.statusCode == 200) {
+        print("Order deleted successfully");
+        return;
+      } else {
+        throw Exception('Failed to delete the order');
+      }
+    } on DioException catch (e) {
+      throw Exception("Dio error: ${e.message}");
+    } catch (e) {
+      throw Exception("Error: ${e.toString()}");
     }
-
-    // Make the DELETE request with the necessary headers and ID
-    var response = await _dio.delete(
-      '${ApiEndpoints.deleteOrder}/$id', // The endpoint for deleting an order
-      options: Options(headers: {"Authorization": "Bearer $token"}),
-    );
-
-    if (response.statusCode == 200) {
-      print("Order deleted successfully");
-      return;
-    } else {
-      throw Exception('Failed to delete the order');
-    }
-  } on DioException catch (e) {
-    throw Exception("Dio error: ${e.message}");
-  } catch (e) {
-    throw Exception("Error: ${e.toString()}");
-}
   }
 
   @override

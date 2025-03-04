@@ -25,11 +25,20 @@ class OrderRemoteRepository implements IOrderRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deleteOrder(String id) {
-    // TODO: implement deleteOrder
-    throw UnimplementedError();
+  Future<Either<Failure, void>> deleteOrder(String id) async {
+    try {
+      await _orderRemoteDatasource.deleteOrder(id);
+      return Future.value(const Right(null));
+    } catch (e) {
+      return Future.value(
+        Left(
+          ApiFailure(
+            message: e.toString(),
+          ),
+        ),
+      );
+    }
   }
-
   @override
   Future<Either<Failure, List<OrderEntity>>> getOrder(
       String? token, String userId) async {

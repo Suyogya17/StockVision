@@ -77,6 +77,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     Emitter<OrderState> emit,
   ) async {
     emit(state.copyWith(isLoading: true));
+    print('Deleting order with ID: ${event.id}'); // Add this print
     final result = await _deleteOrderUsecase(DeleteOrderParams(id: event.id));
     result.fold(
       (failure) =>

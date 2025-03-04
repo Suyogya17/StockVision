@@ -76,6 +76,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
     }
   }
 
+  
   @override
   Widget build(BuildContext context) {
     final String imageUrl = widget.product.image != null
